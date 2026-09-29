@@ -18,8 +18,6 @@ let calendarMonth = new Date(new Date().getFullYear(),new Date().getMonth(),1);
 let calendarSelectedDate = '';
 let timerHandle = null;
 let toastHandle = null;
-let telegramStatus = null;
-let telegramPairTimer = null;
 let backupSyncTimer = null;
 
 function loadUser() {
@@ -48,24 +46,6 @@ function updateExamCountdown() {
 async function telegramRequest(url, body) {
   const response = await fetch(url, { method:body?'POST':'GET', headers:body?{'content-type':'application/json'}:undefined, body:body?JSON.stringify(body):undefined });
   const result = await response.json(); if (!response.ok) throw new Error(result.error || 'Telegram service request failed.'); return result;
-}
-function renderBackupDialog(status=telegramStatus, message='') {
-  telegramStatus=status;
-  clearInterval(telegramPairTimer); telegramPairTimer=null;
-  const connected=Boolean(status?.connected);
-  const pairing=Boolean(status && !connected && status.botName);
-  const stateMarkup=connected
-    ? `<div class="telegram-connected"><span class="telegram-state-dot"></span><span>Connected to <strong>@${esc(status.botName)}</strong>${status.chatName?` · ${esc(status.chatName)}`:''}</span></div><p class="telegram-last-sent">${status.lastSentAt?`Last backup sent ${esc(new Date(status.lastSentAt).toLocaleString())}`:'Daily backup is scheduled for 00:00 India time.'}</p><div class="telegram-controls"><button class="primary-button" data-action="telegram-send">Send backup now</button><button class="outline-button" data-action="telegram-disconnect">Disconnect</button></div>`
-    : pairing
-      ? `<div class="telegram-pairing"><strong>Bot token verified: @${esc(status.botName)}</strong><p>Now open your bot in Telegram and press <code>Start</code> or send <code>/start</code>. This window will connect automatically.</p><a class="outline-button telegram-open-bot" href="https://t.me/${encodeURIComponent(status.botName)}" target="_blank" rel="noopener noreferrer">Open @${esc(status.botName)} in Telegram</a></div>`
-      : `<label class="telegram-token-label" for="telegramToken">Bot API token</label><div class="telegram-token-row"><input id="telegramToken" type="password" autocomplete="off" spellcheck="false" placeholder="Paste the token from BotFather"><button class="primary-button" data-action="telegram-connect">Connect bot</button></div><small class="telegram-token-hint">Token is sent only to this device’s local service and stored in a private local file.</small>`;
-  const markup=`<div class="backup-options"><section class="backup-option"><span class="backup-option-icon">↓</span><div><h3>Download to this device</h3><p>Save your bookmarks, practice history, notes, and settings as a JSON file.</p><button class="primary-button" data-action="backup-download">Download backup</button></div></section><section class="backup-option telegram-option"><span class="backup-option-icon telegram-icon">➤</span><div><h3>Daily backup to Telegram</h3><p>Receive your latest practice backup as a file every day at 00:00 India time.</p><ol class="telegram-steps"><li>Create a bot with <a href="https://t.me/BotFather" target="_blank" rel="noopener noreferrer">@BotFather</a> using <code>/newbot</code>.</li><li>Copy its API token and connect it below.</li><li>Open your bot and send <code>/start</code> to finish pairing.</li></ol>${message?`<div class="backup-setup-note"><strong>${esc(message)}</strong></div>`:''}${stateMarkup}<div class="backup-setup-note"><strong>Keep this computer and service running at midnight.</strong> The bot and backup stay on this device; the browser syncs your practice data to its local service.</div></div></section></div>`;
-  dialogShow('Back up your practice',markup,'<button class="outline-button" data-dialog="close">Close</button>');
-  if (pairing) telegramPairTimer=setInterval(async()=>{try{telegramStatus=await telegramRequest('/api/telegram/pair',{});if(telegramStatus.connected){renderBackupDialog(telegramStatus,'Telegram bot connected successfully.');fetch('/api/telegram/backup',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({app:'gate-ce-practice',version:1,exportedAt:new Date().toISOString(),data:user})});}}catch{}},4000);
-}
-async function showBackupDialog() {
-  try { renderBackupDialog(await telegramRequest('/api/telegram/status')); }
-  catch { telegramStatus=null; renderBackupDialog(null,'Local backup service is not running. Start this app with node server.mjs to connect a Telegram bot.'); }
 }
 function toast(message) { let el=$('toast'); if(!el){el=document.createElement('div');el.id='toast';el.className='toast';document.body.append(el);} el.textContent=message; clearTimeout(toastHandle); toastHandle=setTimeout(()=>el.remove(),2400); }
 function dialogShow(title, body, footer='') { dialog.classList.toggle('calculator-modal',body.includes('class="gate-calc"'));dialog.innerHTML=`<div class="modal-head"><h2>${title}</h2><button class="modal-close" data-dialog="close" aria-label="Close">×</button></div><div class="modal-body">${body}</div>${footer?`<div class="modal-footer">${footer}</div>`:''}`; dialog.showModal(); }
@@ -539,7 +519,23 @@ function renderCollection(which) {
 }
 function toggleSaved(kind,id) { const key=kind==='bookmark'?'bookmarks':'mistakes';if(user[key].includes(id))user[key]=user[key].filter(x=>x!==id);else user[key].push(id);saveUser();render(); }
 function saveDownload(filename,data,type='application/json') {
-  const blob=new Blob([JSON.stringify(data,null,2)],{type});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=filename;a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);
+  try {
+    const blob=new Blob([JSON.stringify(data,null,2)],{type});
+    const url=URL.createObjectURL(blob);
+    const a=document.createElement('a');
+    a.href=url;
+    a.download=filename;
+    a.style.display='none';
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    setTimeout(()=>URL.revokeObjectURL(url),1000);
+    return true;
+  } catch(error) {
+    console.error('Backup download failed:',error);
+    toast('Could not create backup file.');
+    return false;
+  }
 }
 function attemptById(id) { return user.history.find(a=>a.id===id); }
 async function handleAction(action,el) {
