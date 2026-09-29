@@ -1,0 +1,1568 @@
+[
+  {
+    "id": "1f09158fb08acdaa404acca1",
+    "year": 2023,
+    "session": "SET-1",
+    "questionNo": 61,
+    "natAnswerRaw": "{\"value1\":\"-0.152\",\"value2\":\"-0.149\",\"value3\":\"0\"}",
+    "questionText": "The differential equation, $\\frac{\\mathrm{du}}{\\mathrm{dt}}+2 \\mathrm{tu}^{2}=1$ is solved by employing a backward differnce scheme within the finite difference framework. The value of $u$ at the $(n-1)^{\\text {th }}$ time-step, for some $n$ , is 1.75. The corresponding time $(\\mathrm{t})$ is $3.14 \\mathrm{~s}$ . Each time step is $0.01 \\mathrm{~s}$ long. Then, the value of $(u_{n}-u_{n-1})$ is ____ (round off to three decimal places).",
+    "reason": "Stored answer hint was blank or did not match the official key range pool; requires question-level verification."
+  },
+  {
+    "id": "a39127313276285cdb1379aa",
+    "year": 2017,
+    "session": "SET-2",
+    "questionNo": 152,
+    "natAnswerRaw": "{\"value1\":\"0.5\",\"value2\":\"0.5\",\"value3\":\"0\"}",
+    "questionText": "A two-faced fair coin has its faces designated as head (H) and tail (T). This coin is tossed three times in succession to record the following outcomes: H, H, H. If the coin is tossed one more time, the probability (up to one decimal place) of obtaining H again, given the previous realizations of H, H and H, would be______",
+    "reason": "No official CE answer-key PDF was located for 2015–2017."
+  },
+  {
+    "id": "82f804ed317e47eaae6989ed",
+    "year": 2017,
+    "session": "SET-2",
+    "questionNo": 153,
+    "natAnswerRaw": "{\"value1\":\"133.9\",\"value2\":\"134.1\",\"value3\":\"0\"}",
+    "questionText": "The divergence of the vector field $V\\, =x^{2}i+2y^{3}j+z^{4}k$ at $x=1, y=2, z=3$ is_______",
+    "reason": "No official CE answer-key PDF was located for 2015–2017."
+  },
+  {
+    "id": "9b6a442967db54564fb9017b",
+    "year": 2017,
+    "session": "SET-1",
+    "questionNo": 156,
+    "natAnswerRaw": "{\"value1\":\"5.4\",\"value2\":\"5.6\",\"value3\":\"0\"}",
+    "questionText": "A particle of mass 2 kg is travelling at a velocity of 1.5 m/s. A force $f(t)=3t^{2}$ (in N) is applied to it in the direction of motion for a duration of 2 seconds, where t denotes time in seconds. The velocity (in m/s, up to one decimal place) of the particle immediately after the removal of the force is _____",
+    "reason": "No official CE answer-key PDF was located for 2015–2017."
+  },
+  {
+    "id": "0a31b61b82f783661fb1d098",
+    "year": 2017,
+    "session": "SET-1",
+    "questionNo": 157,
+    "natAnswerRaw": "{\"value1\":\"7.95\",\"value2\":\"8.05\",\"value3\":\"0\"}",
+    "questionText": "Consider the equation $\\frac{\\mathrm{d} u}{\\mathrm{d} t}=3t^{2}+1$ with u=0 at t=0. This is numerically solved by using the forward Euler method with a step size $\\Delta t= 2$ . The absolute error in the solution at the end of the first time step is_________",
+    "reason": "No official CE answer-key PDF was located for 2015–2017."
+  },
+  {
+    "id": "33b3c75e9568f51c5b80bc69",
+    "year": 2017,
+    "session": "SET-1",
+    "questionNo": 161,
+    "natAnswerRaw": "{\"value1\":\"-1.1\",\"value2\":\"-0.9\",\"value3\":\"0\"}",
+    "questionText": "$\\lim_{x \\to 0} (\\frac{\\tan x}{x^{2}-x})$ is equals to",
+    "reason": "No official CE answer-key PDF was located for 2015–2017."
+  },
+  {
+    "id": "6e64130a3731f8dbf1bd7c68",
+    "year": 2017,
+    "session": "SET-1",
+    "questionNo": 162,
+    "natAnswerRaw": "{\"value1\":\"35.9\",\"value2\":\"36.1\",\"value3\":\"0\"}",
+    "questionText": "Consider the following partial differential equation: $3\\frac{\\partial^2 \\phi }{\\partial x^2}+B\\frac{\\partial^2 \\phi }{\\partial x \\partial y} + 3\\frac{\\partial^2 \\phi }{\\partial y^2}+4\\phi =0$ For this equation to be classified as parabolic, the value of $B^{2}$ must be_______",
+    "reason": "No official CE answer-key PDF was located for 2015–2017."
+  },
+  {
+    "id": "b4662b7df796c37997c2bb88",
+    "year": 2016,
+    "session": "SET-2",
+    "questionNo": 168,
+    "natAnswerRaw": "{\"value1\":\"85\",\"value2\":\"85.5\",\"value3\":\"0\"}",
+    "questionText": "The area between the parabola $x^{2}=8y$ and the straight line y=8 is ______.",
+    "reason": "No official CE answer-key PDF was located for 2015–2017."
+  },
+  {
+    "id": "114c9d836242cb394c06f32a",
+    "year": 2016,
+    "session": "SET-2",
+    "questionNo": 176,
+    "natAnswerRaw": "{\"value1\":\"54.49\",\"value2\":\"54.51\",\"value3\":\"0\"}",
+    "questionText": "The spot speeds (expressed in km/hr) observed at a road section are 66, 62, 45, 79, 32, 51, 56, 60, 53, and 49. The median speed (expressed in km/hr) is ________.(Note: answer with one decimal accuracy)",
+    "reason": "No official CE answer-key PDF was located for 2015–2017."
+  },
+  {
+    "id": "5a457da2557b8fda55d0ce78",
+    "year": 2016,
+    "session": "SET-1",
+    "questionNo": 185,
+    "natAnswerRaw": "{\"value1\":\"0.355\",\"value2\":\"0.365\",\"value3\":\"0\"}",
+    "questionText": "Newton-Raphson method is to be used to find root of equation $3x-e^{x}+\\sin x=0$ . If the initial trial value for the root is taken as 0.333, the next approximation for the root would be _________",
+    "reason": "No official CE answer-key PDF was located for 2015–2017."
+  },
+  {
+    "id": "21e62194e3f47e438d2780a8",
+    "year": 2015,
+    "session": "SET-2",
+    "questionNo": 186,
+    "natAnswerRaw": "{\"value1\":\"1.36\",\"value2\":\"1.37\",\"value3\":\"0\"}",
+    "questionText": "For step-size, $\\Delta x=0.4$ , the value of following integral using Simpson's 1/3 rule is _________. $\\int_{0}^{0.8}(0.2+25x-200x^{2}+675x^{3}-900x^{4}+400x^{5})dx$",
+    "reason": "No official CE answer-key PDF was located for 2015–2017."
+  },
+  {
+    "id": "c051231739d15cf0a0c17fbc",
+    "year": 2015,
+    "session": "SET-2",
+    "questionNo": 188,
+    "natAnswerRaw": "{\"value1\":\"18\",\"value2\":\"18\",\"value3\":\"0\"}",
+    "questionText": "Consider the following second order linear differential equation: $\\frac{d^2 y}{ dx^2}=-12x^{2}+24x-20$ The boundary conditions are: at x = 0, y = 5 and at x = 2, y = 21. The value of y at x = 1 is ____________.",
+    "reason": "No official CE answer-key PDF was located for 2015–2017."
+  },
+  {
+    "id": "0f50b1f34549d1a415493281",
+    "year": 2015,
+    "session": "SET-2",
+    "questionNo": 189,
+    "natAnswerRaw": "{\"value1\":\"1.06\",\"value2\":\"1.07\",\"value3\":\"0\"}",
+    "questionText": "For probability density function of a random variable,x is $\\begin{matrix} f(x) &=\\frac{x}{4}(4-x^2) &for \\;\\; 0\\leq x\\leq 2 \\\\ &=0 & ohterwise \\end{matrix}$ The mean, $\\mu _{x}$ of the random variable is _____.",
+    "reason": "No official CE answer-key PDF was located for 2015–2017."
+  },
+  {
+    "id": "19ff2a60185d11d377f6e235",
+    "year": 2015,
+    "session": "SET-2",
+    "questionNo": 193,
+    "natAnswerRaw": "{\"value1\":\"0.3\",\"value2\":\"0.4\",\"value3\":\"0\"}",
+    "questionText": "In Newton-Raphson iterative method, the initial guess value ( $x_{ini}$ ) is considered as zero while finding the roots of the euation: $f(x)=-2+6x-4x^{2}+0.5x^{3}$ . The correction, $\\Delta x$ , to be added to $x_{ini}$ in the first iteration is____________.",
+    "reason": "No official CE answer-key PDF was located for 2015–2017."
+  },
+  {
+    "id": "fd0937104b486b7ae886d0a6",
+    "year": 2015,
+    "session": "SET-1",
+    "questionNo": 198,
+    "natAnswerRaw": "{\"value1\":\"2.32\",\"value2\":\"2.34\",\"value3\":\"0\"}",
+    "questionText": "The quadratic equation $x^{2}-4x+4=0$ is to be solved numerically, starting with the initial guess $x_0=3$ . The Newton-Raphson method is applied once to get a new estimate and then the Secant method is applied once using the initial guess and this new estimate. The estimated value of the root after the application of the Secant method is __________.",
+    "reason": "No official CE answer-key PDF was located for 2015–2017."
+  },
+  {
+    "id": "f648fde64a4eb113c0c48b70",
+    "year": 2015,
+    "session": "SET-1",
+    "questionNo": 200,
+    "natAnswerRaw": "{\"value1\":\"0.23\",\"value2\":\"0.25\",\"value3\":\"0\"}",
+    "questionText": "Consider the following probability mass function (p.m.f) of a random variable X : $p(x,q)=\\begin{cases} q & \\text{ if } X=0\\\\ 1-q& \\text{ if } X=1 \\\\ 0 & \\text otherwise \\end{cases}$ If q = 0.4, the variance of X is _______.",
+    "reason": "No official CE answer-key PDF was located for 2015–2017."
+  },
+  {
+    "id": "f9c6018c6e48ed0558de85e4",
+    "year": 2015,
+    "session": "SET-1",
+    "questionNo": 202,
+    "natAnswerRaw": "{\"value1\":\"4.49\",\"value2\":\"4.51\",\"value3\":\"0\"}",
+    "questionText": "For what value of p the following set of equations will have no solution? 2x+3y=53x+py=10",
+    "reason": "No official CE answer-key PDF was located for 2015–2017."
+  },
+  {
+    "id": "3017fe2c7010e9890c77e1d1",
+    "year": 2017,
+    "session": "SET-2",
+    "questionNo": 62,
+    "natAnswerRaw": "{\"value1\":\"15707\",\"value2\":\"15708\",\"value3\":\"0\"}",
+    "questionText": "A 2 m long, axially loaded mild steel rod of 8 mm diameter exhibits the load-displacement $(P-\\delta )$ behavior as shown in the figure. Assume the yield stress of steel as 250 Mpa. The complementary energy (in N-mm) stored in the bar up to its linear elastic behavior will be____",
+    "reason": "No official CE answer-key PDF was located for 2015–2017."
+  },
+  {
+    "id": "2fa90d6d7ba18e9ab2afe087",
+    "year": 2017,
+    "session": "SET-2",
+    "questionNo": 63,
+    "natAnswerRaw": "{\"value1\":\"20\",\"value2\":\"25\",\"value3\":\"0\"}",
+    "questionText": "A hollow circular shaft has an outer diameter of 100 mm and inner diameter of 50 mm. If the allowable shear stress is 125 MPa, the maximum torque (in kN-m) that the shaft can resist is____",
+    "reason": "No official CE answer-key PDF was located for 2015–2017."
+  },
+  {
+    "id": "da6eb2dc5dd3dd1fe7edd476",
+    "year": 2017,
+    "session": "SET-1",
+    "questionNo": 67,
+    "natAnswerRaw": "{\"value1\":\"7.9\",\"value2\":\"8.3\",\"value3\":\"0\"}",
+    "questionText": "Consider two axially loaded columns, namely, 1 and 2, made of a linear elastic material with Young's modulus $2 \\times 10^{5}$ MPa, square cross- section with side 10 mm, and length 1 m. For Column 1, one end is fixed and the other end is free. For Column 2, one end is fixed and the other end is pinned. Based on the Euler's theory, the ratio (up to one decimal place) of the buckling load of Column 2 to the buckling load of Column 1 is ________",
+    "reason": "No official CE answer-key PDF was located for 2015–2017."
+  },
+  {
+    "id": "5e73c6c2accddd574e39075a",
+    "year": 2017,
+    "session": "SET-1",
+    "questionNo": 68,
+    "natAnswerRaw": "{\"value1\":\"34.9\",\"value2\":\"35.1\",\"value3\":\"0\"}",
+    "questionText": "Consider the stepped bar made with a linear elastic material and subjected to an axial load of 1 kN, as shown in the figure. Segments 1 and 2 have cross-sectional are of $100mm^{2}$ and $60mm^{2}$ , Young's modulus of $2 \\times 10^{5}$ MPa and $3 \\times 10^{5}$ MPa, and length of 400mm and 900mm, respectively. The strain energy (in N-mm, up to one decimal place) in the bar due to the axial load is __________",
+    "reason": "No official CE answer-key PDF was located for 2015–2017."
+  },
+  {
+    "id": "02b010da3edd95be0fac51d3",
+    "year": 2016,
+    "session": "SET-2",
+    "questionNo": 71,
+    "natAnswerRaw": "{\"value1\":\"2.9\",\"value2\":\"3.1\",\"value3\":\"0\"}",
+    "questionText": "A 450 mm long plain concrete prism is subjected to the concentrated vertical loads as shown in the figure. Cross section of the prism is given as 150 mm x 150 mm. Considering linear stress distribution across the cross-section, the modulus of rupture (expressed in MPa) is _______ .",
+    "reason": "No official CE answer-key PDF was located for 2015–2017."
+  },
+  {
+    "id": "8a4565e2a6bd169ef8a2ae44",
+    "year": 2015,
+    "session": "SET-2",
+    "questionNo": 78,
+    "natAnswerRaw": "{\"value1\":\"3\",\"value2\":\"3.3\",\"value3\":\"0\"}",
+    "questionText": "A steel strip of length, L = 200 mm is fixed at end A and rests at B on a vertical spring of stiffness, k = 2 N/mm. The steel strip is 5 mm wide and 10 mm thick. A vertical load, P = 50 N is applied at B, as shown in the figure. Considering E = 200 GPa, the force (in N) developed in the spring is _________.",
+    "reason": "No official CE answer-key PDF was located for 2015–2017."
+  },
+  {
+    "id": "8a0e03ed4e2b437c155c5338",
+    "year": 2015,
+    "session": "SET-2",
+    "questionNo": 79,
+    "natAnswerRaw": "{\"value1\":\"0.05\",\"value2\":\"0.05\",\"value3\":\"0\"}",
+    "questionText": "A simply supported reinforced concrete beam of length 10 m sags while undergoing shrinkage. Assuming a uniform curvature of 0.004 $m^{-1}$ along the span, the maximum deflection (in m) of the beam at mid-span is _______.",
+    "reason": "No official CE answer-key PDF was located for 2015–2017."
+  },
+  {
+    "id": "2e05918c83a6025f4f2aa51f",
+    "year": 2015,
+    "session": "SET-2",
+    "questionNo": 82,
+    "natAnswerRaw": "{\"value1\":\"0.25\",\"value2\":\"0.25\",\"value3\":\"0\"}",
+    "questionText": "A horizontal beam ABC is loaded as shown in the figure below. The distance of the point of contraflexure from end A (in m) is _________.",
+    "reason": "No official CE answer-key PDF was located for 2015–2017."
+  },
+  {
+    "id": "8c76c70f2c9e1a4fcf6e40fd",
+    "year": 2015,
+    "session": "SET-1",
+    "questionNo": 83,
+    "natAnswerRaw": "{\"value1\":\"25\",\"value2\":\"25\",\"value3\":\"0\"}",
+    "questionText": "Two beams are connected by a linear spring as shown in the following figure. For a load P as shown in the figure, the percentage of the applied load P carried by the spring is __________.",
+    "reason": "No official CE answer-key PDF was located for 2015–2017."
+  },
+  {
+    "id": "45d83d1618e7e08b733985e1",
+    "year": 2015,
+    "session": "SET-1",
+    "questionNo": 84,
+    "natAnswerRaw": "{\"value1\":\"14.5\",\"value2\":\"15.5\",\"value3\":\"0\"}",
+    "questionText": "A tapered circular rod of diameter varying from 20 mm to 10 mm is connected to another uniform circular rod of diameter 10 mm as shown in the following figure. Both bars are made of same material with the modulus of elasticity, $E=2\\times 10^{5}$ MPa. When subjected to a load $P=30\\pi kN$ , the deflection at point A is ______ mm.",
+    "reason": "No official CE answer-key PDF was located for 2015–2017."
+  },
+  {
+    "id": "1a8b61634fc05e2393649556",
+    "year": 2015,
+    "session": "SET-1",
+    "questionNo": 85,
+    "natAnswerRaw": "{\"value1\":\"0\",\"value2\":\"0\",\"value3\":\"0\"}",
+    "questionText": "Two triangular wedges are glued together as shown in the following figure. The stress acting normal to the interface, $\\sigma _{n}$ is _____ MPa.",
+    "reason": "No official CE answer-key PDF was located for 2015–2017."
+  },
+  {
+    "id": "3b3e6e53349dc2e834287c88",
+    "year": 2018,
+    "session": "SET-2",
+    "questionNo": 47,
+    "natAnswerRaw": "{\"value1\":\"0.01\",\"value2\":\"0.01\",\"value3\":\"0\"}",
+    "questionText": "A prismatic beam P-Q-R of flexural rigidity $EI=1\\times 10^{4}kNm^{2}$ is subjected to a moment of 180 kNm at Q as shown in the figure.The rotation at Q (in rad, up to two decimal places) is ______",
+    "reason": "Stored answer hint was blank or did not match the official key range pool; requires question-level verification."
+  },
+  {
+    "id": "8fb82b5bc3d0ee4e1a682f9c",
+    "year": 2017,
+    "session": "SET-2",
+    "questionNo": 52,
+    "natAnswerRaw": "{\"value1\":\"0.9\",\"value2\":\"1.1\",\"value3\":\"0\"}",
+    "questionText": "Consider the portal frame shown in the figure and assume the modulus of elasticity $E=2.5\\times 10^{4}$ MPa and the moment of inertial, $I=8\\times 10^{8}\\; mm^{4}$ for all the members of the frame. The rotations (in degrees, up to decimal place) at the rigid joint Q would be ___",
+    "reason": "No official CE answer-key PDF was located for 2015–2017."
+  },
+  {
+    "id": "5ace1d57baefc6acbfb163ae",
+    "year": 2017,
+    "session": "SET-1",
+    "questionNo": 54,
+    "natAnswerRaw": "{\"value1\":\"199\",\"value2\":\"201\",\"value3\":\"0\"}",
+    "questionText": "Consider the beam ABCD shown in the figure. For a moving concentrated load of 50 kN on the beam, the magnitude of the maximum bending moment (in kN-m) obtained at the support C will be equal to _____",
+    "reason": "No official CE answer-key PDF was located for 2015–2017."
+  },
+  {
+    "id": "6d14f14ea878a18f99aee823",
+    "year": 2017,
+    "session": "SET-1",
+    "questionNo": 55,
+    "natAnswerRaw": "{\"value1\":\"59\",\"value2\":\"61\",\"value3\":\"0\"}",
+    "questionText": "The value of M in the beam ABC shown in the figure is such that the joint B does not rotate. The value of support reaction (in kN) at B should be equal to ______",
+    "reason": "No official CE answer-key PDF was located for 2015–2017."
+  },
+  {
+    "id": "14929d5f432f012672b93d01",
+    "year": 2015,
+    "session": "SET-2",
+    "questionNo": 62,
+    "natAnswerRaw": "{\"value1\":\"1.78\",\"value2\":\"1.79\",\"value3\":\"0\"}",
+    "questionText": "A simply supported beam AB of span, L=24 m is subjected to two wheel loads acting at a distance, d=5m apart as shown in the figure below. Each wheel transmits a load, P=3 kN and may occupy any position along the beam. If the beam is an I-section having section modulus, S=16.2 $cm^{3}$ , the maximum bending stress (in GPa) due to the wheel loads is ___________.",
+    "reason": "No official CE answer-key PDF was located for 2015–2017."
+  },
+  {
+    "id": "4037fbf47d24e4f662db699b",
+    "year": 2015,
+    "session": "SET-1",
+    "questionNo": 64,
+    "natAnswerRaw": "{\"value1\":\"5\",\"value2\":\"5\",\"value3\":\"0\"}",
+    "questionText": "For the 2D truss with the applied loads shown below, the strain energy in the member XY is _______ kN-m. For member XY, assume AE = 30 kN, where A is cross-section area and E is the modulus of elasticity.",
+    "reason": "No official CE answer-key PDF was located for 2015–2017."
+  },
+  {
+    "id": "b37fa995d8fb6c4830d7376b",
+    "year": 2015,
+    "session": "SET-1",
+    "questionNo": 65,
+    "natAnswerRaw": "{\"value1\":\"5\",\"value2\":\"5\",\"value3\":\"0\"}",
+    "questionText": "For the beam shown below, the value of the support moment M is __________ kN-m.",
+    "reason": "No official CE answer-key PDF was located for 2015–2017."
+  },
+  {
+    "id": "06354a45ccb94f0d7158f3e1",
+    "year": 2025,
+    "session": "SET-2",
+    "questionNo": 2,
+    "natAnswerRaw": "{\"value1\":\"1\",\"value2\":\"1\",\"value3\":\"0\"}",
+    "questionText": "The figure shows a network diagram for a construction project. The activities A, B, C, D, E, and F are represented by arrows and their durations are in the figure. The total float available for the activity E in day(s) is equal to _____ (round off to the nearest integer).",
+    "reason": "Stored answer hint was blank or did not match the official key range pool; requires question-level verification."
+  },
+  {
+    "id": "91e5ad90431a09c85412536a",
+    "year": 2021,
+    "session": "SET-2",
+    "questionNo": 15,
+    "natAnswerRaw": "{\"value1\":\"20000\",\"value2\":\"20000\",\"value3\":\"0\"}",
+    "questionText": "An equipment has been purchased at an initial cost of Rs. 160000 and has an estimated salvage value of Rs. 10000. The equipment has an estimated life of 5 years. The difference between the book values (in Rs, in integer) obtained at the end of 4th year using straight line method and sum of years digit method of depreciation is _____",
+    "reason": "Stored answer hint was blank or did not match the official key range pool; requires question-level verification."
+  },
+  {
+    "id": "800b6059bbe87e2b0c998fa4",
+    "year": 2017,
+    "session": "SET-2",
+    "questionNo": 28,
+    "natAnswerRaw": "{\"value1\":\"209\",\"value2\":\"219\",\"value3\":\"0\"}",
+    "questionText": "For a construction project, the mean and standard deviation of the completion time are 200 days and 6.1 days, respectively. Assume normal distribution and use the value of standard normal deviate Z = 1.64 for the 95% confidence level. The maximum time required (in days) for the completion of the project would be _______",
+    "reason": "No official CE answer-key PDF was located for 2015–2017."
+  },
+  {
+    "id": "754f072434d88c131eceb7f3",
+    "year": 2017,
+    "session": "SET-1",
+    "questionNo": 30,
+    "natAnswerRaw": "{\"value1\":\"51\",\"value2\":\"51\",\"value3\":\"0\"}",
+    "questionText": "The activity details of a project are given below: The estimated minimum time (in days) for the completion of the project will be________",
+    "reason": "No official CE answer-key PDF was located for 2015–2017."
+  },
+  {
+    "id": "8232681225923e5cffe9899f",
+    "year": 2016,
+    "session": "SET-1",
+    "questionNo": 34,
+    "natAnswerRaw": "{\"value1\":\"37\",\"value2\":\"38\",\"value3\":\"0\"}",
+    "questionText": "The Optimistic Time (O), most likely Time (M) and Pessimistic Time (P) (in days) of the activities in the critical path are given below in the format O-M-P.The expected completion time(in days) of the project________.",
+    "reason": "No official CE answer-key PDF was located for 2015–2017."
+  },
+  {
+    "id": "a30cfaf37ce2df5dc64005f9",
+    "year": 2021,
+    "session": "SET-2",
+    "questionNo": 37,
+    "natAnswerRaw": "{\"value1\":\"129\",\"value2\":\"130\",\"value3\":\"0\"}",
+    "questionText": "A rectangular cross-section of a reinforced concrete beam is shown in the figure. The diameter of each reinforcing bar is 16 mm. The values of modulus of elasticity of concrete and steel are $2.0 \\times 10^{4} \\mathrm{MPa} \\text { and } 2.1 \\times 10^{5} \\mathrm{MPa}$ , respectively.The distance of the centroidal axis from the centerline of the reinforcement (x) for the uncracked section (in mm,round off to one decimal place) is ____________",
+    "reason": "Stored answer hint was blank or did not match the official key range pool; requires question-level verification."
+  },
+  {
+    "id": "0ac51d1d5b9b0adba02e573d",
+    "year": 2020,
+    "session": "SET-1",
+    "questionNo": 45,
+    "natAnswerRaw": "{\"value1\":\"158\",\"value2\":\"158.8\",\"value3\":\"0\"}",
+    "questionText": "The singly reinforced concrete beam section shown in the figure (not drawn to the scale) is made of M25 grade concrete and Fe500 grade reinforcing steel. The total crosssectional area of the tension steel is 942 $mm^2$ . As per Limit State Design of IS 456 : 2000, the design moment capacity (in kNm round off to two decimal places) of the beam section, is __________",
+    "reason": "Stored answer hint was blank or did not match the official key range pool; requires question-level verification."
+  },
+  {
+    "id": "ce6772c40076a1e51e21b69f",
+    "year": 2018,
+    "session": "SET-1",
+    "questionNo": 62,
+    "natAnswerRaw": "{\"value1\":\"\",\"value2\":\"\",\"value3\":\"0\"}",
+    "questionText": "The frequency distribution of the compressive strength of 20 concrete cube specimens is given in the table. If $\\mu$ is the mean strength of the specimens and $\\sigma$ is the standard deviation, the number of specimens (out of 20) with compressive strength less than $\\mu -3\\sigma$ is ______",
+    "reason": "Stored answer hint was blank or did not match the official key range pool; requires question-level verification."
+  },
+  {
+    "id": "8e5fcc5adae23165d93e757c",
+    "year": 2017,
+    "session": "SET-2",
+    "questionNo": 66,
+    "natAnswerRaw": "{\"value1\":\"0.14\",\"value2\":\"0.16\",\"value3\":\"0\"}",
+    "questionText": "A simply supported rectangular concrete beam of span 8m has to be prestressed with a force of 1600 kN. The tendon is of parabolic profile having zero eccentricity at the supports. The beam has to carry an external uniformly distributed load of intensity 30 kN/m. Neglecting the self-weight of the beam, the maximum dip (in meters, up to two decimal places) of the tendon at the mid-span to balance the external load should be_______",
+    "reason": "No official CE answer-key PDF was located for 2015–2017."
+  },
+  {
+    "id": "673cdf68469fef7b63529b0e",
+    "year": 2017,
+    "session": "SET-1",
+    "questionNo": 68,
+    "natAnswerRaw": "{\"value1\":\"4.5\",\"value2\":\"5\",\"value3\":\"0\"}",
+    "questionText": "A pre-tensioned rectangular concrete beam 150 mm wide and 300 mm depth is prestressed with three straight tendons, each having a cross-sectional area of 50 $mm^{2}$ , to an initial stress of 1200 $N / mm^{2}$ . The tendons are located at 100 mm from the soffit of the beam. If the modular ratio is 6, the loss of prestressing force (in kN, up to one decimal place) due to the elastic deformation of concrete only is ______",
+    "reason": "No official CE answer-key PDF was located for 2015–2017."
+  },
+  {
+    "id": "233628c37fd653c957a10d6f",
+    "year": 2016,
+    "session": "SET-2",
+    "questionNo": 70,
+    "natAnswerRaw": "{\"value1\":\"64\",\"value2\":\"66\",\"value3\":\"0\"}",
+    "questionText": "A haunched (varying depth) reinforced concrete beam is simply supported at both ends, as shown in the figure. The beam is subjected to a uniformly distributed factored load of intensity 10 kN/m. The design shear force (expressed in kN) at the section X-X of the beam is ___________.",
+    "reason": "No official CE answer-key PDF was located for 2015–2017."
+  },
+  {
+    "id": "8054b5a1bc8eced69c51b6c8",
+    "year": 2016,
+    "session": "SET-1",
+    "questionNo": 72,
+    "natAnswerRaw": "{\"value1\":\"9999\",\"value2\":\"10001\",\"value3\":\"0\"}",
+    "questionText": "For M25 concrete with creep coefficient of 1.5, the long-term static modulus of elasticity (expressed in MPa) as per the provisions of IS:456-2000 is __________.",
+    "reason": "No official CE answer-key PDF was located for 2015–2017."
+  },
+  {
+    "id": "b60f6d08fba9373130156c9a",
+    "year": 2015,
+    "session": "SET-2",
+    "questionNo": 76,
+    "natAnswerRaw": "{\"value1\":\"0.09\",\"value2\":\"0.1\",\"value3\":\"0\"}",
+    "questionText": "According to the concept of Limit State Design as per IS 456: 2000, the probability of failure of a structure is__________.",
+    "reason": "No official CE answer-key PDF was located for 2015–2017."
+  },
+  {
+    "id": "75e384e67558e6788b2796a3",
+    "year": 2015,
+    "session": "SET-1",
+    "questionNo": 78,
+    "natAnswerRaw": "{\"value1\":\"42\",\"value2\":\"43\",\"value3\":\"0\"}",
+    "questionText": "Consider the singly reinforced beam section given below (left figure). The stress block parameters for the cross-section from IS: 456 : 2000 are also given below (right figure). The moment of resistance for the given section by the limit state method is ________ kN-m",
+    "reason": "No official CE answer-key PDF was located for 2015–2017."
+  },
+  {
+    "id": "cd2514dc48e34844f1c906fc",
+    "year": 2015,
+    "session": "SET-1",
+    "questionNo": 79,
+    "natAnswerRaw": "{\"value1\":\"49.5\",\"value2\":\"51\",\"value3\":\"0\"}",
+    "questionText": "The composition of an air-entrained concrete is given below: Assume the specific gravity of OPC, sand and coarse aggregate top be 3.14, 2.67 and 2.74, respectively. The air content is ________ $litres/m^{3}$ .",
+    "reason": "No official CE answer-key PDF was located for 2015–2017."
+  },
+  {
+    "id": "43df750fc9f87fe426bfde58",
+    "year": 2015,
+    "session": "SET-1",
+    "questionNo": 80,
+    "natAnswerRaw": "{\"value1\":\"6.38\",\"value2\":\"6.42\",\"value3\":\"0\"}",
+    "questionText": "The development length of a deformed reinforncement bar can be expressed as (1/k) $(\\phi \\sigma _{s}/\\tau _{bd})$ . From the IS: 456-2000, the value of k can be calculated as________.",
+    "reason": "No official CE answer-key PDF was located for 2015–2017."
+  },
+  {
+    "id": "bbbf17b4a549d37dc93a8915",
+    "year": 2020,
+    "session": "SET-2",
+    "questionNo": 15,
+    "natAnswerRaw": "{\"value1\":\"400\",\"value2\":\"420\",\"value3\":\"0\"}",
+    "questionText": "Two steel plates are lap jointed in a workshop using 6 mm thick fillet weld as shown in the figure (not drawn to the scale). The ultimate strength of the weld is 410 MPa.As per Limit State Design is IS 800 : 2007, the design capacity (in kN, round off to three decimal places) of the welded connection, is _______.",
+    "reason": "Stored answer hint was blank or did not match the official key range pool; requires question-level verification."
+  },
+  {
+    "id": "43745778c7c124fe62a1d337",
+    "year": 2018,
+    "session": "SET-1",
+    "questionNo": 29,
+    "natAnswerRaw": "{\"value1\":\"\",\"value2\":\"\",\"value3\":\"0\"}",
+    "questionText": "In a fillet weld, the direct shear stress and bending tensile stress are 50 MPa and 150 MPa, respectively. As per IS 800: 2007, the equivalent stress (in MPa, up to two decimal places) will be ______",
+    "reason": "Stored answer hint was blank or did not match the official key range pool; requires question-level verification."
+  },
+  {
+    "id": "9b2046a2649284004f18890d",
+    "year": 2017,
+    "session": "SET-2",
+    "questionNo": 31,
+    "natAnswerRaw": "{\"value1\":\"59\",\"value2\":\"61\",\"value3\":\"0\"}",
+    "questionText": "Two plates of 8 mm thickness each are connected by a fillet weld of 6 mm thickness as shown in the figure. The permissible stresses in the plate and the weld are 150 MPa and 110 MPa, respectively. Assuming the length of the weld shown in the figure to be the effective length, the permissible load P (in KN) is",
+    "reason": "No official CE answer-key PDF was located for 2015–2017."
+  },
+  {
+    "id": "a3461a7dca5a9fd71b5a8f0c",
+    "year": 2017,
+    "session": "SET-1",
+    "questionNo": 32,
+    "natAnswerRaw": "{\"value1\":\"5.9\",\"value2\":\"6.1\",\"value3\":\"0\"}",
+    "questionText": "A column is subjected to a load through a bracket as shown in the figure. The resultant force (in kN, up to one decimal place) in the bolt 1 is_____",
+    "reason": "No official CE answer-key PDF was located for 2015–2017."
+  },
+  {
+    "id": "a4b048e1078e8df274aefaf3",
+    "year": 2016,
+    "session": "SET-1",
+    "questionNo": 37,
+    "natAnswerRaw": "{\"value1\":\"99.9\",\"value2\":\"100.1\",\"value3\":\"0\"}",
+    "questionText": "The semi-compact section of a laterally unsupported steel beam has an elastic section modulus, plastic section modulus and design bending compressive stress of $500 \\; cm^3, 650 \\; cm^3$ and 200MPa, respectively. The design flexural capacity (expressed in kNm) of the section is ____.",
+    "reason": "No official CE answer-key PDF was located for 2015–2017."
+  },
+  {
+    "id": "111015d3ff13d15fac5462db",
+    "year": 2015,
+    "session": "SET-1",
+    "questionNo": 41,
+    "natAnswerRaw": "{\"value1\":\"3.3\",\"value2\":\"3.4\",\"value3\":\"0\"}",
+    "questionText": "For formation of collapse mechanism in the following figure, the minimum value of $P_{u}$ is $cM_{p}/L$ . $M_{p}$ and $3M_{p}$ denote the plastic moment capacities of beam sections as shown in this figure. The value of c is _____.",
+    "reason": "No official CE answer-key PDF was located for 2015–2017."
+  },
+  {
+    "id": "551f7dd7eeaa284548d090e0",
+    "year": 2015,
+    "session": "SET-1",
+    "questionNo": 42,
+    "natAnswerRaw": "{\"value1\":\"155\",\"value2\":\"156.3\",\"value3\":\"0\"}",
+    "questionText": "A bracket plate connected to a column flange transmits a load of 100 kN as shown in the following figure. The maximum force for which the bolts should be designed is ___________ kN.",
+    "reason": "No official CE answer-key PDF was located for 2015–2017."
+  },
+  {
+    "id": "673bb64b604d79b34b9b2d03",
+    "year": 2025,
+    "session": "SET-2",
+    "questionNo": 20,
+    "natAnswerRaw": "{\"value1\":\"1\",\"value2\":\"1\",\"value3\":\"0\"}",
+    "questionText": "The bank of a canal has the profile shown in the figure. The material is a homogeneous clay with a bulk unit weight of $20\\ \\text{kN/m}^3$ , undrained cohesion of $30\\ \\text{kPa}$ and it is fully saturated ( $\\phi_u = 0$ ). For the trial slip circle shown, the area ABCDEA is $150\\ \\text{m}^2$ and the centroid is at P. A tension crack (DE) of $2.5\\ \\text{m}$ deep was also observed. Assume unit weight of water is $9.81\\ \\text{kN/m}^3$ and consider 1 m run of the bank for the analysis. Considering the canal is empty and the tension crack is completely filled with water, the factor of safety against slope failure of the bank is ______ (round off to two decimal places).",
+    "reason": "Stored answer hint was blank or did not match the official key range pool; requires question-level verification."
+  },
+  {
+    "id": "4909b34e9f92d69452647c69",
+    "year": 2025,
+    "session": "SET-1",
+    "questionNo": 27,
+    "natAnswerRaw": "{\"value1\":\"8.48\",\"value2\":\"8.56\",\"value3\":\"0\"}",
+    "questionText": "Two soils of permeabilities $k_{1}$ and $k_{2}$ are placed in a horizontal flow apparatus, as shown in the figure. For Soil $1, L_{1}=50 \\mathrm{~cm}$ , and $k_{1}=0.055 \\mathrm{~cm} / \\mathrm{s}$ ; for Soil $2, L_{2}=30 \\mathrm{~cm}$ , and $\\mathrm{k}_{2}=0.035 \\mathrm{~cm} / \\mathrm{s}$ . The cross sectional area of the horizontal pipe is $100 \\mathrm{~cm}^{2}$ , and the head difference ( $\\Delta \\mathrm{h}$ ) is 150 cm . The discharge (in $\\mathrm{cm}^{3} / \\mathrm{s}$ ) through the soils is _________ (rounded off to 2 decimal places).",
+    "reason": "Stored answer hint was blank or did not match the official key range pool; requires question-level verification."
+  },
+  {
+    "id": "087d195daea68b8c89df0048",
+    "year": 2025,
+    "session": "SET-1",
+    "questionNo": 28,
+    "natAnswerRaw": "{\"value1\":\"15\",\"value2\":\"15\",\"value3\":\"0\"}",
+    "questionText": "A single pile with 450 mm diameter has been driven into a homogeneous clay layer, which has an undrained cohesion ( $\\mathrm{c}_{\\mathrm{u}}$ ) of 20 kPa and unit weight of $18 \\mathrm{kN} / \\mathrm{m}^{3}$ . The ground water table is found to be at the surface of the clay layer. The adhesion factor $(\\alpha)$ of the soil is 0.95 and bearing capacity factor $\\left(N_{c}\\right)$ is 9 . The pile is supporting a column load of 144 kN with a factor of safety of 3.0 against ultimate axial pile capacity in compression. The required embedment depth of the pile (in m ) is _________ (rounded off to the nearest integer).",
+    "reason": "Stored answer hint was blank or did not match the official key range pool; requires question-level verification."
+  },
+  {
+    "id": "cc1ddc07bde71e5753868df4",
+    "year": 2025,
+    "session": "SET-1",
+    "questionNo": 29,
+    "natAnswerRaw": "{\"value1\":\"23.3\",\"value2\":\"23.63\",\"value3\":\"0\"}",
+    "questionText": "A clayey soil has a moisture content of $18 \\%$ , a specific gravity of soil solids of 2.74 , and a degree of saturation of $65 \\%$ . The soil soaks up water during a rain event, and the degree of saturation increases to $85.2 \\%$ . The change of the volume during the soaking is negligible. The new moisture content (in \\%) of the soil will be _________ (rounded off to 2 decimal places).",
+    "reason": "Stored answer hint was blank or did not match the official key range pool; requires question-level verification."
+  },
+  {
+    "id": "41725f677618a26956465a7f",
+    "year": 2021,
+    "session": "SET-2",
+    "questionNo": 90,
+    "natAnswerRaw": "{\"value1\":\"0.09\",\"value2\":\"0.105\",\"value3\":\"0\"}",
+    "questionText": "The void ratio of a clay soil sample M decreased from 0.575 to 0.510 when the applied pressure is increased from 120 kPa to 180 kPa. For the same increment in pressure, the void ratio of another clay soil sample N decreases from 0.600 to 0.550. If the ratio of hydraulic conductivity of sample M to sample N is 0.125, then the ratio of coefficient of consolidation of sample M to sample N (round off to three decimal places) is ______________",
+    "reason": "Stored answer hint was blank or did not match the official key range pool; requires question-level verification."
+  },
+  {
+    "id": "f92790b298d0436a04da611a",
+    "year": 2021,
+    "session": "SET-2",
+    "questionNo": 92,
+    "natAnswerRaw": "{\"value1\":\"439\",\"value2\":\"442\",\"value3\":\"0\"}",
+    "questionText": "A rectangular footing of size 2.8m x 3.5m is embedded in a clay layer and a vertical load is placed with an eccentricity of 0.8 m as shown in the figure (not to scale). Take Bearing capacity factors: $N_{c}=5.14$ , $N_{q}=1.0$ , and $N_{\\gamma}=0.0$ ; Shape factors: $s_{c}=1.16$ , $s_{q}=1.0$ and $s_{\\gamma}=1.0$ ; Depth factors: $d_{c}=1.1$ , $d_{q}=1.0$ and $d_{\\gamma}=1.0$ ; and Inclination factors: $i_{c}=1.0$ and $i_{q}=1.0$ and $i_{\\gamma}=1.0$ .Using Meyerhoff's method, the load (in kN, round off to two decimal places) that can be applied on the footing with a factor of safety of 2.5 is _________________",
+    "reason": "Stored answer hint was blank or did not match the official key range pool; requires question-level verification."
+  },
+  {
+    "id": "4d6a79e0eb26dad115bb053b",
+    "year": 2020,
+    "session": "SET-1",
+    "questionNo": 114,
+    "natAnswerRaw": "{\"value1\":\"18.4\",\"value2\":\"19.5\",\"value3\":\"0\"}",
+    "questionText": "A 10 m thick clay layer is resting over a 3 m thick sand layer and is submerged. A fill of 2 m thick sand with unit weight of 20 $kN/m^3$ is placed above the clay layer to accelerate the rate of consolidation of the clay layer. Coefficient of consolidation of clay is $9 \\times 10^{-2} m^2/year$ and coefficient of volume compressibility of clay is $2.2 \\times 10^{-4} m^2/kN$ . Assume Taylor?s relation between time factor and average degree of consolidation.The settlement (in mm, round off to two decimal places) of the clay layer, 10 years after the construction of the fill, is _________.",
+    "reason": "Stored answer hint was blank or did not match the official key range pool; requires question-level verification."
+  },
+  {
+    "id": "565e6e780e3158afb75c36c5",
+    "year": 2020,
+    "session": "SET-1",
+    "questionNo": 116,
+    "natAnswerRaw": "{\"value1\":\"21\",\"value2\":\"23\",\"value3\":\"0\"}",
+    "questionText": "A vertical retaining wall of 5 m height has to support soil having unit weight of 18 $kN/m^3$ , effective cohesion of 12 $kN/m^2$ , and effective friction angle of $30^{\\circ}$ . As per Rankine's earth pressure theory and assuming that a tension crack has occurred, the lateral active thrust on the wall per meter length (in kN/m, round off to two decimal places), is ______.",
+    "reason": "Stored answer hint was blank or did not match the official key range pool; requires question-level verification."
+  },
+  {
+    "id": "f9cc11820e9c39745f79ca27",
+    "year": 2019,
+    "session": "SET-2",
+    "questionNo": 122,
+    "natAnswerRaw": "{\"value1\":\"350\",\"value2\":\"356\",\"value3\":\"0\"}",
+    "questionText": "A square footing of 2 m sides rests on the surface of a homogeneous soil bed having the properties: cohesion c=24 kPa, angle of internal friction $\\phi =25^{\\circ}$ , and unit weight $\\gamma =18kN/m^3$ . Terzaghi's bearing capacity factors for $\\phi =25^{\\circ}$ are $N_c=25.1, N_q=12.7$ , $N_{\\gamma}=9.7, N_c'=14.8,N_q'=5.6$ , and $N_{\\gamma}'=3.2$ . The ultimate bearing capacity of the foundation (in kPa, round off to 2 decimal places) is _______",
+    "reason": "Stored answer hint was blank or did not match the official key range pool; requires question-level verification."
+  },
+  {
+    "id": "54aefb8771bac525afe4dd4b",
+    "year": 2019,
+    "session": "SET-2",
+    "questionNo": 124,
+    "natAnswerRaw": "{\"value1\":\"2.95\",\"value2\":\"3.05\",\"value3\":\"0\"}",
+    "questionText": "Constant head permeability tests were performed on two soil specimens, S1 and S2. The ratio of height of the two specimens ( $L_{S1}:L_{S2}$ ) is 1.5, the ratio of the diameter of specimens ( $D_{S1}:D_{S2}$ ) is 0.5, and the ratio of the constant head ( $h_{S1}:h_{S2}$ ) applied on the specimens is 2.0. If the discharge from both the specimens is equal, the ratio of the permeability of the soil specimens ( $k_{S1}:k_{S2}$ ) is ____",
+    "reason": "Stored answer hint was blank or did not match the official key range pool; requires question-level verification."
+  },
+  {
+    "id": "e8094f69ea2b7c926ded51c5",
+    "year": 2018,
+    "session": "SET-1",
+    "questionNo": 156,
+    "natAnswerRaw": "{\"value1\":\"\",\"value2\":\"\",\"value3\":\"0\"}",
+    "questionText": "A core cutter of 130 mm height has inner and outer diameters of 100 mm and 106 mm, respectively. The area ratio of the core cutter (in %, up to two decimal places) is ______",
+    "reason": "Stored answer hint was blank or did not match the official key range pool; requires question-level verification."
+  },
+  {
+    "id": "7d080ed53d613f78bc304709",
+    "year": 2018,
+    "session": "SET-1",
+    "questionNo": 157,
+    "natAnswerRaw": "{\"value1\":\"\",\"value2\":\"\",\"value3\":\"0\"}",
+    "questionText": "In a shrinkage limit test, the volume and mass of a dry soil pat are found to be 50 $cm^{3}$ and 88 g, respectively. The specific gravity of the soil solids is 2.71 and the density of water is 1 g/cc. The shrinkage limit (in %, up to two decimal places) is ______",
+    "reason": "Stored answer hint was blank or did not match the official key range pool; requires question-level verification."
+  },
+  {
+    "id": "3eccd651d078a626fc6f9392",
+    "year": 2017,
+    "session": "SET-2",
+    "questionNo": 160,
+    "natAnswerRaw": "{\"value1\":\"187\",\"value2\":\"192\",\"value3\":\"0\"}",
+    "questionText": "Consider a square-shaped area ABCD on the ground with its Centre at M as shown in the figure. Four concentrated vertical load of P=5000 kN are applied on this area, at each corner. The vertical stress increment (in kPa, up to one decimal place) due to these loads according to the Boussinesq's equation, at a point 5 m right below M, is_____",
+    "reason": "No official CE answer-key PDF was located for 2015–2017."
+  },
+  {
+    "id": "155e8b7278498142b2ad9ac5",
+    "year": 2017,
+    "session": "SET-2",
+    "questionNo": 164,
+    "natAnswerRaw": "{\"value1\":\"1.6\",\"value2\":\"1.6\",\"value3\":\"0\"}",
+    "questionText": "A sheet pile has an embedment depth of 12 m in a homogeneous soil stratum. The coefficient of permeability of soil is $10^{-6}\\, m/s$ . Difference in the water levels between the two sides of the sheet pile is 4 m. The flow net is constructed with five number of flow lines and eleven number of equipotential lines. The quantity of seepage (in $\\frac{cm^{3}}{s}$ per m, up to one decimal place) under the sheet pile is________",
+    "reason": "No official CE answer-key PDF was located for 2015–2017."
+  },
+  {
+    "id": "2ba7675199748044166ed39f",
+    "year": 2017,
+    "session": "SET-1",
+    "questionNo": 169,
+    "natAnswerRaw": "{\"value1\":\"25.5\",\"value2\":\"27\",\"value3\":\"0\"}",
+    "questionText": "A consolidated undrained $\\bar{CU}$ triaxial compression test is conducted on a normally consolidated clay at a confining pressure of 100 kPa. The deviator stress at failure is 80 kPa, and the pore-water pressure measured at failure is 50 kPa. The effective angle of internalfriction (in degrees, up to one decimal place) of the soil is _________",
+    "reason": "No official CE answer-key PDF was located for 2015–2017."
+  },
+  {
+    "id": "bc59a9159e0980dcf92df203",
+    "year": 2017,
+    "session": "SET-1",
+    "questionNo": 170,
+    "natAnswerRaw": "{\"value1\":\"34\",\"value2\":\"34.5\",\"value3\":\"0\"}",
+    "questionText": "The infinite sand slope shown in the figure is on theverge of sliding failure. The ground water tablecoincides with the ground surface. Unit weight of water $\\gamma _{w}=9.81\\; kN/m^{3}$ . The value of the effective angle of internal friction (indegrees, up to one decimal place) of the sand is________",
+    "reason": "No official CE answer-key PDF was located for 2015–2017."
+  },
+  {
+    "id": "709a2fd36818b62c85f0535b",
+    "year": 2017,
+    "session": "SET-1",
+    "questionNo": 171,
+    "natAnswerRaw": "{\"value1\":\"385\",\"value2\":\"392\",\"value3\":\"0\"}",
+    "questionText": "It is proposed to drive H-piles up to a depth of 7 m at a construction site. The average surfacearea of the H-pile is 3 $m^{2}$ per meter length. The soil at the site is homogeneous sand, havingan effective friction angle of 32 $^{\\circ}$ . The ground water table (GWT) is at a depth of 2 m below the ground surface. The unit weights of the soil above and below the GWT are 16 $kN/m^{3}$ and 19 $kN/m^{3}$ respectively. Assume the earth pressure coefficient, K= 1.0, and the angle of wall friction $\\delta =23^{\\circ}$ , The total axial frictional resistance (in kN, up to one decimal place) mobilized on the pile against the driving is _____",
+    "reason": "No official CE answer-key PDF was located for 2015–2017."
+  },
+  {
+    "id": "f61393c85963ab0b8c1df354",
+    "year": 2017,
+    "session": "SET-1",
+    "questionNo": 173,
+    "natAnswerRaw": "{\"value1\":\"1765\",\"value2\":\"1775\",\"value3\":\"0\"}",
+    "questionText": "A 3 m thick clay layer is subjected to an initial uniform pore pressure of 145 kPa as shown in the figure. For the given ground conditions, the time (in days, rounded to the nearest integer) required for 90% consolidation would be ____________",
+    "reason": "No official CE answer-key PDF was located for 2015–2017."
+  },
+  {
+    "id": "a6cbde22fa7f4e337f72e26a",
+    "year": 2016,
+    "session": "SET-2",
+    "questionNo": 178,
+    "natAnswerRaw": "{\"value1\":\"298\",\"value2\":\"300\",\"value3\":\"0\"}",
+    "questionText": "A 4 m wide strip footing is founded at a depth of 1.5 m below the ground surface in a $c-\\phi$ soil as shown in the figure. The water table is at a depth of 5.5 m below ground surface. The soil properties are: ${c}'=35\\: kN/m^{2},{\\phi }'=28.63^{\\circ},$ $\\gamma _{sat}=19\\: kN/m^{3}, \\; \\gamma _{bulk}=17\\:kN/m^{3}$ and $\\gamma _{w}=9.81kN/m^{3}$ . The values of bearing capacity factors for different ${\\phi }'$ are given below.Using Terzaghi's bearing capacity equation and a factor of safety $F_{s}=2.5$ , the net safe bearing capacity (expressed in $kN/m^{2}$ ) for local shear failure of the soil is ________.",
+    "reason": "No official CE answer-key PDF was located for 2015–2017."
+  },
+  {
+    "id": "0527d657e4919c04599573b6",
+    "year": 2016,
+    "session": "SET-2",
+    "questionNo": 179,
+    "natAnswerRaw": "{\"value1\":\"0.04\",\"value2\":\"0.05\",\"value3\":\"0\"}",
+    "questionText": "Water flows from P to Q through two soil samples, Soil 1 and Soil 2, having cross sectional area of 80 $cm^2$ as shown in the figure. Over a period of 15 minutes, 200 ml of water was observed to pass through any cross section. The flow conditions can be assumed to be steady state. If the coefficient of permeability of Soil 1 is 0.02 mm/s, the coefficient of permeability of Soil 2 (expressed in mm/s) would be ____",
+    "reason": "No official CE answer-key PDF was located for 2015–2017."
+  },
+  {
+    "id": "d5bdd414034216f579012946",
+    "year": 2016,
+    "session": "SET-2",
+    "questionNo": 181,
+    "natAnswerRaw": "{\"value1\":\"69\",\"value2\":\"70.5\",\"value3\":\"0\"}",
+    "questionText": "The soil profile at a site consists of a 5 m thick sand layer underlain by a $c-\\phi$ soil as shown in figure. The water table is found 1 m below the ground level. The entire soil mass is retained by a concrete retaining wall and is in the active state. The back of the wall is smooth and vertical. The total active earth pressure (expressed in $kN/m^{2}$ ) at point A as per Rankine's theory is _________.",
+    "reason": "No official CE answer-key PDF was located for 2015–2017."
+  },
+  {
+    "id": "9b1f8c641dc54a5df109bdd3",
+    "year": 2016,
+    "session": "SET-2",
+    "questionNo": 182,
+    "natAnswerRaw": "{\"value1\":\"495\",\"value2\":\"505\",\"value3\":\"0\"}",
+    "questionText": "The seepage occurring through an earthen dam is represented by a flow net comprising of 10 equipotential drops and 20 flow channels. The coefficient of permeability of the soil is 3 mm/min and the head loss is 5 m. The rate of seepage (expressed in $cm^{3}/s$ per m length of the dam) through the earthen dam is ___.",
+    "reason": "No official CE answer-key PDF was located for 2015–2017."
+  },
+  {
+    "id": "1bbc19e022b1ef105fce4963",
+    "year": 2016,
+    "session": "SET-1",
+    "questionNo": 187,
+    "natAnswerRaw": "{\"value1\":\"100\",\"value2\":\"110\",\"value3\":\"0\"}",
+    "questionText": "A drained triaxial compression test on a saturated clay yielded the effective shear strength parameters as ${c}'=15\\, kPa \\: \\, and \\: {\\phi }'=22^{\\circ}.$ Consolidated Undrained triaxial test on an identical sample of this clay at a cell pressure of 200 kPa developed a pore water pressure of 150kPa at failure. The deviator stress (expressed in kPa) at failure is _________ .",
+    "reason": "No official CE answer-key PDF was located for 2015–2017."
+  },
+  {
+    "id": "bd10273c1ace3e029ebb6ae9",
+    "year": 2016,
+    "session": "SET-1",
+    "questionNo": 188,
+    "natAnswerRaw": "{\"value1\":\"65.3\",\"value2\":\"65.6\",\"value3\":\"0\"}",
+    "questionText": "A seepage flow condition is shown in the figure.The saturated unit weight of the soil $\\gamma _{sat}=18kN/m^{3}$ . Using unit weight of water, $\\gamma _{w}=9.81kN/m^{3}$ , the effective vertical stress (expressed in $kN/m^{2}$ ) on plane X-X is ________.",
+    "reason": "No official CE answer-key PDF was located for 2015–2017."
+  },
+  {
+    "id": "52742864bd6c9ec48d66667c",
+    "year": 2016,
+    "session": "SET-1",
+    "questionNo": 189,
+    "natAnswerRaw": "{\"value1\":\"36\",\"value2\":\"38\",\"value3\":\"0\"}",
+    "questionText": "An undisturbed soil sample was taken from the middle of a clay layer (i.e., 1.5 m below GL), as shown in figure. The water table was at the top of clay layer. Laboratory test results are as follows:Natural water content of clay : 25% Preconsolidation pressure of clay : 60 kPa Compression index of clay : 0.50 Recompression index of clay : 0.05 Specific gravity of clay : 2.70 Bulk unit weight of sand : 17 kN/ $m^{3}$ A compacted fill of 2.5 m height with unit weight of 20 kN/ $m^{3}$ is placed at the ground levelAssuming unit weight of water as10 kN/ $m^{3}$ , the ultimate consolidation settlement (expressed in mm) of the clay layer is ____________",
+    "reason": "No official CE answer-key PDF was located for 2015–2017."
+  },
+  {
+    "id": "6db3fd4217c04799c7018425",
+    "year": 2016,
+    "session": "SET-1",
+    "questionNo": 191,
+    "natAnswerRaw": "{\"value1\":\"41\",\"value2\":\"43\",\"value3\":\"0\"}",
+    "questionText": "The porosity (n) and the degree of saturation (S) of a soil sample are 0.7 and 40%, respectively. In a 100 $m^{3}$ volume of the soil, the volume (expressed in $m^{3}$ ) of air is ________ .",
+    "reason": "No official CE answer-key PDF was located for 2015–2017."
+  },
+  {
+    "id": "2c44d88cd9c94273e15dae7f",
+    "year": 2015,
+    "session": "SET-2",
+    "questionNo": 197,
+    "natAnswerRaw": "{\"value1\":\"1620\",\"value2\":\"1630\",\"value3\":\"0\"}",
+    "questionText": "A pile of diameter 0.4 m is fully embedded in a clay stratum having 5 layers, each 5 m thick as shown in the figure below. Assume a constant unit weight of soil as 18 kN/ $m^{3}$ for all the layers. Using $\\lambda$ -method ( $\\lambda$ =0.15 for 25 m embedment length) and neglecting the end bearing component, the ultimate pile capacity (in kN) is ________.",
+    "reason": "No official CE answer-key PDF was located for 2015–2017."
+  },
+  {
+    "id": "1a8c4980f3203f7122b39171",
+    "year": 2015,
+    "session": "SET-2",
+    "questionNo": 198,
+    "natAnswerRaw": "{\"value1\":\"313\",\"value2\":\"316\",\"value3\":\"0\"}",
+    "questionText": "A 4 m thick layer of normally consolidated clay has an average void ratio of 1.30. Its compression index is 0.6 and coefficient of consolidation is 1 $m^{2}/yr$ . If the increase in vertical pressure due to foundation load on the clay layer is equal to the existing effective overburden pressure, the change in the thickness of the clay layer is ______ mm.",
+    "reason": "No official CE answer-key PDF was located for 2015–2017."
+  },
+  {
+    "id": "3df21ed5314acbf771025c49",
+    "year": 2015,
+    "session": "SET-2",
+    "questionNo": 199,
+    "natAnswerRaw": "{\"value1\":\"0.7\",\"value2\":\"0.72\",\"value3\":\"0\"}",
+    "questionText": "A 588 $cm^{3}$ volume of moist sand weighs 1010 gm. Its dry weight is 918 gm and specific gravity of solids, G is 2.67. Assuming density of water as 1 gm/ $cm^{3}$ , the void ratio is __________.",
+    "reason": "No official CE answer-key PDF was located for 2015–2017."
+  },
+  {
+    "id": "6deeb1d0d2eaa455539c67a1",
+    "year": 2015,
+    "session": "SET-1",
+    "questionNo": 204,
+    "natAnswerRaw": "{\"value1\":\"434\",\"value2\":\"444\",\"value3\":\"0\"}",
+    "questionText": "A square footing (2m x 2m) is subjected to an inclined point load P as shown in the figure below. The water table is located well below the base of the footing. Considering one-way eccentricity, the net safe load carrying capacity of the footing for a factor of safety of 3.0 is _________ kN.The following factor may be used:Bearing capacity factors: $N_{q}$ =33.3, $N_{\\gamma }$ =37.16; Shape factor: $F_{qs }=F_{\\gamma s }$ =1.314; Depth factors : $F_{q d }=F_{\\gamma d }$ =1.133; Inclination factors: $F_{q i }$ =0.444, $F_{\\gamma i }$ =0.02",
+    "reason": "No official CE answer-key PDF was located for 2015–2017."
+  },
+  {
+    "id": "8541e877db0e10510033a3a6",
+    "year": 2015,
+    "session": "SET-1",
+    "questionNo": 205,
+    "natAnswerRaw": "{\"value1\":\"10\",\"value2\":\"12\",\"value3\":\"0\"}",
+    "questionText": "A non-homogenous soil deposit consists of a silt layer sandwiched between a fine-sand layer at top and a clay layer below. Permeability of the silt layer is 10 times the permeability of the clay layer and one-tenth of the permeability of the sand layer. Thickness of the silt layer is 2 times the thickness of the sand layer and two-third of the thickness of the clay layer. The ratio of equivalent horizontal and equivalent vertical permeability of the deposit is __________.",
+    "reason": "No official CE answer-key PDF was located for 2015–2017."
+  },
+  {
+    "id": "fbd3d5beb68df3c240ba1604",
+    "year": 2015,
+    "session": "SET-1",
+    "questionNo": 206,
+    "natAnswerRaw": "{\"value1\":\"4\",\"value2\":\"5\",\"value3\":\"0\"}",
+    "questionText": "A 20 m thick clay layer is sandwiched between a silty sand layer and a gravelly sand layer. The layer experiences 30 mm settlement in 2 years. Given: $T_{v}=\\left\\{\\begin{matrix} \\frac{\\pi }{4}\\left ( \\frac{U}{100} \\right )^{2}& forU\\leq 60\\%\\\\ 1.781-0.933\\log_{10}(100-U)& for U>60\\%\\end{matrix}\\right.$ Where $T_v$ is the time factor and U is the degree consolidation in $\\%$ .If the coefficient of consolidation of the layer is 0.003 $cm^{2}/s$ , the deposit will experience a total of 50 mm settlement in the next _______ years.",
+    "reason": "No official CE answer-key PDF was located for 2015–2017."
+  },
+  {
+    "id": "133db296be7225024b4c326c",
+    "year": 2015,
+    "session": "SET-1",
+    "questionNo": 207,
+    "natAnswerRaw": "{\"value1\":\"50\",\"value2\":\"55\",\"value3\":\"0\"}",
+    "questionText": "A water tank is to be constructed on the soil deposit shown in the figure below. A circular footing of diameter 3 m and depth of embedment 1 m has been designed to support the tank. The total vertical load to be taken by the footing is 1500 kN. Assume the unit weight of water as 10 $kN/m^{3}$ and the load dispersion pattern as 2V:1H. The expected settlement of the tank due to primary consolidation of the clay layer is ________ mm.",
+    "reason": "No official CE answer-key PDF was located for 2015–2017."
+  },
+  {
+    "id": "f36e65ede8dfe78b5e8127f7",
+    "year": 2021,
+    "session": "SET-2",
+    "questionNo": 48,
+    "natAnswerRaw": "{\"value1\":\"63.5\",\"value2\":\"63.9\",\"value3\":\"0\"}",
+    "questionText": "A fire hose nozzle directs a steady stream of water of velocity 50 m/s at an angle of $45^{\\circ}$ above the horizontal. The stream rises initially but then eventually falls to the ground. Assume water as incompressible and inviscid. Consider the density of air and the air friction as negligible, and assume the acceleration due to gravity as $9.81 \\mathrm{~m} / \\mathrm{s}^{2}$ . The maximum height (in m,round off to two decimal places) reached by the stream above the hose nozzle will then be _________",
+    "reason": "Stored answer hint was blank or did not match the official key range pool; requires question-level verification."
+  },
+  {
+    "id": "5a78bf44fc76176bee9e692a",
+    "year": 2018,
+    "session": "SET-2",
+    "questionNo": 77,
+    "natAnswerRaw": "{\"value1\":\"-9\",\"value2\":\"-8\",\"value3\":\"0\"}",
+    "questionText": "A three-fluid system (immiscible) is connected to a vacuum pump. The specific gravity values of the fluids (S1, S2) are given in the figure.The gauge pressure value (in $kN/m^{2}$ , up to two decimal places) of $p_{1}$ is ______",
+    "reason": "Stored answer hint was blank or did not match the official key range pool; requires question-level verification."
+  },
+  {
+    "id": "489ffb47bc3e29435d3c2c81",
+    "year": 2018,
+    "session": "SET-1",
+    "questionNo": 83,
+    "natAnswerRaw": "{\"value1\":\"\",\"value2\":\"\",\"value3\":\"0\"}",
+    "questionText": "A 10 m wide rectangular channel carries a discharge of 20 $m^{3}/s$ under critical condition. Using g = 9.81 $m/s^{2}$ , the specific energy (in m, up to two decimal places) is ______",
+    "reason": "Stored answer hint was blank or did not match the official key range pool; requires question-level verification."
+  },
+  {
+    "id": "b6541176c0d4a1a3fcf0fa16",
+    "year": 2018,
+    "session": "SET-1",
+    "questionNo": 84,
+    "natAnswerRaw": "{\"value1\":\"\",\"value2\":\"\",\"value3\":\"0\"}",
+    "questionText": "A 1:50 model of a spillway is to be tested in the laboratory. The discharge in the prototype spillway is 1000 $m^{3}/s$ . The corresponding discharge (in $m^{3}/s$ , up to two decimal places) to be maintained in the model, neglecting variation in acceleration due to gravity, is ______",
+    "reason": "Stored answer hint was blank or did not match the official key range pool; requires question-level verification."
+  },
+  {
+    "id": "208da48193b2bfdc12bda469",
+    "year": 2017,
+    "session": "SET-2",
+    "questionNo": 87,
+    "natAnswerRaw": "{\"value1\":\"65\",\"value2\":\"69\",\"value3\":\"0\"}",
+    "questionText": "Water is pumped at a steady uniform flow rate of 0.01 $m^{3}/s$ through a horizontal smooth circular pipe of 100 mm diameter. Given that the Reynolds number is 800 and g is 9.81 $m/s^{2}$ , the head loss (in meters, up to one decimal place) per km length due to friction would be_____",
+    "reason": "No official CE answer-key PDF was located for 2015–2017."
+  },
+  {
+    "id": "153827f279d9751c2cdd56bc",
+    "year": 2017,
+    "session": "SET-2",
+    "questionNo": 88,
+    "natAnswerRaw": "{\"value1\":\"1.06\",\"value2\":\"1.08\",\"value3\":\"0\"}",
+    "questionText": "A 1 m wide rectangular channel carries a discharge of 2 $m^{3}/s$ . The specific energy-depth diagram is prepared for the channel. It is observed in this diagram that corresponding to a particular specific energy; the subcritical depth is twice the supercritical depth. The subcritical depth (in meters, up to two decimal places) is equal to _____",
+    "reason": "No official CE answer-key PDF was located for 2015–2017."
+  },
+  {
+    "id": "1e89dc5f1d3a43c949575c01",
+    "year": 2017,
+    "session": "SET-2",
+    "questionNo": 89,
+    "natAnswerRaw": "{\"value1\":\"20.7\",\"value2\":\"20.76\",\"value3\":\"0\"}",
+    "questionText": "The figure shows a U-tube having a 5 mmx5 mm square cross-section filled with mercury (specific gravity = 13.6) up to a height of 20 cm in each limb (open to the atmosphere). If 5 $cm^{3}$ of water is added to the right limb, the new height (in cm, up to two decimal places) of mercury in the LEFT limb will be_____",
+    "reason": "No official CE answer-key PDF was located for 2015–2017."
+  },
+  {
+    "id": "b3f1e6083777eceb8bd3f610",
+    "year": 2017,
+    "session": "SET-1",
+    "questionNo": 91,
+    "natAnswerRaw": "{\"value1\":\"2.5\",\"value2\":\"3.75\",\"value3\":\"0\"}",
+    "questionText": "Water flows through a 90 $^{\\circ}$ bend in a horizontal plane as depicted in the figure. A pressure of 140 kPa is measured at section 1-1. The inlet diameter marked at section 1-1 is $\\frac{27}{\\sqrt{\\pi }}cm$ , while the nozzle diameter marked at section 2-2 is $\\frac{14}{\\sqrt{\\pi }}cm$ . Assume the following: (i) Acceleration due to gravity = 10 $m/s^{2}$ (ii) Weights of both the bent pipe segment as well as water are negligible. (iii) Friction across the bend is negligible. The magnitude of the force (in kN, up to two decimal places) that would be required to hold the pipe section is ______",
+    "reason": "No official CE answer-key PDF was located for 2015–2017."
+  },
+  {
+    "id": "39cf02e7e8c288889028e8d0",
+    "year": 2017,
+    "session": "SET-1",
+    "questionNo": 92,
+    "natAnswerRaw": "{\"value1\":\"0.8\",\"value2\":\"0.83\",\"value3\":\"0\"}",
+    "questionText": "A sluice gate used to control the flow in a horizontal channel of unit width is shown in the figure. It is observed that the depth of flow is 1.0 m upstream of the gate, while the depth is 0.2 m downstream of the gate. Assuming a smooth flow transition across the sluice gate, i.e., without any energy loss, and the acceleration due to gravity as 10 $m/s^{2}$ the discharge (in $m^{3}/ s$ , up to two decimal places) passing under the sluice gate is_____",
+    "reason": "No official CE answer-key PDF was located for 2015–2017."
+  },
+  {
+    "id": "52ff75027f973c6a47ebe0c2",
+    "year": 2017,
+    "session": "SET-1",
+    "questionNo": 94,
+    "natAnswerRaw": "{\"value1\":\"0.6\",\"value2\":\"0.63\",\"value3\":\"0\"}",
+    "questionText": "A triangular pipe network is shown in the figure. The head loss in each pipe is given by $h_{f}=rQ^{1.8}$ with the variables expressed in a consistent set of units. The value of r for the pipe AB is 1 and for the pipe BC is 2. If the discharge supplied at the point A (i.e., 100) is equally divided between the pipes AB and AC, the value of r (up to two decimal places) for the pipe AC should be ____________",
+    "reason": "No official CE answer-key PDF was located for 2015–2017."
+  },
+  {
+    "id": "b83eeab7d18cf4d3666fb379",
+    "year": 2016,
+    "session": "SET-2",
+    "questionNo": 96,
+    "natAnswerRaw": "{\"value1\":\"6560\",\"value2\":\"6580\",\"value3\":\"0\"}",
+    "questionText": "A penstock of 1 m diameter and 5 km length is used to supply water from a reservoir to an impulse turbine. A nozzle of 15 cm diameter is fixed at the end of the penstock. The elevation difference between the turbine and water level in the reservoir is 500 m. Consider the head loss due to friction as 5% of the velocity head available at the jet. Assume unit weight of water = $10\\: kN/m^{3}$ and acceleration due to gravity (g)= $10\\: m/s^{2}$ . If the overall efficiency 80%, power generated (expressed in kW and rounded to nearest integer) is ___________",
+    "reason": "No official CE answer-key PDF was located for 2015–2017."
+  },
+  {
+    "id": "8a63e1b9be90e1b91cb7b7fc",
+    "year": 2016,
+    "session": "SET-2",
+    "questionNo": 97,
+    "natAnswerRaw": "{\"value1\":\"0.19\",\"value2\":\"0.21\",\"value3\":\"0\"}",
+    "questionText": "A 3m wide rectangular channel carries a flow of $6\\: m^{3}/s$ . The depth of flow at a section P is 0.5 m. A flat-topped hump is to be placed at the downstream of the section P. Assume negligible energy loss between section P and hump, and consider g as $9.81\\: m/s^{2}$ . The maximum height of the hump (expressed in m) which will not change the depth of flow at section P is ____________",
+    "reason": "No official CE answer-key PDF was located for 2015–2017."
+  },
+  {
+    "id": "49086c05f59e865457470a05",
+    "year": 2016,
+    "session": "SET-2",
+    "questionNo": 98,
+    "natAnswerRaw": "{\"value1\":\"7.4\",\"value2\":\"8\",\"value3\":\"0\"}",
+    "questionText": "A square plate is suspended vertically from one of its edges using a hinge support as shown in figure. A water jet of 20 mm diameter having a velocity of 10 m/s strikes the plate at its mid-point, at an angle of $30^{\\circ}$ with the vertical. Consider g as $9.81\\: m/s^{2}$ and neglect the self-weight of the plate. The force F (expressed in N) required to keep the plate in its vertical position is _______________",
+    "reason": "No official CE answer-key PDF was located for 2015–2017."
+  },
+  {
+    "id": "9fc5d142338118bc50545b0a",
+    "year": 2016,
+    "session": "SET-1",
+    "questionNo": 100,
+    "natAnswerRaw": "{\"value1\":\"2.29\",\"value2\":\"2.32\",\"value3\":\"0\"}",
+    "questionText": "A hydraulically efficient trapezoidal channel section has a uniform flow depth of 2m. The bed width (expressed in m) of the channel is __________ .",
+    "reason": "No official CE answer-key PDF was located for 2015–2017."
+  },
+  {
+    "id": "a230d8a05ba75f46ea1c69a0",
+    "year": 2016,
+    "session": "SET-1",
+    "questionNo": 101,
+    "natAnswerRaw": "{\"value1\":\"126\",\"value2\":\"128\",\"value3\":\"0\"}",
+    "questionText": "A sector gate is provided on a spillway as shown in the figure. Assuming g = $10\\: \\: m/s^{2}$ the resultant force per meter length (expressed in kN/m) on the gate will be _______ .",
+    "reason": "No official CE answer-key PDF was located for 2015–2017."
+  },
+  {
+    "id": "6fbe21a49a268248f154da4f",
+    "year": 2016,
+    "session": "SET-1",
+    "questionNo": 103,
+    "natAnswerRaw": "{\"value1\":\"13.6\",\"value2\":\"13.7\",\"value3\":\"0\"}",
+    "questionText": "The pre-jump Froude Number for a particular flow in a horizontal rectangular channel is 10. The ratio of sequent depths (i.e., post-jump depth to pre-jump depth) is ___________",
+    "reason": "No official CE answer-key PDF was located for 2015–2017."
+  },
+  {
+    "id": "a0a3f996367f4dbf5f867ca9",
+    "year": 2015,
+    "session": "SET-2",
+    "questionNo": 104,
+    "natAnswerRaw": "{\"value1\":\"0.56\",\"value2\":\"0.58\",\"value3\":\"0\"}",
+    "questionText": "A pipe of 0.7 m diameter has a length of 6 km and connects two reservoirs A and B. The water level in reservoir A is at an elevation 30 m above the water level in reservoir B. Halfway along the pipe line, there is a branch through which water can be supplied to a third reservoir C. The friction factor of the pipe is 0.024. The quantity of water discharged into reservoir C is 0.15 $m^{3}$ /s. Considering the acceleration due to gravity as 9.81 $m/s^{2}$ and neglecting minor losses, the discharge (in $m^{3}/s$ ) into the reservoir B is __________.",
+    "reason": "No official CE answer-key PDF was located for 2015–2017."
+  },
+  {
+    "id": "d3bb66e65f817ced05964aa2",
+    "year": 2015,
+    "session": "SET-2",
+    "questionNo": 106,
+    "natAnswerRaw": "{\"value1\":\"29.3\",\"value2\":\"29.5\",\"value3\":\"0\"}",
+    "questionText": "A triangular gate with a base width of 2 m and a height of 1.5 m lies in a vertical plane. The top vertex of the gate is 1.5 m below the surface of a tank which contains oil of specific gravity 0.8. Considering the density of water and acceleration due to gravity to be 1000 kg/ $m^{3}$ and 9.81 m/ $s^{2}$ , respectively, the hydrostatic force (in kN) exerted by the oil on the gate is__________.",
+    "reason": "No official CE answer-key PDF was located for 2015–2017."
+  },
+  {
+    "id": "760a9fb40f75c9967cb43172",
+    "year": 2015,
+    "session": "SET-2",
+    "questionNo": 108,
+    "natAnswerRaw": "{\"value1\":\"540\",\"value2\":\"540\",\"value3\":\"0\"}",
+    "questionText": "A nozzle is so shaped that the average flow velocity changes linearly from 1.5 m/s at the beginning to 15 m/s at its end in a distance of 0.375 m. The magnitude of the convective acceleration (in m/ $s^{2}$ ) at the end of the nozzle is _________.",
+    "reason": "No official CE answer-key PDF was located for 2015–2017."
+  },
+  {
+    "id": "3cb0e4a799baa5c9968511a2",
+    "year": 2015,
+    "session": "SET-1",
+    "questionNo": 111,
+    "natAnswerRaw": "{\"value1\":\"0.0031\",\"value2\":\"0.0033\",\"value3\":\"0\"}",
+    "questionText": "A short reach of a 2 m wide rectangular open channel has its bed level rising in the direction of flow at a slope of 1 in 10000. It carries a discharge of 4 $m^{3}/s$ and its Manning's roughness coefficient is 0.01. The flow in this reach is gradually varying. At a certain section in this reach, the depth of flow was measured as 0.5 m. The rate of change of the water depth with distance, dy/dx, at this section is ____ (use g = 10 $m/s^{2}$ ).",
+    "reason": "No official CE answer-key PDF was located for 2015–2017."
+  },
+  {
+    "id": "47ee00c52e99ef3f915ce0e4",
+    "year": 2015,
+    "session": "SET-1",
+    "questionNo": 112,
+    "natAnswerRaw": "{\"value1\":\"4.75\",\"value2\":\"4.85\",\"value3\":\"0\"}",
+    "questionText": "A hydraulic jump is formed in a 2 m wide rectangular channel which is horizontal and frictionless. The post-jump depth and velocity are 0.8 m and 1 $m/s$ , respectively. The pre-jump velocity is _______ $m/s$ (use g=10 $m/s^{2}$ ).",
+    "reason": "No official CE answer-key PDF was located for 2015–2017."
+  },
+  {
+    "id": "da444e032015e5a9c4e48883",
+    "year": 2015,
+    "session": "SET-1",
+    "questionNo": 113,
+    "natAnswerRaw": "{\"value1\":\"0.14\",\"value2\":\"0.142\",\"value3\":\"0\"}",
+    "questionText": "Two reservoirs are connected through a 930 m long, 0.3 m diameter pipe, which has a gate valve. The pipe entrance is sharp (loss coefficient = 0.5) and the valve is half-open (loss coefficient = 5.5). The head difference between the two reservoirs is 20 m. Assume the friction factor for the pipe as 0.03 and g = 10 $m/s^{2}$ . The discharge in the pipe accounting for all minor and major losses is _________ $m^{3}/s$ .",
+    "reason": "No official CE answer-key PDF was located for 2015–2017."
+  },
+  {
+    "id": "76be624fcef454ef00a444c7",
+    "year": 2023,
+    "session": "SET-1",
+    "questionNo": 19,
+    "natAnswerRaw": "{\"value1\":\"3.6\",\"value2\":\"3.6\",\"value3\":\"0\"}",
+    "questionText": "A 12-hour storm occurs over a catchment and results in a direct runoff depth of $100 \\mathrm{~mm}$ . The time-distribution of the rainfall intensity is shown in the figure (not to scale). The $\\phi$ -index of the storm is (in $\\mathrm{mm}$ , rounded off to two decimal places)_____",
+    "reason": "Stored answer hint was blank or did not match the official key range pool; requires question-level verification."
+  },
+  {
+    "id": "e81002e20e4c4e7ef650247b",
+    "year": 2019,
+    "session": "SET-1",
+    "questionNo": 36,
+    "natAnswerRaw": "{\"value1\":\"7\",\"value2\":\"7.3\",\"value3\":\"0\"}",
+    "questionText": "The hyetograph of a storm event of duration 140 minutesis shown in the figure. The infiltration capacity at the start of this event (t=0) is 17 mm/hour, which linearly decreases to 10 mm/hour after 40 minutes duration. As the event progresses, the infiltration rate further drops down linearly to attain a value of 4 mm/hour at t=100 minutes and remains constant thereafter till the end of the storm event. The value of the infiltration index, $\\phi$ (in mm/hour, round off to 2 decimal places), is _______",
+    "reason": "Stored answer hint was blank or did not match the official key range pool; requires question-level verification."
+  },
+  {
+    "id": "ddc188fd220f9d7cbf85ea98",
+    "year": 2018,
+    "session": "SET-1",
+    "questionNo": 43,
+    "natAnswerRaw": "{\"value1\":\"\",\"value2\":\"\",\"value3\":\"0\"}",
+    "questionText": "For routing of flood in a given channel using the Muskingum method, two of the routing coefficients are estimated as $C_{0}=-0.25$ and $C_{1}= 0.55$ . The value of the third coefficient $C_{2}$ would be ______",
+    "reason": "Stored answer hint was blank or did not match the official key range pool; requires question-level verification."
+  },
+  {
+    "id": "65c4ae89015aaeb6f14d7a65",
+    "year": 2017,
+    "session": "SET-2",
+    "questionNo": 44,
+    "natAnswerRaw": "{\"value1\":\"286.9\",\"value2\":\"287.9\",\"value3\":\"0\"}",
+    "questionText": "A catchment is idealized as a 25 km x 25 km square. It has five rain gauges, one at each corner and one at the center, as shown in the figure. During a month, the precipitation at these gauges is measured as $G_{1}$ = 300 mm, $G_{2}$ = 285 mm, $G_{3}$ = 272mm, $G_{4}$ = 290mm and $G_{5}$ = 288mm. The average precipitation (in mm, up to one decimal place) over the catchment during this month by using the Thiessen polygon method is ______",
+    "reason": "No official CE answer-key PDF was located for 2015–2017."
+  },
+  {
+    "id": "7f18068963c5e3f9bf1bcc61",
+    "year": 2017,
+    "session": "SET-2",
+    "questionNo": 45,
+    "natAnswerRaw": "{\"value1\":\"0.98\",\"value2\":\"1\",\"value3\":\"0\"}",
+    "questionText": "The infiltration capacity of a soil follows the Horton's exponential model, $f=c_{1}+c_{2} e^{-kt}$ . During and experiment, the initial infiltration capacity was observed to be 200 mm/h. After a long time, the infiltration capacity was reduced to 25 mm/h. If the infiltration capacity after 1 hour was 90 mm/h, the value of the decay rate constant, k (in $h^{-1}$ , up to two decimal places) is____",
+    "reason": "No official CE answer-key PDF was located for 2015–2017."
+  },
+  {
+    "id": "5169b45b5c779f0f18d902d7",
+    "year": 2017,
+    "session": "SET-2",
+    "questionNo": 46,
+    "natAnswerRaw": "{\"value1\":\"1.9\",\"value2\":\"2.1\",\"value3\":\"0\"}",
+    "questionText": "During a storm event in a certain period, the rainfall intensity is 3.5 cm/hour and the $\\Phi$ -index is 1.5 cm/hour. The intensity of effective rainfall (in cm/hour, up to one decimal place) for this period is",
+    "reason": "No official CE answer-key PDF was located for 2015–2017."
+  },
+  {
+    "id": "9607688ab32b66c8d4220613",
+    "year": 2017,
+    "session": "SET-1",
+    "questionNo": 47,
+    "natAnswerRaw": "{\"value1\":\"149\",\"value2\":\"151\",\"value3\":\"0\"}",
+    "questionText": "An effective rainfall of 2-hour duration produced a flood hydrograph peak of 200 $m^{3}/s$ . The flood hydrograph has a base flow of 20 $m^{3}/s$ . If the spatial average rainfall in the watershed for the duration of storm is 2 cm and the average loss rate is 0.4 cm/hour, the peak of 2-hour unit hydrograph (in $m^{3}/s-cm$ , up to one decimal place) is _____",
+    "reason": "No official CE answer-key PDF was located for 2015–2017."
+  },
+  {
+    "id": "74977bd25d71572142374796",
+    "year": 2017,
+    "session": "SET-1",
+    "questionNo": 48,
+    "natAnswerRaw": "{\"value1\":\"15\",\"value2\":\"15\",\"value3\":\"0\"}",
+    "questionText": "The ordinates of a 2-hour unit hydrograph for a catchment are given as The ordinate (in $m^{3}/s$ ) of a 4-hour unit hydrograph for this catchment at the time of 3 h would be ______",
+    "reason": "No official CE answer-key PDF was located for 2015–2017."
+  },
+  {
+    "id": "94dae9ae8500e3a4bcd66f1f",
+    "year": 2016,
+    "session": "SET-2",
+    "questionNo": 49,
+    "natAnswerRaw": "{\"value1\":\"59\",\"value2\":\"61\",\"value3\":\"0\"}",
+    "questionText": "The ordinates of a one-hour unit hydrograph at sixty minute interval are 0, 3, 12, 8, 6, 3 and 0 $m^{3}/s$ . A two-hour storm of 4 cm excess rainfall occurred in the basin from 10 AM. Considering constant base flow of 20 $m^{3}/s$ , the flow of the river (expressed in $m^{3}/s$ ) at 1 PM is_____________",
+    "reason": "No official CE answer-key PDF was located for 2015–2017."
+  },
+  {
+    "id": "2f300087843b9ac6fd3e471b",
+    "year": 2016,
+    "session": "SET-1",
+    "questionNo": 51,
+    "natAnswerRaw": "{\"value1\":\"21.5\",\"value2\":\"21.7\",\"value3\":\"0\"}",
+    "questionText": "The direct runoff hydrograph in response to 5 cm rainfall excess in a catchment is shown in the figure. The area of the catchment (expressed in hectares) is ___________.",
+    "reason": "No official CE answer-key PDF was located for 2015–2017."
+  },
+  {
+    "id": "150c2f89c01a49bbd8694f57",
+    "year": 2015,
+    "session": "SET-1",
+    "questionNo": 53,
+    "natAnswerRaw": "{\"value1\":\"21.9\",\"value2\":\"22.1\",\"value3\":\"0\"}",
+    "questionText": "The 4-hr unit hydrograph for a catchment is given in the table below. What would be the maximum ordinate of the S-curve (in $m^{3}/s$ ) derive from this hydrograph?",
+    "reason": "No official CE answer-key PDF was located for 2015–2017."
+  },
+  {
+    "id": "cf30315f98728ebadc49e2e5",
+    "year": 2015,
+    "session": "SET-1",
+    "questionNo": 54,
+    "natAnswerRaw": "{\"value1\":\"1093\",\"value2\":\"1094\",\"value3\":\"0\"}",
+    "questionText": "In a catchment, there are four rain-gauge stations, P, Q, R, and S. Normal annual precipitation values at these stations are 780 mm, 850 mm, 920 mm, and 980 mm respectively. In the year 2013, stations Q, R, and S, were operative but P was not. Using the normal ratio method, the precipitation at station P for the year 2013 has been established as 860 mm. If the observed precipitation at station Q and R for the year 2013 were 930 mm and 1010 mm, respectively; what was the observed precipitation (in mm) at station S for that year?",
+    "reason": "No official CE answer-key PDF was located for 2015–2017."
+  },
+  {
+    "id": "57f21f208b9a282d440b5434",
+    "year": 2022,
+    "session": "SET-1",
+    "questionNo": 12,
+    "natAnswerRaw": "{\"value1\":\"14.28\",\"value2\":\"14.28\",\"value3\":\"0\"}",
+    "questionText": "During a particular stage of the growth of a crop, the consumptive use of water is 2.8 mm/day. The amount of water available in the soil is 50 % of the maximum depth of available water in the root zone. Consider the maximum root zone depth of the crop as 80 mm and the irrigation efficiency as 70%. The interval between irrigation (in days) will be _________. (round off to the nearest integer)",
+    "reason": "Stored answer hint was blank or did not match the official key range pool; requires question-level verification."
+  },
+  {
+    "id": "fce418ab7b14102d82768930",
+    "year": 2017,
+    "session": "SET-2",
+    "questionNo": 23,
+    "natAnswerRaw": "{\"value1\":\"5150\",\"value2\":\"5250\",\"value3\":\"0\"}",
+    "questionText": "The culturable command area of a canal is 10,000 ha. The area grows only two crops-rice in the Kharif season and wheat in the Rabi season. The design discharge of the canal is based on the rice requirements, which has an irrigated area of 2500 ha, base period of 150 days and delta of 130 cm. The maximum permissible irrigated area (in ha) for wheat, with a base period of 120 days and delta of 50 cm, is",
+    "reason": "No official CE answer-key PDF was located for 2015–2017."
+  },
+  {
+    "id": "d00be856a215d4daa8f87fc9",
+    "year": 2016,
+    "session": "SET-1",
+    "questionNo": 26,
+    "natAnswerRaw": "{\"value1\":\"10490\",\"value2\":\"10510\",\"value3\":\"0\"}",
+    "questionText": "A concrete gravity dam section is shown in the figure. Assuming unit weight of water as $10\\: kN/m^{3}$ and unit weight of concrete as $24\\: kN/m^{3}$ , the uplift force per unit length of the dam (expressed in kN/m) at PQ is ____________.",
+    "reason": "No official CE answer-key PDF was located for 2015–2017."
+  },
+  {
+    "id": "98a1ffafa137cc1e6394c6a1",
+    "year": 2015,
+    "session": "SET-2",
+    "questionNo": 27,
+    "natAnswerRaw": "{\"value1\":\"1.4\",\"value2\":\"1.5\",\"value3\":\"0\"}",
+    "questionText": "A field channel has cultivable commanded area of 2000 hectares. The intensities of irrigation for gram and wheat are 30% and 50% respectively. Gram has a kor period of 18 days, kor depth of 12 cm, while wheat has a kor period of 18 days and a kor depth of 15 cm. The discharge (in $m^{3}$ /s) required in the field channel to supply water to the commanded area during the kor period is_____.",
+    "reason": "No official CE answer-key PDF was located for 2015–2017."
+  },
+  {
+    "id": "d0bfd28228bd584f7fa16fed",
+    "year": 2021,
+    "session": "SET-2",
+    "questionNo": 78,
+    "natAnswerRaw": "{\"value1\":\"677.5\",\"value2\":\"679.5\",\"value3\":\"0\"}",
+    "questionText": "A lake has a maximum depth of 60 m. If the mean atmospheric pressure in the lake region is 91 kPa and the unit weight of the lake water is $9790 \\mathrm{~N} / \\mathrm{m}^{3}$ , the absolute pressure (in kPa,round off to two decimal places) at the maximum depth of the lake is ___________",
+    "reason": "Stored answer hint was blank or did not match the official key range pool; requires question-level verification."
+  },
+  {
+    "id": "b7103cf5281c12298f481b2c",
+    "year": 2021,
+    "session": "SET-2",
+    "questionNo": 79,
+    "natAnswerRaw": "{\"value1\":\"17.25\",\"value2\":\"17.45\",\"value3\":\"0\"}",
+    "questionText": "The internal $\\left(d_{i}\\right)$ and external $\\left(d_{o}\\right)$ diameters of a Shelby sampler are 48 mm and 52 mm, respectively. The area ratio $\\left(A_{r}\\right)$ of the sampler (in %,round off to two decimal palces) is _____________",
+    "reason": "Stored answer hint was blank or did not match the official key range pool; requires question-level verification."
+  },
+  {
+    "id": "d723f74a36db3982dbd4b644",
+    "year": 2018,
+    "session": "SET-1",
+    "questionNo": 126,
+    "natAnswerRaw": "{\"value1\":\"\",\"value2\":\"\",\"value3\":\"0\"}",
+    "questionText": "A city generates $40 \\times 10^{6}$ kg of municipal solid waste (MSW) per year, out of which only 10% is recovered/recycled and the rest goes to landfill. The landfill has a single lift of 3 m height and is compacted to a density of $550 kg/m^{3}$ . If 80% of the landfill is assumed to be MSW, the landfill area (in $m^{2}$ , up to one decimal place) required would be ______",
+    "reason": "Stored answer hint was blank or did not match the official key range pool; requires question-level verification."
+  },
+  {
+    "id": "a63a53513e3ec00901fc3a37",
+    "year": 2017,
+    "session": "SET-2",
+    "questionNo": 128,
+    "natAnswerRaw": "{\"value1\":\"300\",\"value2\":\"300\",\"value3\":\"0\"}",
+    "questionText": "The analysis of a water sample produces the following results: The total hardness (in mg/L as $CaCO_{3}$ ) of the water sample is _____",
+    "reason": "No official CE answer-key PDF was located for 2015–2017."
+  },
+  {
+    "id": "e8f84142b4416391856aaa8d",
+    "year": 2017,
+    "session": "SET-2",
+    "questionNo": 129,
+    "natAnswerRaw": "{\"value1\":\"8\",\"value2\":\"8\",\"value3\":\"0\"}",
+    "questionText": "A municipal corporation is required to treat 1000 $m^{3}/day$ of water. It is found that an overflow rate of 20 m/day will produce a satisfactory removal of the discrete suspended particles at a depth of 3 m. The diameter (in meters, rounded to the nearest integer) of a circular settling tank designed for the removal of these particles would be______",
+    "reason": "No official CE answer-key PDF was located for 2015–2017."
+  },
+  {
+    "id": "d84253b7c018a404cefe3ac2",
+    "year": 2017,
+    "session": "SET-2",
+    "questionNo": 130,
+    "natAnswerRaw": "{\"value1\":\"0.22\",\"value2\":\"0.24\",\"value3\":\"0\"}",
+    "questionText": "For a given water sample, the ratio between $BOD_{5-day,20^{\\circ}C}$ and the ultimate BOD is 0.68. The value of the reaction rate constant k (on base e) (in $day^{-1}$ up to two decimal places) is_____",
+    "reason": "No official CE answer-key PDF was located for 2015–2017."
+  },
+  {
+    "id": "0d083b0b07e75fa0669ec62b",
+    "year": 2017,
+    "session": "SET-2",
+    "questionNo": 131,
+    "natAnswerRaw": "{\"value1\":\"3850\",\"value2\":\"3900\",\"value3\":\"0\"}",
+    "questionText": "The composition of a municipal solid waste sample is given below: The difference between the energy content of the waste sample calculated on dry basis and asdiscarded basis (in kJ/kg) would be",
+    "reason": "No official CE answer-key PDF was located for 2015–2017."
+  },
+  {
+    "id": "f074f0a262d75b6ed89853c5",
+    "year": 2017,
+    "session": "SET-1",
+    "questionNo": 135,
+    "natAnswerRaw": "{\"value1\":\"17.9\",\"value2\":\"18.1\",\"value3\":\"0\"}",
+    "questionText": "The wastewater having an organic concentration of 54 mg/l is flowing at a steady rate of 0.8 $m^{3}/day$ through a detention tank of dimensions $2m\\times 4m\\times 2m$ . If the contents of the tankare well mixed and the decay constant is 0.1 per day, the outlet concentration (in mg/l, up to one decimal place) is ______",
+    "reason": "No official CE answer-key PDF was located for 2015–2017."
+  },
+  {
+    "id": "6f4bf9776a160dd32d4b2477",
+    "year": 2017,
+    "session": "SET-1",
+    "questionNo": 136,
+    "natAnswerRaw": "{\"value1\":\"20\",\"value2\":\"22\",\"value3\":\"0\"}",
+    "questionText": "Two wastewater streams A and B, having an identical ultimate BOD are getting mixed to form the stream C. The temperature of the stream A is 20 $^{\\circ}$ C and the temperature of the stream C is 10 $^{\\circ}$ C. It is given that The 5-day BOD of the stream A measured at 20 $^{\\circ}$ C=50 mg/l BOD rate constant (base 10) at 20 $^{\\circ}$ C=0.115 per day Temperature coefficient = 1.135 The 5-day BOD (in mg/l, up to one decimal place)of stream C, calculated at 10 $^{\\circ}$ C, is ______",
+    "reason": "No official CE answer-key PDF was located for 2015–2017."
+  },
+  {
+    "id": "dc6db6079fa7ddbd08ec7b7f",
+    "year": 2017,
+    "session": "SET-1",
+    "questionNo": 137,
+    "natAnswerRaw": "{\"value1\":\"0.3\",\"value2\":\"0.5\",\"value3\":\"0\"}",
+    "questionText": "The spherical grit particles, having a radius of 0.01mm and specific gravity of 3.0, need to beseparated in a settling chamber. It is given that $g=9.81 \\; m/s^{2}$ the density of the liquid in the settling chamber $=1000 \\; kg/m^{3}$ the kinematic viscosity of the liquid in the settling chamber = $10^{-6} \\; m^{2}/s$ Assuming laminar conditions, the settling velocity (in mm/s, up to one decimal place) is_____",
+    "reason": "No official CE answer-key PDF was located for 2015–2017."
+  },
+  {
+    "id": "ac2881833999a7a383ed187c",
+    "year": 2017,
+    "session": "SET-1",
+    "questionNo": 138,
+    "natAnswerRaw": "{\"value1\":\"79\",\"value2\":\"81\",\"value3\":\"0\"}",
+    "questionText": "The equivalent sound power level (in dB) of the four sources with the noise levels of 60 dB, 69 dB, 70 dB and 79 dB is_______",
+    "reason": "No official CE answer-key PDF was located for 2015–2017."
+  },
+  {
+    "id": "36a5e6faeaa3dcbfd0657dfa",
+    "year": 2016,
+    "session": "SET-2",
+    "questionNo": 141,
+    "natAnswerRaw": "{\"value1\":\"275\",\"value2\":\"278\",\"value3\":\"0\"}",
+    "questionText": "For a wastewater sample, the three-day biochemical oxygen demand at incubation temperature of $20\\: ^{\\circ}C \\; (BOD_{3days,20{\\circ}C})$ , is estimated as 200 mg/L. Taking the value of the first order BOD reaction rate constant as $0.22\\: day^{-1}$ , the five-day BOD (expressed in mg/L) of the wastewater at incubation temperature of $20\\: ^{\\circ}C$ $(BOD_{5days,20{\\circ}C})$ would be ___________",
+    "reason": "No official CE answer-key PDF was located for 2015–2017."
+  },
+  {
+    "id": "8d6c5db15c8de7de3bc00c00",
+    "year": 2016,
+    "session": "SET-2",
+    "questionNo": 142,
+    "natAnswerRaw": "{\"value1\":\"67\",\"value2\":\"69\",\"value3\":\"0\"}",
+    "questionText": "A noise meter located at a distance of 30 m from a point source recorded 74 dB . The reading at a distance of 60 m from the point source would be _________",
+    "reason": "No official CE answer-key PDF was located for 2015–2017."
+  },
+  {
+    "id": "0e93d43aee5cb0f9339231f3",
+    "year": 2016,
+    "session": "SET-2",
+    "questionNo": 146,
+    "natAnswerRaw": "{\"value1\":\"380\",\"value2\":\"390\",\"value3\":\"0\"}",
+    "questionText": "The hardness of a ground water sample was found to be 420 mg/L as $CaCO_{3}$ . A softener containing ion exchange resins was installed to reduce the total hardness to 75 mg/L as $CaCO_{3}$ before supplying to 4 households. Each household gets treated water at a rate of 540 L/day. If the efficiency of the softener is 100%, the bypass flow rate (expressed in L/day) is _____________.",
+    "reason": "No official CE answer-key PDF was located for 2015–2017."
+  },
+  {
+    "id": "450211e01ce313dfc473559d",
+    "year": 2016,
+    "session": "SET-2",
+    "questionNo": 147,
+    "natAnswerRaw": "{\"value1\":\"6.8\",\"value2\":\"7\",\"value3\":\"0\"}",
+    "questionText": "A water supply board is responsible for treating 1500 $m^{3}/day$ of water. A settling column analysis indicates that an overflow rate of 20 m/day will produce satisfactory removal for a depth of 3.1 m. It is decided to have two circular settling tanks in parallel. The required diameter (expressed in m) of the settling tanks is ___________.",
+    "reason": "No official CE answer-key PDF was located for 2015–2017."
+  },
+  {
+    "id": "0786eccbcf5e26dd4cd3eff5",
+    "year": 2016,
+    "session": "SET-2",
+    "questionNo": 149,
+    "natAnswerRaw": "{\"value1\":\"0.19\",\"value2\":\"0.21\",\"value3\":\"0\"}",
+    "questionText": "Water table of an aquifer drops by 100 cm over an area of 1000 $km^{2}$ . The porosity and specific retention of the aquifer material are 25% and 5%, respectively. The amount of water (expressed in $km^{3}$ ) drained out from the area is ______ .",
+    "reason": "No official CE answer-key PDF was located for 2015–2017."
+  },
+  {
+    "id": "e01c72b2178b3aca0980af32",
+    "year": 2016,
+    "session": "SET-1",
+    "questionNo": 150,
+    "natAnswerRaw": "{\"value1\":\"0.29\",\"value2\":\"0.31\",\"value3\":\"0\"}",
+    "questionText": "The 2-day and 4-day BOD values of a sewage sample are 100 mg/L and 155 mg/L, respectively. The value of BOD rate constant (expressed in per day) is ___________",
+    "reason": "No official CE answer-key PDF was located for 2015–2017."
+  },
+  {
+    "id": "a00a455ec0183d7da08696e8",
+    "year": 2016,
+    "session": "SET-1",
+    "questionNo": 151,
+    "natAnswerRaw": "{\"value1\":\"8000\",\"value2\":\"8040\",\"value3\":\"0\"}",
+    "questionText": "An electrostatic precipitator (ESP) with 5600 $m^{2}$ of collector plate area is 96 percent efficient in treating 185 $m^{3}/s$ of flue gas from a 200 MW thermal power plant. It was found that in order to achieve 97 percent efficiency, the collector plate area should be 6100 $m^{2}$ . In order to increase the efficiency to 99 percent, the ESP collector plate area (expressed in $m^{2}$ ) would be ______",
+    "reason": "No official CE answer-key PDF was located for 2015–2017."
+  },
+  {
+    "id": "111dc69ee0dbdfb6961585f0",
+    "year": 2016,
+    "session": "SET-1",
+    "questionNo": 152,
+    "natAnswerRaw": "{\"value1\":\"4.4\",\"value2\":\"4.6\",\"value3\":\"0\"}",
+    "questionText": "Effluent from an industry 'A' has a pH of 4.2. The effluent from another industry 'B' has double the hydroxyl ( $OH^{-}$ ) ion concentration than the effluent from industry 'A'. pH of effluent from the industry 'B' will be ____________.",
+    "reason": "No official CE answer-key PDF was located for 2015–2017."
+  },
+  {
+    "id": "678d1d3a799a98ea935bb876",
+    "year": 2015,
+    "session": "SET-2",
+    "questionNo": 157,
+    "natAnswerRaw": "{\"value1\":\"1750\",\"value2\":\"1750\",\"value3\":\"0\"}",
+    "questionText": "In a wastewater treatment plant, primary sedimentation tank (PST) designed at an overflow rate of 32.5 $m^{3}/day/m^{2}$ is 32.5 m long, 8.0 m wide and liquid depth of 2.25 m. If the length of the weir is 75 m, the weir loading rate (in $m^{3}/day/m$ ) is ___________.",
+    "reason": "No official CE answer-key PDF was located for 2015–2017."
+  },
+  {
+    "id": "170fd076d4e9681089d8bf5f",
+    "year": 2015,
+    "session": "SET-2",
+    "questionNo": 159,
+    "natAnswerRaw": "{\"value1\":\"144\",\"value2\":\"144\",\"value3\":\"0\"}",
+    "questionText": "A water treatment plant of capacity, $1\\: m^{3}/s$ has filter boxes of dimensions 6m x 10m. Loading rate to the filters is $120 m^{3}/day/m^{2}$ . When two of the filters are out of service for back washing, the loading rate (in $m^{3}/day/m^{2}$ )is_______.",
+    "reason": "No official CE answer-key PDF was located for 2015–2017."
+  },
+  {
+    "id": "baea8e4c2c455e7dbfcc1f4a",
+    "year": 2015,
+    "session": "SET-2",
+    "questionNo": 160,
+    "natAnswerRaw": "{\"value1\":\"13.6\",\"value2\":\"13.8\",\"value3\":\"0\"}",
+    "questionText": "A landfill is to be designed to serve a population of 200000 for a period of 25 years. The solid waste (SW) generation is 2 kg/person/day. The density of the un-compacted SW is 100 kg/ $m^{3}$ and a compaction ratio of 4 is suggested. The ratio of compacted fill (i.e. SW + cover) to compacted SW is 1.5. The landfill volume (in million $m^{3}$ ) required is _______.",
+    "reason": "No official CE answer-key PDF was located for 2015–2017."
+  },
+  {
+    "id": "d6ab79b1ef0f6e88abfcc2b7",
+    "year": 2015,
+    "session": "SET-2",
+    "questionNo": 162,
+    "natAnswerRaw": "{\"value1\":\"0.05\",\"value2\":\"0.05\",\"value3\":\"0\"}",
+    "questionText": "A groundwater sample was found to contain 500 mg/L total dissolved solids (TDS). TDS (in %) present in the sample is ________.",
+    "reason": "No official CE answer-key PDF was located for 2015–2017."
+  },
+  {
+    "id": "468db4e887a41db63eb936a5",
+    "year": 2015,
+    "session": "SET-1",
+    "questionNo": 164,
+    "natAnswerRaw": "{\"value1\":\"20\",\"value2\":\"24\",\"value3\":\"0\"}",
+    "questionText": "Consider a primary sedimentation tank (PST) in a water treatment plant with Surface Overflow Rate (SOR) of 40 $m^{3}/m^2/d$ . The diameter of the spherical particle which will have 90 percent theoretical removal efficiency in this tank is_________ $\\mu m$ . Assume that settling velocity of the particle in water described by Stokes' Law. Given: Density of water = 1000 $kg/m^{3}$ ; Density of particle = 2650 $kg/m^{3}$ ; g = 9.81 $m/s^{2}$ ; Kinematic viscosity of water $(v) = 1.10 \\times 10^{-6} m^{2}/s$",
+    "reason": "No official CE answer-key PDF was located for 2015–2017."
+  },
+  {
+    "id": "436b2d3d26daa8574259d301",
+    "year": 2015,
+    "session": "SET-1",
+    "questionNo": 165,
+    "natAnswerRaw": "{\"value1\":\"0.01\",\"value2\":\"0.012\",\"value3\":\"0\"}",
+    "questionText": "The concentration of Sulfur Dioxide ( $SO_{2}$ ) in ambient atmosphere was measured as 30 $\\mu g/m^{3}$ . Under the same conditions, the above $SO_{2}$ concentration expressed in ppm is ___________.Given: (P/(RT) = 41.6 $mol/m^{3}$ ; where, P=Pressure; T=Temperature; R=universal gas constant; Molecular weight of $SO_{2}$ = 64.",
+    "reason": "No official CE answer-key PDF was located for 2015–2017."
+  },
+  {
+    "id": "413555a181b8a68cbcf959e4",
+    "year": 2024,
+    "session": "SET-1",
+    "questionNo": 35,
+    "natAnswerRaw": "{\"value1\":\"33.22\",\"value2\":\"33.22\",\"value3\":\"0\"}",
+    "questionText": "The following data is obtained from an axle load survey at a site: Average rear axle load $-12000 \\mathrm{~kg}$ . Number of commercial vehicles $=800$ per day The pavement at this site would be reconstructed over a period of 5 years from the date of survey. The design life of the reconstructed pavement is 15 years. Use the standard axle load as $8160 \\mathrm{~kg}$ and the annual average vehicle growth rate as $4.0 \\%$ Assume that Equivalent Wheel Load Factor (EWLF) and Vehicle Drainage Factor (VDF) are equal The cumulative standard axle (in msa) for the pavement design is _____(rounded off to 2 decimal places)",
+    "reason": "Stored answer hint was blank or did not match the official key range pool; requires question-level verification."
+  },
+  {
+    "id": "3f0e26c6003a61cd37924547",
+    "year": 2020,
+    "session": "SET-1",
+    "questionNo": 80,
+    "natAnswerRaw": "{\"value1\":\"6\",\"value2\":\"6\",\"value3\":\"0\"}",
+    "questionText": "Traffic volume count has been collected on a 2 lane road section which needs upgradation due to severe traffic flow condition. Maximum service flow rate per lane is observed as 1280 veh/h at level of service 'C'. The Peak Hour Factor is reported as 0.78125. Historical traffic volume count provides Annual Average Daily Traffic as 122270 veh/day. Directional split of the traffic flow is observed to be 60 : 40. Assuming that traffic stream consists of 'All Cars' and all drivers are 'Regular Commuters', the number of extra lane(s) (round off to the next higher integer) to be provide, is ________.",
+    "reason": "Stored answer hint was blank or did not match the official key range pool; requires question-level verification."
+  },
+  {
+    "id": "97dd555166f2c247a45d6d61",
+    "year": 2019,
+    "session": "SET-2",
+    "questionNo": 88,
+    "natAnswerRaw": "{\"value1\":\"157.2\",\"value2\":\"157.6\",\"value3\":\"0\"}",
+    "questionText": "A broad gauge railway line passes through a horizontal curved section (radius = 875 m) of length 200 m. The allowable speed on this portion is 100 km/h. For calculating the cant, consider the gauge as centre-to-centre distance between the rail heads, equal to 1750 mm. The maximum permissible cant (in mm, round off to 1 decimal place) with respect to the centre-to-centre distance between the rail heads is_____",
+    "reason": "Stored answer hint was blank or did not match the official key range pool; requires question-level verification."
+  },
+  {
+    "id": "4d8c9758802c2ede11dd96e9",
+    "year": 2017,
+    "session": "SET-2",
+    "questionNo": 110,
+    "natAnswerRaw": "{\"value1\":\"1.9\",\"value2\":\"2.1\",\"value3\":\"0\"}",
+    "questionText": "The radii of relative stiffness of the rigid pavements P and Q are denoted by $l_{P}$ and $l_{Q}$ , respectively. The geometric and material properties of the concrete slab and underlying soil are given below: The ratio (up to one decimal place) of $l_{P} / l_{Q}$ is _______",
+    "reason": "No official CE answer-key PDF was located for 2015–2017."
+  },
+  {
+    "id": "9bc084b2003b28cae2d4c56b",
+    "year": 2017,
+    "session": "SET-2",
+    "questionNo": 112,
+    "natAnswerRaw": "{\"value1\":\"1.49\",\"value2\":\"1.51\",\"value3\":\"0\"}",
+    "questionText": "While aligning a hill road with a ruling gradient of 6 %, a horizontal curve of radius 50 m is encountered. The grade compensation (in percentage, up to two decimal places) to be provided for this case would be _____",
+    "reason": "No official CE answer-key PDF was located for 2015–2017."
+  },
+  {
+    "id": "7d0ae07d9b49ac1fef62882e",
+    "year": 2017,
+    "session": "SET-1",
+    "questionNo": 118,
+    "natAnswerRaw": "{\"value1\":\"0.1276\",\"value2\":\"0.1372\",\"value3\":\"0\"}",
+    "questionText": "Vehicles arriving at an intersection from one of the approach road follow the Poisson distribution. The mean rate of arrival is 900 vehicles per hour. If a gap is defined as the time difference between two successive vehicle arrivals (with vehicles assumed to be points), the probability (up to four decimal places) that the gap is greater than 8 seconds is",
+    "reason": "No official CE answer-key PDF was located for 2015–2017."
+  },
+  {
+    "id": "6170360499c7afd8b1fa824a",
+    "year": 2016,
+    "session": "SET-2",
+    "questionNo": 121,
+    "natAnswerRaw": "{\"value1\":\"92\",\"value2\":\"93\",\"value3\":\"0\"}",
+    "questionText": "A motorist travelling at 100 km/h on a highway needs to take the next exit, which has a speed limit of 50 km/h. The section of the roadway before the ramp entry has a downgrade of 3% and coefficient of friction (f) is 0.35. In order to enter the ramp at the maximum allowable speed limit, the braking distance (expressed in m) from the exit ramp is________",
+    "reason": "No official CE answer-key PDF was located for 2015–2017."
+  },
+  {
+    "id": "618857ddefe18d8e413aeecd",
+    "year": 2016,
+    "session": "SET-1",
+    "questionNo": 125,
+    "natAnswerRaw": "{\"value1\":\"2.9\",\"value2\":\"3\",\"value3\":\"0\"}",
+    "questionText": "While traveling along and against the traffic stream, a moving observer measured the relative flows as 50 vehicles/hr and 200 vehicles/hr, respectively. The average speeds of the moving observer while traveling along and against the stream are 20 km/hr and 30 km/hr, respectively. The density of the traffic stream (expressed in vehicles/km) is _______.",
+    "reason": "No official CE answer-key PDF was located for 2015–2017."
+  },
+  {
+    "id": "9067551153408f40046b78ea",
+    "year": 2016,
+    "session": "SET-1",
+    "questionNo": 127,
+    "natAnswerRaw": "{\"value1\":\"1199\",\"value2\":\"1201\",\"value3\":\"0\"}",
+    "questionText": "In a one-lane one-way homogeneous traffic stream, the observed average headway is 3.0 sec. The flow (expressed in vehicles/hr) in this traffic stream is __________.",
+    "reason": "No official CE answer-key PDF was located for 2015–2017."
+  },
+  {
+    "id": "bb59050b364bd0cbe45f4cad",
+    "year": 2015,
+    "session": "SET-2",
+    "questionNo": 131,
+    "natAnswerRaw": "{\"value1\":\"1750\",\"value2\":\"1750\",\"value3\":\"0\"}",
+    "questionText": "The relation between speed u (in km/h) and density k (number of vehicles/km) for a traffic stream on a road is u=70-0.7k. The capacity on this road is _________vph (vehicles/hour).",
+    "reason": "No official CE answer-key PDF was located for 2015–2017."
+  },
+  {
+    "id": "5c3be27752efe4cdef105faa",
+    "year": 2015,
+    "session": "SET-1",
+    "questionNo": 134,
+    "natAnswerRaw": "{\"value1\":\"141.84\",\"value2\":\"142.32\",\"value3\":\"0\"}",
+    "questionText": "A sign is required to be put up asking drivers to slow down to 30 km/h before entering zone Y (see figure). On this road, vehicles require 174 m to slow down to 30 kmn/h (the distance of 174 m includes the distance travelled during the perception reaction time of drivers). The sign can be read by 6/6 vision drivers from a distance of 48 m. The sign is placed at a distance of x m from the start of Zone Y so that even a 6/9 vision drive can slow down to 30 km/h before entering the zone. The minimum value of x is _______ m.",
+    "reason": "No official CE answer-key PDF was located for 2015–2017."
+  },
+  {
+    "id": "4afab85c37886dde3923f6fa",
+    "year": 2015,
+    "session": "SET-1",
+    "questionNo": 136,
+    "natAnswerRaw": "{\"value1\":\"895\",\"value2\":\"905\",\"value3\":\"0\"}",
+    "questionText": "The acceleration time relationship for a vehicle subjected to non-uniform acceleration is, $\\frac{\\mathrm{d}v }{\\mathrm{d} t}=(\\alpha -\\beta v_{0})e^{-\\beta t}$ Where, v is the speed in m/s, t is the time in s, $\\alpha$ and $\\beta$ are parameters, and $v_{0}$ is the initial speed in m/s. If the accelerating behavior of a vehicle, whose drive intends to overtake a slow moving vehicle ahead, is described as, $\\frac{\\mathrm{d} v}{\\mathrm{d} t}=(\\alpha -\\beta v)$ considering $\\alpha =2 m/s^{2}$ , $\\beta =0.05s^{-1}$ and $\\frac{\\mathrm{d}v }{\\mathrm{d} t}=1.3 m/s^{2}$ at t=3s, the distance(in m) travelled by the vehicle in 35s is _______.",
+    "reason": "No official CE answer-key PDF was located for 2015–2017."
+  },
+  {
+    "id": "76ac2bf04d8aaf4fcaab64c3",
+    "year": 2015,
+    "session": "SET-1",
+    "questionNo": 138,
+    "natAnswerRaw": "{\"value1\":\"8\",\"value2\":\"8\",\"value3\":\"0\"}",
+    "questionText": "The penetration value of a bitumen sample tested at 25 $^{\\circ}$ C is 80. When this sample is heated to 60 $^{\\circ}$ C and tested again, the needle of the penetration test apparatus penetrates the bitumen sample by d mm. The value of d CANNOT be less than _____mm.",
+    "reason": "No official CE answer-key PDF was located for 2015–2017."
+  },
+  {
+    "id": "a00c5dc066ccfb8acbecfba8",
+    "year": 2017,
+    "session": "SET-2",
+    "questionNo": 56,
+    "natAnswerRaw": "{\"value1\":\"32.5\",\"value2\":\"33.5\",\"value3\":\"0\"}",
+    "questionText": "An observer standing on the deck of a ship just sees the top of a lighthouse. The top of the lighthouse is 40 m above the sea level and the height of the observer's eye is 5 m above the sea level. The distance (in km, up to one decimal place) of the observer form the lighthouse is____",
+    "reason": "No official CE answer-key PDF was located for 2015–2017."
+  },
+  {
+    "id": "6cca7a38fcca7e31690b138c",
+    "year": 2017,
+    "session": "SET-2",
+    "questionNo": 57,
+    "natAnswerRaw": "{\"value1\":\"89\",\"value2\":\"91\",\"value3\":\"0\"}",
+    "questionText": "Two towers A and B, standing vertically on a horizontal ground, appear in a vertical aerial photograph as shown in the figure. The length of the image of the tower A on the photograph is1.5 cm and of the tower B is 2.0 cm. The distance of the top the tower A (as shown by the arrowhead) is 4.0 cm and the distance of the top of the tower B is 6.0 cm, as measured form the principal point p of the photograph. If the height of the tower B is 80 m, the height (in meters) of the tower A is_____",
+    "reason": "No official CE answer-key PDF was located for 2015–2017."
+  },
+  {
+    "id": "8ada8ed15aaf0870bb902f32",
+    "year": 2017,
+    "session": "SET-2",
+    "questionNo": 58,
+    "natAnswerRaw": "{\"value1\":\"199.99\",\"value2\":\"200.01\",\"value3\":\"0\"}",
+    "questionText": "The VPI (vertical point of intersection) is 100 m away (when measured along the horizontal) from the VPC (vertical point of curvature). If the vertical curve is parabolic, the length of the curve (in meters and measured along the horizontal) is______",
+    "reason": "No official CE answer-key PDF was located for 2015–2017."
+  },
+  {
+    "id": "1969295dfe4b4f454e080cb1",
+    "year": 2016,
+    "session": "SET-2",
+    "questionNo": 63,
+    "natAnswerRaw": "{\"value1\":\"120\",\"value2\":\"121\",\"value3\":\"0\"}",
+    "questionText": "A tall tower was photographed from an elevation of 700 m above the datum. The radial distances of the top and bottom of the tower from the principal points are 112.50 mm and 82.40 mm, respectively. If the bottom of the tower is at an elevation 250 m above the datum, then the height (expressed in m) of the tower is _____.",
+    "reason": "No official CE answer-key PDF was located for 2015–2017."
+  },
+  {
+    "id": "2cd69d915aa29fd25cb82a8e",
+    "year": 2016,
+    "session": "SET-1",
+    "questionNo": 67,
+    "natAnswerRaw": "{\"value1\":\"476.5\",\"value2\":\"477.5\",\"value3\":\"0\"}",
+    "questionText": "The vertical angles subtended by the top of a tower T at two instrument stations set up at P and Q, are shown in the figure. The two stations are in line with the tower and spaced at a distance of 60m. Readings taken from these two stations on a leveling staff placed at the benchmark (BM = 450.000 m) are also shown in the figure. The reduced level of the top of the tower T (expressed in m) is _____ .",
+    "reason": "No official CE answer-key PDF was located for 2015–2017."
+  },
+  {
+    "id": "424b83a6771a1ef2ba8415a5",
+    "year": 2015,
+    "session": "SET-2",
+    "questionNo": 71,
+    "natAnswerRaw": "{\"value1\":\"100\",\"value2\":\"100\",\"value3\":\"0\"}",
+    "questionText": "Two pegs A and B were fixed on opposite banks of a 50m wide river. The level was set up at A and the staff readings on Pegs A and B were observed as 1.350 m and 1.550 m, respectively. Thereafter the instrument was shifted and set up at B. The staff readings on Pegs B and A were observed as 0.750 m and 0.550 m, respectively. If the R.L. of Peg A is 100.200 m, the R.L. (in m) of Peg B is _____",
+    "reason": "No official CE answer-key PDF was located for 2015–2017."
+  },
+  {
+    "id": "b77db75b298276562fe5db25",
+    "year": 2015,
+    "session": "SET-2",
+    "questionNo": 74,
+    "natAnswerRaw": "{\"value1\":\"97.44\",\"value2\":\"97.44\",\"value3\":\"0\"}",
+    "questionText": "In a leveling work, sum of the Back Sight (B.S.) and Fore Sight (F.S.) have been found to be 3.085 m and 5.645 m respectively. If the Reduced Level (R.L.) of the starting station is 100.000 m, the R.L. (in m) of the last station is _______.",
+    "reason": "No official CE answer-key PDF was located for 2015–2017."
+  }
+]

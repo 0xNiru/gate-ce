@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96" role="img" aria-labelledby="title desc">
+  <title id="title">NIRU</title>
+  <desc id="desc">NIRU, an original engineering practice brand mark.</desc>
+  <defs>
+    <linearGradient id="brand" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#0d5478"/><stop offset="1" stop-color="#13a3aa"/></linearGradient>
+  </defs>
+  <circle cx="48" cy="48" r="45" fill="#f5fbfd" stroke="#155777" stroke-width="2.5"/>
+  <circle cx="48" cy="37" r="25" fill="url(#brand)"/>
+  <path d="M34 51V23l28 28V23" fill="none" stroke="#fff" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M29 64h38" stroke="#d49b43" stroke-width="2" stroke-linecap="round"/>
+  <text x="48" y="79" text-anchor="middle" fill="#174e69" font-family="Arial, Helvetica, sans-serif" font-size="14" font-weight="800" letter-spacing="2">NIRU</text>
+</svg>
