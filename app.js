@@ -283,10 +283,19 @@ function prepareExam(qs,title,meta={}) {
   const ids=qs.map(q=>q.id);const marks=qs.reduce((n,q)=>n+num(q.marks),0);
   openInstructions({id:`exam-${Date.now()}`,title,qids:ids,subject:meta.subject||null,topic:meta.topic||null,year:meta.year||null,session:meta.session||null,durationSeconds:Math.max(60,Math.round(marks*108))});
 }
-function beginPendingExam() {
+async function enterExamFullscreen() {
+  try {
+    if (!document.fullscreenElement) {
+      await document.documentElement.requestFullscreen();
+    }
+  } catch (err) {
+    console.warn('Fullscreen request failed:', err);
+  }
+}
+async function beginPendingExam() {
   if(!pendingExam)return;
   const exam={...pendingExam,index:0,answers:{},visited:[0],marked:[],times:{},questionStartedAt:Date.now(),deadline:Date.now()+pendingExam.durationSeconds*1000};
-  user.activeExam=exam;saveUser();pendingExam=null;dialogClose();navigate('exam');
+  user.activeExam=exam;saveUser();pendingExam=null;dialogClose();await enterExamFullscreen();navigate('exam');
 }
 function currentExamQuestions() { return (user.activeExam?.qids||[]).map(id=>questionById.get(id)).filter(Boolean); }
 function currentQuestion() { const qs=currentExamQuestions();return qs[user.activeExam?.index||0]; }
@@ -605,7 +614,7 @@ async function handleAction(action,el) {
     pool.length=count;
     prepareExam(pool,`Custom practice · ${subj||'All subjects'}`,{subject:subj||null,topic:top||null});return;
   }
-  if(action==='resume'){if(user.activeExam){user.activeExam.questionStartedAt=Date.now();saveUser();}view='exam';render();window.scrollTo(0,0);return;}
+ if(action==='resume'){if(user.activeExam){user.activeExam.questionStartedAt=Date.now();saveUser();}await enterExamFullscreen();view='exam';render();window.scrollTo(0,0);return;}
   if(action==='finish-later'){const e=user.activeExam;recordElapsedTime(e);saveUser();navigate('home');return;}
   if(action==='discard-exam'){dialogShow('Discard unfinished exam?','Your in-progress responses will be removed.','<button class="outline-button" data-dialog="close">Keep exam</button><button class="danger-button" data-dialog="discard-active">Discard exam</button>');return;}
   if(action==='start-topic'&&pendingExam){beginPendingExam();return;}
