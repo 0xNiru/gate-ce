@@ -18,9 +18,13 @@ let calendarMonth = new Date(new Date().getFullYear(),new Date().getMonth(),1);
 let calendarSelectedDate = '';
 let timerHandle = null;
 let toastHandle = null;
-let telegramStatus = null;
-let telegramPairTimer = null;
-let backupSyncTimer = null;
+const BACKUP_META_KEY = 'gate-ce-practice-backup-meta';
+const PRE_RESTORE_KEY = 'gate-ce-practice-pre-restore';
+const BACKUP_KEEP_DAYS = 14;
+let backupFolder = { handle: null, name: '', state: 'none', error: '' }; // state: none | granted | prompt | error
+let autoBackupTimer = null;
+let autoBackupBusy = false;
+let pendingRestore = null;
 
 function loadUser() {
   try { return { ...DEFAULT_USER, ...JSON.parse(localStorage.getItem(STORE_KEY) || '{}') }; }
@@ -28,9 +32,7 @@ function loadUser() {
 }
 function saveUser() {
   localStorage.setItem(STORE_KEY, JSON.stringify(user));
-  if (!telegramStatus?.connected) return;
-  clearTimeout(backupSyncTimer);
-  backupSyncTimer = setTimeout(() => fetch('/api/telegram/backup', { method:'POST', headers:{'content-type':'application/json'}, body:JSON.stringify({app:'gate-ce-practice',version:1,exportedAt:new Date().toISOString(),data:user}) }).catch(()=>{}), 1200);
+  scheduleAutoBackup();
 }
 function esc(value='') { return String(value).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
 function num(value) { return Number.isFinite(Number(value)) ? Number(value) : 0; }
@@ -45,30 +47,149 @@ function examCountdownParts() {
 function updateExamCountdown() {
   const parts=examCountdownParts();for(const key of ['days','hours','minutes','seconds']){const node=$(`countdown-${key}`);if(node)node.textContent=String(parts[key]).padStart(key==='days'?1:2,'0');}
 }
-async function telegramRequest(url, body) {
-  const response = await fetch(url, { method:body?'POST':'GET', headers:body?{'content-type':'application/json'}:undefined, body:body?JSON.stringify(body):undefined });
-  const result = await response.json(); if (!response.ok) throw new Error(result.error || 'Telegram service request failed.'); return result;
+// ---------- Local backup: download, restore, and automatic folder backup ----------
+const plural = (n, word) => `${n} ${word}${n === 1 ? '' : 's'}`;
+function whenLabel(ts) { const d = new Date(ts); return ts && !Number.isNaN(d.getTime()) ? d.toLocaleString() : ''; }
+function backupStamp(d = new Date()) { const p = n => String(n).padStart(2, '0'); return `${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())}`; }
+function backupPayload() { return { app: 'gate-ce-practice', version: 1, exportedAt: new Date().toISOString(), data: user }; }
+function dataCounts(u) { return `${plural((u.history || []).length, 'attempt')} · ${plural((u.bookmarks || []).length, 'bookmark')} · ${plural((u.mistakes || []).length, 'mistake')}`; }
+function isEmptyUser(u = user) { return !u.history.length && !u.bookmarks.length && !u.mistakes.length && !u.todos.length && !u.notes && !Object.keys(u.questionNotes || {}).length && !Object.keys(u.answerOverrides || {}).length; }
+function readBackupMeta() { try { return JSON.parse(localStorage.getItem(BACKUP_META_KEY) || '{}') || {}; } catch { return {}; } }
+function writeBackupMeta(patch) { try { localStorage.setItem(BACKUP_META_KEY, JSON.stringify({ ...readBackupMeta(), ...patch })); } catch {} }
+function readPreRestore() { try { const snap = JSON.parse(localStorage.getItem(PRE_RESTORE_KEY) || 'null'); return snap && snap.data ? snap : null; } catch { return null; } }
+function getRestoreInput() {
+  let input = $('restoreInput');
+  if (!input) { input = document.createElement('input'); input.type = 'file'; input.id = 'restoreInput'; input.accept = 'application/json,.json'; input.hidden = true; document.body.append(input); }
+  return input;
 }
-function renderBackupDialog(status=telegramStatus, message='') {
-  telegramStatus=status;
-  clearInterval(telegramPairTimer); telegramPairTimer=null;
-  const connected=Boolean(status?.connected);
-  const pairing=Boolean(status && !connected && status.botName);
-  const stateMarkup=connected
-    ? `<div class="telegram-connected"><span class="telegram-state-dot"></span><span>Connected to <strong>@${esc(status.botName)}</strong>${status.chatName?` · ${esc(status.chatName)}`:''}</span></div><p class="telegram-last-sent">${status.lastSentAt?`Last backup sent ${esc(new Date(status.lastSentAt).toLocaleString())}`:'Daily backup is scheduled for 00:00 India time.'}</p><div class="telegram-controls"><button class="primary-button" data-action="telegram-send">Send backup now</button><button class="outline-button" data-action="telegram-disconnect">Disconnect</button></div>`
-    : pairing
-      ? `<div class="telegram-pairing"><strong>Bot token verified: @${esc(status.botName)}</strong><p>Now open your bot in Telegram and press <code>Start</code> or send <code>/start</code>. This window will connect automatically.</p><a class="outline-button telegram-open-bot" href="https://t.me/${encodeURIComponent(status.botName)}" target="_blank" rel="noopener noreferrer">Open @${esc(status.botName)} in Telegram</a></div>`
-      : `<label class="telegram-token-label" for="telegramToken">Bot API token</label><div class="telegram-token-row"><input id="telegramToken" type="password" autocomplete="off" spellcheck="false" placeholder="Paste the token from BotFather"><button class="primary-button" data-action="telegram-connect">Connect bot</button></div><small class="telegram-token-hint">Token is sent only to this device’s local service and stored in a private local file.</small>`;
-  const markup=`<div class="backup-options"><section class="backup-option"><span class="backup-option-icon">↓</span><div><h3>Download to this device</h3><p>Save your bookmarks, practice history, notes, and settings as a JSON file.</p><button class="primary-button" data-action="backup-download">Download backup</button></div></section><section class="backup-option telegram-option"><span class="backup-option-icon telegram-icon">➤</span><div><h3>Daily backup to Telegram</h3><p>Receive your latest practice backup as a file every day at 00:00 India time.</p><ol class="telegram-steps"><li>Create a bot with <a href="https://t.me/BotFather" target="_blank" rel="noopener noreferrer">@BotFather</a> using <code>/newbot</code>.</li><li>Copy its API token and connect it below.</li><li>Open your bot and send <code>/start</code> to finish pairing.</li></ol>${message?`<div class="backup-setup-note"><strong>${esc(message)}</strong></div>`:''}${stateMarkup}<div class="backup-setup-note"><strong>Keep this computer and service running at midnight.</strong> The bot and backup stay on this device; the browser syncs your practice data to its local service.</div></div></section></div>`;
-  dialogShow('Back up your practice',markup,'<button class="outline-button" data-dialog="close">Close</button>');
-  if (pairing) telegramPairTimer=setInterval(async()=>{try{telegramStatus=await telegramRequest('/api/telegram/pair',{});if(telegramStatus.connected){renderBackupDialog(telegramStatus,'Telegram bot connected successfully.');fetch('/api/telegram/backup',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({app:'gate-ce-practice',version:1,exportedAt:new Date().toISOString(),data:user})});}}catch{}},4000);
+function backupAttention() { return backupFolder.state === 'prompt' || backupFolder.state === 'error' ? '<span title="Backup folder needs attention" style="width:8px;height:8px;border-radius:50%;background:#e5484d;display:inline-block;margin-left:4px"></span>' : ''; }
+
+// Folder handles can't go in localStorage, so the chosen folder lives in IndexedDB.
+function backupDb() { return new Promise((resolve, reject) => { const req = indexedDB.open('gate-ce-practice-backup', 1); req.onupgradeneeded = () => req.result.createObjectStore('handles'); req.onsuccess = () => resolve(req.result); req.onerror = () => reject(req.error); }); }
+async function idbGet(key) { const db = await backupDb(); return new Promise((resolve, reject) => { const r = db.transaction('handles').objectStore('handles').get(key); r.onsuccess = () => resolve(r.result); r.onerror = () => reject(r.error); }); }
+async function idbSet(key, value) { const db = await backupDb(); return new Promise((resolve, reject) => { const tx = db.transaction('handles', 'readwrite'); if (value === undefined) tx.objectStore('handles').delete(key); else tx.objectStore('handles').put(value, key); tx.oncomplete = () => resolve(); tx.onerror = () => reject(tx.error); }); }
+function folderBackupSupported() { return window.isSecureContext && typeof window.showDirectoryPicker === 'function'; }
+async function initBackupFolder() {
+  if (!folderBackupSupported()) return;
+  try {
+    const handle = await idbGet('folder'); if (!handle) return;
+    backupFolder.handle = handle; backupFolder.name = handle.name;
+    backupFolder.state = (await handle.queryPermission({ mode: 'readwrite' })) === 'granted' ? 'granted' : 'prompt';
+  } catch {}
 }
-async function showBackupDialog() {
-  try { renderBackupDialog(await telegramRequest('/api/telegram/status')); }
-  catch { telegramStatus=null; renderBackupDialog(null,'Local backup service is not running. Start this app with node server.mjs to connect a Telegram bot.'); }
+async function ensureFolderAccess(interactive) {
+  const handle = backupFolder.handle; if (!handle) throw new Error('No backup folder selected.');
+  let perm = await handle.queryPermission({ mode: 'readwrite' });
+  if (perm !== 'granted' && interactive) perm = await handle.requestPermission({ mode: 'readwrite' });
+  if (perm !== 'granted') { backupFolder.state = 'prompt'; throw new Error('Permission needed for the backup folder. Press “Re-authorize folder”.'); }
+  backupFolder.state = 'granted'; return handle;
 }
+async function pruneFolderBackups(handle) {
+  try {
+    const names = [];
+    for await (const [name, entry] of handle.entries()) if (entry.kind === 'file' && /^gate-ce-practice-\d{4}-\d{2}-\d{2}\.json$/.test(name)) names.push(name);
+    names.sort().reverse();
+    for (const name of names.slice(BACKUP_KEEP_DAYS)) await handle.removeEntry(name);
+  } catch {}
+}
+async function runFolderBackup({ interactive = false } = {}) {
+  const handle = await ensureFolderAccess(interactive);
+  if (isEmptyUser()) throw new Error('Nothing to back up yet. Your data is empty, so existing backup files were left untouched.');
+  const text = JSON.stringify(backupPayload(), null, 2);
+  const put = async name => { const file = await handle.getFileHandle(name, { create: true }); const writable = await file.createWritable(); await writable.write(text); await writable.close(); };
+  await put('gate-ce-practice-latest.json');
+  await put(`gate-ce-practice-${backupStamp()}.json`);
+  await pruneFolderBackups(handle);
+  backupFolder.error = ''; writeBackupMeta({ lastFolderAt: Date.now() });
+}
+function scheduleAutoBackup(delay = 4000) {
+  if (!backupFolder.handle || backupFolder.state !== 'granted') return;
+  clearTimeout(autoBackupTimer);
+  autoBackupTimer = setTimeout(async () => {
+    if (autoBackupBusy) { scheduleAutoBackup(); return; }
+    autoBackupBusy = true;
+    try { await runFolderBackup(); }
+    catch (error) {
+      backupFolder.error = error.message || 'Folder backup failed.';
+      if (error.name === 'NotAllowedError' || error.name === 'SecurityError') backupFolder.state = 'prompt';
+      else if (error.name === 'NotFoundError') backupFolder.state = 'error';
+    } finally { autoBackupBusy = false; }
+  }, delay);
+}
+
+// Restore
+function normalizeBackup(raw) {
+  const incoming = raw && typeof raw === 'object' ? (raw.data && typeof raw.data === 'object' ? raw.data : raw) : null;
+  if (!incoming || Array.isArray(incoming)) throw new Error('This file is not a practice backup.');
+  if (!['bookmarks', 'mistakes', 'history', 'todos', 'notes', 'answerOverrides', 'theme'].some(key => key in incoming)) throw new Error('This file does not look like a GATE CE practice backup.');
+  const list = v => Array.isArray(v) ? v : [];
+  const map = v => v && typeof v === 'object' && !Array.isArray(v) ? v : {};
+  const next = {
+    ...DEFAULT_USER, ...incoming,
+    bookmarks: list(incoming.bookmarks), mistakes: list(incoming.mistakes), history: list(incoming.history), todos: list(incoming.todos),
+    answerOverrides: map(incoming.answerOverrides), questionNotes: map(incoming.questionNotes),
+    notes: typeof incoming.notes === 'string' ? incoming.notes : '',
+    theme: incoming.theme === 'dark' ? 'dark' : 'light',
+    activeExam: incoming.activeExam && typeof incoming.activeExam === 'object' ? incoming.activeExam : null
+  };
+  if (next.activeExam && !(Array.isArray(next.activeExam.qids) && next.activeExam.qids.every(id => questionById.has(id)))) next.activeExam = null;
+  return next;
+}
+function stageRestore(text, name) {
+  let parsed;
+  try { parsed = JSON.parse(text); } catch { throw new Error('That file is not valid JSON, so it can’t be a backup.'); }
+  pendingRestore = { next: normalizeBackup(parsed), name, exportedAt: (parsed && parsed.exportedAt) || '' };
+  showRestoreConfirm();
+}
+function showRestoreConfirm() {
+  const p = pendingRestore, when = whenLabel(p.exportedAt);
+  dialogShow('Restore this backup?',
+    `<p>Restore <strong>${esc(p.name)}</strong>${when ? ` (exported ${esc(when)})` : ''}?</p><p>The file contains ${esc(dataCounts(p.next))}.</p><p>This browser currently has ${esc(dataCounts(user))}. Restoring <strong>replaces</strong> all of it. A safety copy of the current data is kept so you can undo from the Backup window.</p>`,
+    '<button class="outline-button" data-dialog="close">Cancel</button><button class="primary-button" data-dialog="confirm-restore">Restore backup</button>');
+}
+function applyRestoredUser(message) {
+  saveUser(); document.body.classList.toggle('dark', user.theme === 'dark'); dialogClose();
+  clearInterval(timerHandle); timerHandle = null; view = 'home'; history.replaceState({}, '', '#home'); render(); toast(message);
+}
+function confirmRestore() {
+  if (!pendingRestore) return;
+  let safetyCopy = true;
+  try { localStorage.setItem(PRE_RESTORE_KEY, JSON.stringify({ savedAt: Date.now(), data: user })); } catch { safetyCopy = false; }
+  user = pendingRestore.next; pendingRestore = null;
+  applyRestoredUser(safetyCopy ? 'Backup restored' : 'Backup restored (no undo copy: browser storage is full)');
+}
+function undoRestore() {
+  const snap = readPreRestore(); if (!snap) { toast('No earlier data to bring back.'); return; }
+  user = { ...DEFAULT_USER, ...snap.data }; try { localStorage.removeItem(PRE_RESTORE_KEY); } catch {}
+  applyRestoredUser('Earlier data brought back');
+}
+
+// Dialog
+function folderSectionMarkup() {
+  const f = backupFolder, meta = readBackupMeta(), row = 'style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px"';
+  const last = meta.lastFolderAt ? `<p><small>Last saved ${esc(whenLabel(meta.lastFolderAt))}</small></p>` : '';
+  const err = f.error ? `<p><small>${esc(f.error)}</small></p>` : '';
+  if (!folderBackupSupported()) return '<p>Automatic folder backup needs Chrome or Edge, opened from <code>localhost</code> or an https address. In this browser, use the download option above.</p>';
+  if (f.state === 'granted') return `<p>Saving to <strong>${esc(f.name)}</strong> a few seconds after every change. Your last ${BACKUP_KEEP_DAYS} daily files are kept, plus a <code>latest</code> file.</p>${last}${err}<div ${row}><button class="primary-button" data-action="backup-folder-now">Back up now</button><button class="outline-button" data-action="backup-folder-restore">Restore latest</button><button class="outline-button" data-action="backup-folder-pick">Change folder</button><button class="outline-button" data-action="backup-folder-disconnect">Turn off</button></div>`;
+  if (f.state === 'prompt') return `<p>Your browser needs your permission again to write to <strong>${esc(f.name)}</strong>. This is normal after a browser restart. Automatic backups are paused until you allow it.</p>${err}<div ${row}><button class="primary-button" data-action="backup-folder-now">Re-authorize folder</button><button class="outline-button" data-action="backup-folder-pick">Change folder</button><button class="outline-button" data-action="backup-folder-disconnect">Turn off</button></div>`;
+  if (f.state === 'error') return `<p>The backup folder <strong>${esc(f.name)}</strong> could not be used${f.error ? `: ${esc(f.error)}` : '.'}</p><div ${row}><button class="primary-button" data-action="backup-folder-pick">Choose another folder</button><button class="outline-button" data-action="backup-folder-disconnect">Turn off</button></div>`;
+  return `<p>Pick a folder once and this app saves a fresh backup there automatically whenever your data changes. Cloud-synced folders (OneDrive, Google Drive, Dropbox) make it double as an offsite copy.</p><p><small>Choose a dedicated subfolder such as <code>GATE-backups</code>. Browsers refuse system folders like Documents or Downloads themselves.</small></p>${err}<div ${row}><button class="primary-button" data-action="backup-folder-pick">Choose backup folder</button></div>`;
+}
+function renderBackupDialog(message = '') {
+  const meta = readBackupMeta(), snap = readPreRestore();
+  const note = message ? `<div class="backup-setup-note"><strong>${esc(message)}</strong></div>` : '';
+  const lastDownload = meta.lastDownloadAt ? `<p><small>Last downloaded ${esc(whenLabel(meta.lastDownloadAt))}</small></p>` : '';
+  const undo = snap ? `<p><small>A safety copy from before your last restore (${esc(whenLabel(snap.savedAt))}) is available.</small></p><button class="outline-button" data-action="restore-undo">Undo last restore</button>` : '';
+  const markup = `${note}<div class="backup-options">
+    <section class="backup-option"><span class="backup-option-icon">↓</span><div><h3>Download to this device</h3><p>Save your bookmarks, practice history, notes, and settings as one JSON file (${esc(dataCounts(user))}).</p>${lastDownload}<button class="primary-button" data-action="backup-download">Download backup</button></div></section>
+    <section class="backup-option"><span class="backup-option-icon">↑</span><div><h3>Restore from a file</h3><p>Load a backup you saved earlier. You’ll see a summary and confirm before anything is replaced.</p><button class="outline-button" data-action="restore">Choose backup file</button>${undo}</div></section>
+    <section class="backup-option"><span class="backup-option-icon">⟳</span><div><h3>Automatic backup to a folder</h3>${folderSectionMarkup()}</div></section>
+  </div>`;
+  dialogShow('Back up your practice', markup, '<button class="outline-button" data-dialog="close">Close</button>');
+}
+function showBackupDialog() { renderBackupDialog(); }
 function toast(message) { let el=$('toast'); if(!el){el=document.createElement('div');el.id='toast';el.className='toast';document.body.append(el);} el.textContent=message; clearTimeout(toastHandle); toastHandle=setTimeout(()=>el.remove(),2400); }
-function dialogShow(title, body, footer='') { dialog.classList.toggle('calculator-modal',body.includes('class="gate-calc"'));dialog.innerHTML=`<div class="modal-head"><h2>${title}</h2><button class="modal-close" data-dialog="close" aria-label="Close">×</button></div><div class="modal-body">${body}</div>${footer?`<div class="modal-footer">${footer}</div>`:''}`; dialog.showModal(); }
+function dialogShow(title, body, footer='') { dialog.classList.toggle('calculator-modal',body.includes('class="gate-calc"'));dialog.innerHTML=`<div class="modal-head"><h2>${title}</h2><button class="modal-close" data-dialog="close" aria-label="Close">×</button></div><div class="modal-body">${body}</div>${footer?`<div class="modal-footer">${footer}</div>`:''}`; if(!dialog.open)dialog.showModal(); }
 function showCalculator() { dialog.classList.add('calculator-modal');dialog.classList.remove('calculator-minimized');dialog.innerHTML=window.buildScientificCalculator();dialog.showModal(); }
 function dialogClose(){if(dialog.open)dialog.close();}
 function navigate(next, options={}) { view=next; if(options.subject!==undefined)selectedSubject=options.subject; if(options.topic!==undefined)selectedTopic=options.topic; if(options.result!==undefined)activeResult=options.result; collectionSearch=''; history.pushState({},'',`#${next}`); render(); window.scrollTo(0,0); }
@@ -135,7 +256,7 @@ function header() {
   return `<header class="app-header ${examView?'exam-app-header':''}">
     <a class="brand" href="#home" data-action="go" data-view="home"><span class="brand-mark"><img src="assets/gate-ce-mark.png?v=1" alt=""></span><span class="brand-copy"><strong>GATE CE</strong><small>PREVIOUS YEAR PRACTICE</small></span></a>
     <nav class="header-nav"><button class="nav-link ${active.home?.includes(view)?'active':''}" data-action="go" data-view="home">${iconSvg('grid')}<span>Question Library</span></button><button class="nav-link ${view==='analytics'?'active':''}" data-action="go" data-view="analytics">${iconSvg('math')}<span>Analytics</span></button><button class="nav-link ${view==='bookmarks'?'active':''}" data-action="go" data-view="bookmarks">${iconSvg('bookmark')}<span>Bookmarks</span><span class="nav-count">${user.bookmarks.length||''}</span></button><button class="nav-link ${view==='mistakes'?'active':''}" data-action="go" data-view="mistakes">${iconSvg('mistake')}<span>Mistakes</span><span class="nav-count">${user.mistakes.length||''}</span></button></nav>
-    <div class="header-tools"><button class="header-button" data-action="backup">${iconSvg('backup')}<span>Backup</span></button><button class="header-button" data-action="restore">${iconSvg('restore')}<span>Restore</span></button><button class="icon-button" data-action="theme" aria-label="${user.theme==='dark'?'Switch to light theme':'Switch to dark theme'}" title="${user.theme==='dark'?'Switch to light theme':'Switch to dark theme'}">${iconSvg(user.theme==='dark'?'sun':'moon')}</button></div>
+    <div class="header-tools"><button class="header-button" data-action="backup">${iconSvg('backup')}<span>Backup</span>${backupAttention()}</button><button class="header-button" data-action="restore">${iconSvg('restore')}<span>Restore</span></button><button class="icon-button" data-action="theme" aria-label="${user.theme==='dark'?'Switch to light theme':'Switch to dark theme'}" title="${user.theme==='dark'?'Switch to light theme':'Switch to dark theme'}">${iconSvg(user.theme==='dark'?'sun':'moon')}</button></div>
   </header>`;
 }
 function render() {
@@ -648,25 +769,33 @@ async function handleAction(action,el) {
   }
   if(action==='theme'){user.theme=user.theme==='dark'?'light':'dark';saveUser();document.body.classList.toggle('dark',user.theme==='dark');render();return;}
   if(action==='backup'){showBackupDialog();return;}
-  if(action==='backup-download'){saveDownload('gate-ce-practice-backup.json',{app:'gate-ce-practice',version:1,exportedAt:new Date().toISOString(),data:user});dialogClose();toast('Backup downloaded');return;}
-  if(action==='telegram-connect'){
-    const button=el,token=$('telegramToken')?.value.trim();if(!token){toast('Paste your BotFather token first.');return;}button.disabled=true;button.textContent='Verifying…';
-    try{telegramStatus=await telegramRequest('/api/telegram/connect',{token});await telegramRequest('/api/telegram/backup',{app:'gate-ce-practice',version:1,exportedAt:new Date().toISOString(),data:user});renderBackupDialog(telegramStatus,telegramStatus.connected?'Telegram bot connected successfully.':'Bot token verified. Complete pairing in Telegram.');}
-    catch(error){renderBackupDialog(null,error.message);}
+  if(action==='backup-download'){saveDownload(`gate-ce-practice-backup-${backupStamp()}.json`,backupPayload());writeBackupMeta({lastDownloadAt:Date.now()});dialogClose();toast('Backup downloaded');return;}
+  if(action==='backup-folder-pick'){
+    try{
+      const handle=await window.showDirectoryPicker({id:'gate-ce-practice-backup',mode:'readwrite',startIn:'documents'});
+      await idbSet('folder',handle);backupFolder={handle,name:handle.name,state:'granted',error:''};
+      await runFolderBackup({interactive:true});renderBackupDialog(`Backing up to “${handle.name}”. First backup saved.`);
+    }catch(error){if(error.name==='AbortError')return;renderBackupDialog(error.message||'Could not use that folder.');}
     return;
   }
-  if(action==='telegram-send'){
-    el.disabled=true;el.textContent='Sending…';
-    try{telegramStatus=await telegramRequest('/api/telegram/backup',{app:'gate-ce-practice',version:1,exportedAt:new Date().toISOString(),data:user});telegramStatus=await telegramRequest('/api/telegram/send-test',{});renderBackupDialog(telegramStatus,'Backup sent to Telegram.');}
-    catch(error){renderBackupDialog(telegramStatus,error.message);}
+  if(action==='backup-folder-now'){
+    el.disabled=true;el.textContent='Saving…';
+    try{await runFolderBackup({interactive:true});renderBackupDialog('Backup saved to your folder.');}
+    catch(error){backupFolder.error=error.message||'Folder backup failed.';renderBackupDialog(error.message||'Folder backup failed.');}
     return;
   }
-  if(action==='telegram-disconnect'){
-    try{await telegramRequest('/api/telegram/disconnect',{});renderBackupDialog({connected:false},'Telegram bot disconnected.');}
-    catch(error){renderBackupDialog(telegramStatus,error.message);}
+  if(action==='backup-folder-restore'){
+    try{const handle=await ensureFolderAccess(true);const file=await(await handle.getFileHandle('gate-ce-practice-latest.json')).getFile();stageRestore(await file.text(),file.name);}
+    catch(error){renderBackupDialog(error.name==='NotFoundError'?'No backup file found in that folder yet.':(error.message||'Could not read the backup from the folder.'));}
     return;
   }
-  if(action==='restore'){$('restoreInput').click();return;}
+  if(action==='backup-folder-disconnect'){
+    clearTimeout(autoBackupTimer);backupFolder={handle:null,name:'',state:'none',error:''};
+    try{await idbSet('folder');}catch{}
+    renderBackupDialog('Automatic folder backup is off. Files already in the folder are untouched.');return;
+  }
+  if(action==='restore'){getRestoreInput().click();return;}
+  if(action==='restore-undo'){undoRestore();return;}
   if(action==='export-collection'){
     const ids=el.dataset.kind==='bookmarks'?user.bookmarks:user.mistakes;saveDownload(`${el.dataset.kind}.json`,{exportedAt:new Date().toISOString(),questions:ids.map(id=>questionById.get(id)).filter(Boolean)});return;
   }
@@ -699,8 +828,12 @@ app.addEventListener('change',e=>{
   if(e.target.matches('[data-action="toggle-todo"]')){user.todos[num(e.target.dataset.index)].done=e.target.checked;saveUser();}
 });
 dialog.addEventListener('click',e=>{
+  const a=e.target.closest('[data-action]');if(a){e.stopPropagation();handleAction(a.dataset.action,a);return;}
+});
+dialog.addEventListener('click',e=>{
   const d=e.target.closest('[data-dialog]');if(!d)return;const action=d.dataset.dialog;
   if(action==='close'){if(user.activeExam&&!user.activeExam.questionStartedAt)user.activeExam.questionStartedAt=Date.now();dialogClose();return;}
+  if(action==='confirm-restore'){confirmRestore();return;}
   if(action==='start'){beginPendingExam();return;}
   if(action==='confirm-submit'){finalizeExam();return;}
   if(action==='discard-active'){user.activeExam=null;saveUser();dialogClose();view='home';render();return;}
@@ -711,9 +844,11 @@ dialog.addEventListener('click',e=>{
   const button=e.target.closest('[data-calc]');if(!button)return;const display=$('calcDisplay');const key=button.dataset.calc;
   if(key==='C')display.value='';else if(key==='⌫')display.value=display.value.slice(0,-1);else if(key==='='){try{const expr=display.value.replaceAll('×','*').replaceAll('÷','/').replaceAll('−','-');if(/^[0-9+\-*/().\s]+$/.test(expr))display.value=String(Function(`"use strict";return (${expr})`)());}catch{display.value='Error';}}else display.value+=key;
 });
-$('restoreInput').addEventListener('change',async e=>{
+getRestoreInput().addEventListener('change',async e=>{
   const file=e.target.files?.[0];if(!file)return;
-  try{const parsed=JSON.parse(await file.text());const incoming=parsed.data||parsed;if(!incoming||typeof incoming!=='object')throw new Error('Invalid backup');user={...DEFAULT_USER,...incoming};saveUser();toast('Backup restored');render();}catch{toast('Could not read this backup file.');}finally{e.target.value='';}
+  try{stageRestore(await file.text(),file.name);}
+  catch(error){toast(error.message||'Could not read this backup file.');}
+  finally{e.target.value='';}
 });
 window.addEventListener('popstate',()=>{const path=location.hash.replace('#','').split('/')[0];if(path==='results'&&user.history.length){view='results';activeResult=user.history[0].id;}else if(['home','subject','topic','year','custom','analytics','bookmarks','mistakes'].includes(path))view=path;else view=user.activeExam?'exam':'home';render();});
 document.addEventListener('keydown',e=>{
@@ -727,3 +862,4 @@ document.addEventListener('keydown',e=>{
 
 loadDataset().catch(error=>{app.innerHTML=`<main class="boot-screen"><strong>Could not load the question bank</strong><small>${esc(error.message)}. Start the site with a local web server from the project folder.</small></main>`;console.error(error);});
 setInterval(updateExamCountdown,1000);
+initBackupFolder().then(()=>{if(backupFolder.state==='granted')scheduleAutoBackup(3000);});
