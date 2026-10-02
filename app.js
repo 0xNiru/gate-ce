@@ -25,6 +25,7 @@ let backupFolder = { handle: null, name: '', state: 'none', error: '' }; // stat
 let autoBackupTimer = null;
 let autoBackupBusy = false;
 let pendingRestore = null;
+let customBuilder = { subjects: [], topics: [], types: ['MCQ','MSQ','NAT'], source: 'all', count: 30, durationMinutes: 60 };
 
 function loadUser() {
   try { return { ...DEFAULT_USER, ...JSON.parse(localStorage.getItem(STORE_KEY) || '{}') }; }
@@ -318,7 +319,7 @@ function homePracticeHistory() {
 function renderHome() {
   const counts=subjectCounts();
   const topicCount=new Set(questions.map(q=>q.topic).filter(Boolean)).size;
-  app.innerHTML=`${header()}<main class="page home-page">${homeDashboard()}<section class="home-practice"><div class="home-section-heading"><div><h2>Start practicing</h2><p>Choose the way you want to work through the question bank.</p></div><button class="outline-button custom-practice-cta" data-action="go" data-view="custom">Build a custom practice set</button></div>${practicePickerCards()}</section><section class="library-section home-library"><div class="library-section-head"><div><h2>Browse the question bank</h2><p>${countLabel(questions.length)} · ${topicCount} topics · GATE CE 2001–2026</p></div></div><div class="library-controls"><div class="search-wrap"><span class="search-icon">⌕</span><input class="search-input" id="librarySearch" placeholder="Search subjects and topics" autocomplete="off"></div><div class="segmented"><button class="segment-button active" data-action="go" data-view="home">By subject</button><button class="segment-button" data-action="go" data-view="year">By year</button></div></div><div class="subject-grid">${subjects.map(subject=>`<button class="surface subject-card browse-item" data-action="open-subject" data-subject="${esc(subject)}" data-search="${esc(`${subject} ${topicsFor(subject).join(' ')} ${questions.filter(q=>q.subject===subject).map(q=>q.year).join(' ')}`.toLowerCase())}"><span class="subject-icon">${iconFor(subject)}</span><span class="subject-copy"><strong>${esc(subject)}</strong><small>${countLabel(counts.get(subject)||0)} · ${topicsFor(subject).length} topics</small></span><span class="subject-arrow">›</span></button>`).join('')}</div></section>${homeActivity()}${homePracticeHistory()}<footer class="home-footer"><span>Made with <span class="footer-heart" aria-label="love">♥</span> by <a href="https://github.com/0xniru" target="_blank" rel="noopener noreferrer">Niru</a></span></footer></main>`;
+  app.innerHTML=`${header()}<main class="page home-page">${homeDashboard()}<section class="home-practice"><div class="home-section-heading"><div><h2>Start practicing</h2><p>Choose the way you want to work through the question bank.</p></div><div class="topic-actions"><button class="primary-button custom-test-cta" data-action="go" data-view="custom">Build a custom test</button><button class="outline-button custom-practice-cta" data-action="go" data-view="custom">Custom practice</button></div></div>${practicePickerCards()}</section><section class="library-section home-library"><div class="library-section-head"><div><h2>Browse the question bank</h2><p>${countLabel(questions.length)} · ${topicCount} topics · GATE CE 2001–2026</p></div></div><div class="library-controls"><div class="search-wrap"><span class="search-icon">⌕</span><input class="search-input" id="librarySearch" placeholder="Search subjects and topics" autocomplete="off"></div><div class="segmented"><button class="segment-button active" data-action="go" data-view="home">By subject</button><button class="segment-button" data-action="go" data-view="year">By year</button></div></div><div class="subject-grid">${subjects.map(subject=>`<button class="surface subject-card browse-item" data-action="open-subject" data-subject="${esc(subject)}" data-search="${esc(`${subject} ${topicsFor(subject).join(' ')} ${questions.filter(q=>q.subject===subject).map(q=>q.year).join(' ')}`.toLowerCase())}"><span class="subject-icon">${iconFor(subject)}</span><span class="subject-copy"><strong>${esc(subject)}</strong><small>${countLabel(counts.get(subject)||0)} · ${topicsFor(subject).length} topics</small></span><span class="subject-arrow">›</span></button>`).join('')}</div></section>${homeActivity()}${homePracticeHistory()}<footer class="home-footer"><span>Made with <span class="footer-heart" aria-label="love">♥</span> by <a href="https://github.com/0xniru" target="_blank" rel="noopener noreferrer">Niru</a></span></footer></main>`;
 }
 function renderSubject() {
   const subject=selectedSubject||subjects[0];const topics=topicsFor(subject);const counts=new Map(topics.map(t=>[t,qsForTopic(subject,t).length]));
@@ -339,70 +340,109 @@ function renderYear() {
   const years=[...new Set(questions.map(q=>q.year))].sort((a,b)=>b-a);
   app.innerHTML=`${header()}<main class="page"><div class="breadcrumb"><button data-action="go" data-view="home">Question Library</button><span>›</span><span>By year</span></div><section class="surface topic-intro"><div><h1>Year-wise question sets</h1><p>Build a practice paper from all subjects in a GATE CE year and session.</p></div></section>${years.map(year=>{const sessions=[...groups.keys()].filter(k=>k.startsWith(`${year}|`)).map(k=>k.split('|')[1]);return `<section class="library-section"><div class="library-section-head"><h2>${year}</h2><span>${sessions.length} session${sessions.length===1?'':'s'}</span></div><div class="year-cards">${sessions.map(session=>{const group=groups.get(`${year}|${session}`)||[];return `<button class="surface year-card browse-item" data-action="start-year" data-year="${year}" data-session="${esc(session)}" data-search="${year} ${esc(session).toLowerCase()}"><strong>${year} · ${esc(session)}</strong><small>${countLabel(group.length)} · ${group.reduce((n,q)=>n+num(q.marks),0)} marks · Start →</small></button>`;}).join('')}</div></section>`;}).join('')}</main>`;
 }
+function customSourcePool(source=customBuilder.source) {
+  return source==='bookmarks'
+    ? user.bookmarks.map(id=>questionById.get(id)).filter(Boolean)
+    : source==='mistakes'
+      ? user.mistakes.map(id=>questionById.get(id)).filter(Boolean)
+      : questions;
+}
+function uniqueById(list) {
+  const seen=new Set();
+  return list.filter(item=>item?.id&&!seen.has(item.id)&&(seen.add(item.id),true));
+}
+function customAvailableTopics() {
+  let available=customSourcePool();
+  if(customBuilder.subjects.length)available=available.filter(q=>customBuilder.subjects.includes(q.subject));
+  return [...new Set(available.map(q=>q.topic||'Uncategorized'))].sort((a,b)=>a.localeCompare(b));
+}
 function customPool() {
-  const subject=$('customSubject')?.value||'',topic=$('customTopic')?.value||'',source=$('customSource')?.value||'all';
-  let pool=source==='bookmarks'?user.bookmarks.map(id=>questionById.get(id)).filter(Boolean):source==='mistakes'?user.mistakes.map(id=>questionById.get(id)).filter(Boolean):questions;
-  if(subject)pool=pool.filter(q=>q.subject===subject);
-  if(topic)pool=pool.filter(q=>(q.topic||'Uncategorized')===topic);
+  let pool=uniqueById(customSourcePool());
+  if(customBuilder.subjects.length)pool=pool.filter(q=>customBuilder.subjects.includes(q.subject));
+  if(customBuilder.topics.length)pool=pool.filter(q=>customBuilder.topics.includes(q.topic||'Uncategorized'));
+  if(customBuilder.types.length)pool=pool.filter(q=>customBuilder.types.includes(q.type));
   return pool;
 }
-function customDropdownOptions(id,options,selected='') {
-  return options.map(option=>`<button type="button" class="custom-dropdown-option" role="option" aria-selected="${option.value===selected}" data-action="choose-custom-option" data-select="${id}" data-value="${esc(option.value)}" onclick="selectCustomOption(this.dataset.select,this.dataset.value);event.stopPropagation()">${esc(option.label)}</button>`).join('');
+function toggleCustomChoice(list,value) {
+  return list.includes(value)?list.filter(item=>item!==value):[...list,value];
 }
-function updateCustomDropdown(id) {
-  const control=$(`${id}Control`),input=$(id);if(!control||!input)return;
-  const selected=control.querySelector(`[data-value="${CSS.escape(input.value)}"]`);
-  const trigger=control.querySelector('.custom-dropdown-trigger');
-  trigger.querySelector('.custom-dropdown-value').textContent=selected?.textContent||control.dataset.placeholder;
-  control.querySelectorAll('.custom-dropdown-option').forEach(option=>option.setAttribute('aria-selected',String(option.dataset.value===input.value)));
+function normalizeCustomBuilder() {
+  customBuilder.subjects=customBuilder.subjects.filter(subject=>subjects.includes(subject));
+  const availableTopics=customAvailableTopics();
+  customBuilder.topics=customBuilder.topics.filter(topic=>availableTopics.includes(topic));
+  const allowedTypes=['MCQ','MSQ','NAT'];
+  customBuilder.types=customBuilder.types.filter(type=>allowedTypes.includes(type));
+  if(!customBuilder.types.length)customBuilder.types=[...allowedTypes];
+  if(!['all','bookmarks','mistakes'].includes(customBuilder.source))customBuilder.source='all';
+  if(!Number.isFinite(num(customBuilder.count))||num(customBuilder.count)<1)customBuilder.count=30;
+  if(!Number.isFinite(num(customBuilder.durationMinutes))||num(customBuilder.durationMinutes)<1)customBuilder.durationMinutes=60;
 }
-function selectCustomOption(id,value) {
-  const input=$(id);if(!input)return;
-  input.value=value||'';
-  app.querySelectorAll('.custom-dropdown-menu').forEach(menu=>{menu.hidden=true;menu.closest('.custom-dropdown')?.querySelector('.custom-dropdown-trigger')?.setAttribute('aria-expanded','false');});
-  updateCustomDropdown(id);
-  if(id==='customSubject'||id==='customSource')refreshCustomForm(true);else refreshCustomForm();
+function customCountLabel(selected,total,label) {
+  if(!total)return `No ${label} available`;
+  return selected?`${selected} selected`:`All ${label}`;
 }
-function bindCustomDropdownOptions() {
-  app.querySelectorAll('.custom-dropdown-option:not([data-bound])').forEach(option=>{
-    option.dataset.bound='true';
-    option.addEventListener('pointerdown',event=>{event.preventDefault();event.stopPropagation();selectCustomOption(option.dataset.select,option.dataset.value);});
-    option.addEventListener('click',event=>{event.stopPropagation();selectCustomOption(option.dataset.select,option.dataset.value);});
-  });
-}
-function refreshCustomForm(resetTopic=false) {
-  const topicSelect=$('customTopic');if(!topicSelect)return;
-  const subject=$('customSubject').value,source=$('customSource').value;
-  let available=source==='bookmarks'?user.bookmarks.map(id=>questionById.get(id)).filter(Boolean):source==='mistakes'?user.mistakes.map(id=>questionById.get(id)).filter(Boolean):questions;
-  if(subject)available=available.filter(q=>q.subject===subject);
-  const topics=[...new Set(available.map(q=>q.topic||'Uncategorized'))].sort((a,b)=>a.localeCompare(b));
-  const previous=resetTopic?'':topicSelect.value;
-  topicSelect.value=topics.includes(previous)?previous:'';
-  $(`customTopicControl`).querySelector('.custom-dropdown-menu').innerHTML=customDropdownOptions('customTopic',[{value:'',label:'Any topic'},...topics.map(topic=>({value:topic,label:topic}))],topicSelect.value);
-  bindCustomDropdownOptions();
-  updateCustomDropdown('customTopic');
-  const pool=customPool(),countInput=$('customCount'),startButton=app.querySelector('[data-action="start-custom"]'),summary=$('customPoolSummary');
-  countInput.max=String(Math.max(1,pool.length));
-  if(num(countInput.value)>pool.length&&pool.length)countInput.value=String(pool.length);
-  if(summary)summary.textContent=pool.length?`${countLabel(pool.length)} match these filters. The exam will use up to the requested number.`:'No questions match these filters. Try another subject/topic or choose a different pool.';
+function refreshCustomForm(syncFromInputs=true) {
+  if(syncFromInputs){
+    const countInput=$('customCount'),durationInput=$('customDuration'),sourceInput=$('customSourceSelect');
+    if(countInput)customBuilder.count=countInput.value;
+    if(durationInput)customBuilder.durationMinutes=durationInput.value;
+    if(sourceInput)customBuilder.source=sourceInput.value;
+  }
+  normalizeCustomBuilder();
+  const pool=customPool();
+  const countInput=$('customCount'),durationInput=$('customDuration'),sourceInput=$('customSourceSelect');
+  if(sourceInput)sourceInput.value=customBuilder.source;
+  if(countInput){
+    countInput.max=String(Math.max(1,pool.length));
+    const requested=Math.max(1,Math.floor(num(customBuilder.count)||1));
+    customBuilder.count=pool.length?Math.min(requested,pool.length):requested;
+    countInput.value=String(customBuilder.count);
+  }
+  if(durationInput){
+    const minutes=Math.max(1,Math.floor(num(customBuilder.durationMinutes)||1));
+    customBuilder.durationMinutes=minutes;
+    durationInput.value=String(minutes);
+  }
+  const summary=$('customPoolSummary');
+  const startButton=app.querySelector('[data-action="start-custom"]');
+  const subjectHint=$('customSubjectHint');
+  const topicHint=$('customTopicHint');
+  const typeHint=$('customTypeHint');
+  if(subjectHint)subjectHint.textContent=customCountLabel(customBuilder.subjects.length,subjects.length,'subjects');
+  if(topicHint)topicHint.textContent=customCountLabel(customBuilder.topics.length,customAvailableTopics().length,'topics');
+  if(typeHint)typeHint.textContent=customBuilder.types.length===3?'All question types selected':`${customBuilder.types.length} type${customBuilder.types.length===1?'':'s'} selected`;
+  if(summary){
+    if(pool.length){
+      const requested=Math.max(1,Math.floor(num(customBuilder.count)||1));
+      summary.textContent=`${countLabel(pool.length)} match your filters. This test will include ${Math.min(requested,pool.length)} questions in ${Math.max(1,Math.floor(num(customBuilder.durationMinutes)||1))} minute${Math.max(1,Math.floor(num(customBuilder.durationMinutes)||1))===1?'':'s'}.`;
+    }else summary.textContent='No questions match these filters. Adjust subjects, topics, types, or source.';
+  }
   if(startButton)startButton.disabled=!pool.length;
 }
 function renderCustom() {
-  const subjectOptions=[{value:'',label:'All subjects'},...subjects.map(subject=>({value:subject,label:subject}))];
-  const sourceOptions=[{value:'all',label:'Question bank'},{value:'bookmarks',label:`Bookmarks (${user.bookmarks.length})`},{value:'mistakes',label:`Mistakes (${user.mistakes.length})`}];
-  const dropdown=(id,label,placeholder,options,value)=>`<div class="custom-select-field"><span class="custom-select-label">${label}</span><div class="custom-dropdown" id="${id}Control" data-placeholder="${esc(placeholder)}"><input type="hidden" id="${id}" value="${esc(value)}"><button type="button" class="form-control custom-dropdown-trigger" data-action="toggle-custom-dropdown" data-select="${id}" aria-expanded="false"><span class="custom-dropdown-value">${esc(options.find(option=>option.value===value)?.label||placeholder)}</span><span class="custom-dropdown-arrow" aria-hidden="true">⌄</span></button><div class="custom-dropdown-menu" role="listbox" aria-label="${label}" hidden>${customDropdownOptions(id,options,value)}</div></div></div>`;
-  app.innerHTML=`${header()}<main class="page"><div class="breadcrumb"><button data-action="go" data-view="home">Question Library</button><span>›</span><span>Custom practice</span></div><section class="surface dashboard-card"><div class="card-heading"><h1 class="section-title">✨ Custom practice</h1><small>Choose a question pool and build a timed set</small></div><div class="custom-form">${dropdown('customSubject','Subject','All subjects',subjectOptions,'')}<div class="custom-select-field"><span class="custom-select-label">Topic</span><div class="custom-dropdown" id="customTopicControl" data-placeholder="Any topic"><input type="hidden" id="customTopic" value=""><button type="button" class="form-control custom-dropdown-trigger" data-action="toggle-custom-dropdown" data-select="customTopic" aria-expanded="false"><span class="custom-dropdown-value">Any topic</span><span class="custom-dropdown-arrow" aria-hidden="true">⌄</span></button><div class="custom-dropdown-menu" role="listbox" aria-label="Topic" hidden>${customDropdownOptions('customTopic',[{value:'',label:'Any topic'}])}</div></div></div><label>Question count<input id="customCount" class="form-control" type="number" min="1" max="${questions.length}" value="30"></label>${dropdown('customSource','Question pool','Question bank',sourceOptions,'all')}</div><p class="muted custom-pool-summary" id="customPoolSummary" aria-live="polite"></p><p class="muted" style="font-size:12px">Questions are selected without replacement. The timer uses 1.8 minutes per mark.</p><button class="primary-button" data-action="start-custom">Start custom exam →</button></section></main>`;
-  bindCustomDropdownOptions();
-  refreshCustomForm(true);
+  normalizeCustomBuilder();
+  const sourceOptions=[
+    {value:'all',label:'Question bank'},
+    {value:'bookmarks',label:`Bookmarks (${user.bookmarks.length})`},
+    {value:'mistakes',label:`Mistakes (${user.mistakes.length})`}
+  ];
+  const availableTopics=customAvailableTopics();
+  const chip=(kind,value,label,active)=>`<button type="button" class="custom-chip ${active?'active':''}" data-action="toggle-custom-${kind}" data-value="${esc(value)}" aria-pressed="${active}">${esc(label)}</button>`;
+  app.innerHTML=`${header()}<main class="page"><div class="breadcrumb"><button data-action="go" data-view="home">Question Library</button><span>›</span><span>Custom test builder</span></div><section class="surface dashboard-card"><div class="card-heading"><h1 class="section-title">🧪 Custom test builder</h1><small>Create a mixed-subject timed test in GATE style</small></div><div class="custom-builder-grid"><section class="custom-builder-section"><div class="custom-builder-head"><strong>Subjects</strong><span id="customSubjectHint" class="muted"></span></div><div class="custom-builder-actions"><button class="small-action" data-action="custom-subjects-all">Select all</button><button class="small-action" data-action="custom-subjects-clear">Clear</button></div><div class="custom-chip-list">${subjects.map(subject=>chip('subject',subject,subject,customBuilder.subjects.includes(subject))).join('')}</div></section><section class="custom-builder-section"><div class="custom-builder-head"><strong>Topics</strong><span id="customTopicHint" class="muted"></span></div><div class="custom-builder-actions"><button class="small-action" data-action="custom-topics-all">Select all</button><button class="small-action" data-action="custom-topics-clear">Clear</button></div><div class="custom-chip-list">${availableTopics.length?availableTopics.map(topic=>chip('topic',topic,topic,customBuilder.topics.includes(topic))).join(''):'<p class="muted">No topics available for the selected subject/source.</p>'}</div></section><section class="custom-builder-section"><div class="custom-builder-head"><strong>Question types</strong><span id="customTypeHint" class="muted"></span></div><div class="custom-builder-actions"><button class="small-action" data-action="custom-types-all">Select all</button><button class="small-action" data-action="custom-types-clear">Reset</button></div><div class="custom-chip-list">${['MCQ','MSQ','NAT'].map(type=>chip('type',type,type,customBuilder.types.includes(type))).join('')}</div></section></div><div class="custom-form custom-form-compact"><label>Question source<select id="customSourceSelect" class="form-control">${sourceOptions.map(option=>`<option value="${option.value}" ${customBuilder.source===option.value?'selected':''}>${esc(option.label)}</option>`).join('')}</select></label><label>Question count<input id="customCount" class="form-control" type="number" min="1" value="${Math.max(1,Math.floor(num(customBuilder.count)||30))}"></label><label>Duration (minutes)<input id="customDuration" class="form-control" type="number" min="1" value="${Math.max(1,Math.floor(num(customBuilder.durationMinutes)||60))}"></label></div><p class="muted custom-pool-summary" id="customPoolSummary" aria-live="polite"></p><p class="muted" style="font-size:12px">Questions are sampled without replacement from your filtered pool.</p><button class="primary-button" data-action="start-custom">Start custom test →</button></section></main>`;
+  refreshCustomForm(false);
 }
 function openInstructions(exam) {
   pendingExam=exam;
-  dialogShow('Before you begin',`<ol class="modal-list"><li>The timer begins when the exam starts. Your responses are saved in this browser as you work.</li><li>MCQ questions have one correct option. MSQ questions may have more than one correct option. NAT questions accept a numerical response.</li><li>Use Save &amp; Next to save a response and move forward. Use Mark for Review &amp; Next to flag a question.</li><li>Submit ends the session. Unverified answers are identified separately and are excluded from scoring.</li></ol><p><strong>${esc(exam.title)}</strong><br>${countLabel(exam.qids.length)} · ${exam.qids.reduce((n,id)=>n+num(questionById.get(id)?.marks),0)} marks · ${fmtDuration(exam.durationSeconds)}</p>`,`<button class="outline-button" data-dialog="close">Cancel</button><button class="primary-button" data-dialog="start">Start exam</button>`);
+  const summary=exam.filterSummary;
+  const scope=summary?`<div class="custom-test-summary"><p><strong>Subjects:</strong> ${esc(summary.subjects.length?summary.subjects.join(', '):'All subjects')}</p><p><strong>Topics:</strong> ${esc(summary.topics.length?summary.topics.join(', '):'All topics')}</p><p><strong>Question types:</strong> ${esc(summary.types.join(', '))}</p><p><strong>Question source:</strong> ${esc(summary.sourceLabel)}</p><p><strong>Duration:</strong> ${Math.max(1,Math.floor(num(summary.durationMinutes)||1))} minute${Math.max(1,Math.floor(num(summary.durationMinutes)||1))===1?'':'s'}</p></div>`:'';
+  dialogShow('Before you begin',`<ol class="modal-list"><li>The timer begins when the exam starts. Your responses are saved in this browser as you work.</li><li>MCQ questions have one correct option. MSQ questions may have more than one correct option. NAT questions accept a numerical response.</li><li>Use Save &amp; Next to save a response and move forward. Use Mark for Review &amp; Next to flag a question.</li><li>Submit ends the session. Unverified answers are identified separately and are excluded from scoring.</li></ol>${scope}<p><strong>${esc(exam.title)}</strong><br>${countLabel(exam.qids.length)} · ${exam.qids.reduce((n,id)=>n+num(questionById.get(id)?.marks),0)} marks · ${fmtDuration(exam.durationSeconds)}</p>`,`<button class="outline-button" data-dialog="close">Cancel</button><button class="primary-button" data-dialog="start">Start exam</button>`);
 }
 function prepareExam(qs,title,meta={}) {
   if(!qs.length){toast('No questions found for that selection.');return;}
   const ids=qs.map(q=>q.id);const marks=qs.reduce((n,q)=>n+num(q.marks),0);
-  openInstructions({id:`exam-${Date.now()}`,title,qids:ids,subject:meta.subject||null,topic:meta.topic||null,year:meta.year||null,session:meta.session||null,durationSeconds:Math.max(60,Math.round(marks*108))});
+  const customDuration=num(meta.customDurationSeconds);
+  const durationSeconds=Number.isFinite(customDuration)&&customDuration>=60?Math.round(customDuration):Math.max(60,Math.round(marks*108));
+  openInstructions({id:`exam-${Date.now()}`,title,qids:ids,subject:meta.subject||null,topic:meta.topic||null,year:meta.year||null,session:meta.session||null,durationSeconds,filterSummary:meta.filterSummary||null});
 }
 async function enterExamFullscreen() {
   try {
@@ -681,20 +721,28 @@ async function handleAction(action,el) {
     reviewFilter=el.dataset.reviewFilterOption||'all';applyReviewFilter();return;
   }
   if(action==='go'){navigate(el.dataset.view);return;}
-  if(action==='toggle-custom-dropdown'){
-    const control=$(`${el.dataset.select}Control`),menu=control?.querySelector('.custom-dropdown-menu');if(!menu)return;
-    const shouldOpen=menu.hidden;
-    app.querySelectorAll('.custom-dropdown-menu').forEach(item=>{item.hidden=true;item.closest('.custom-dropdown')?.querySelector('.custom-dropdown-trigger')?.setAttribute('aria-expanded','false');});
-    menu.hidden=!shouldOpen;el.setAttribute('aria-expanded',String(shouldOpen));return;
+  if(action==='toggle-custom-subject'){
+    const value=el.dataset.value||'';if(!value)return;
+    customBuilder.subjects=toggleCustomChoice(customBuilder.subjects,value);
+    customBuilder.topics=customBuilder.topics.filter(topic=>customAvailableTopics().includes(topic));
+    renderCustom();return;
   }
-  if(action==='choose-custom-option'){
-    const id=el.dataset.select,input=$(id);if(!input)return;
-    input.value=el.dataset.value||'';
-    app.querySelectorAll('.custom-dropdown-menu').forEach(item=>{item.hidden=true;item.closest('.custom-dropdown')?.querySelector('.custom-dropdown-trigger')?.setAttribute('aria-expanded','false');});
-    updateCustomDropdown(id);
-    if(id==='customSubject'||id==='customSource')refreshCustomForm(true);else refreshCustomForm();
-    return;
+  if(action==='toggle-custom-topic'){
+    const value=el.dataset.value||'';if(!value)return;
+    customBuilder.topics=toggleCustomChoice(customBuilder.topics,value);
+    renderCustom();return;
   }
+  if(action==='toggle-custom-type'){
+    const value=el.dataset.value||'';if(!value)return;
+    customBuilder.types=toggleCustomChoice(customBuilder.types,value);
+    if(!customBuilder.types.length)customBuilder.types=['MCQ','MSQ','NAT'];
+    renderCustom();return;
+  }
+  if(action==='custom-subjects-all'){customBuilder.subjects=[...subjects];renderCustom();return;}
+  if(action==='custom-subjects-clear'){customBuilder.subjects=[];customBuilder.topics=[];renderCustom();return;}
+  if(action==='custom-topics-all'){customBuilder.topics=[...customAvailableTopics()];renderCustom();return;}
+  if(action==='custom-topics-clear'){customBuilder.topics=[];renderCustom();return;}
+  if(action==='custom-types-all'||action==='custom-types-clear'){customBuilder.types=['MCQ','MSQ','NAT'];renderCustom();return;}
   if(action==='open-subject'){navigate('subject',{subject});return;}
   if(action==='open-topic'){navigate('topic',{topic});return;}
   if(action==='start-quick-practice'){
@@ -726,14 +774,21 @@ async function handleAction(action,el) {
     prepareExam(group,`GATE CE ${year} · ${session}`,{year:Number(year),session});return;
   }
   if(action==='start-custom'){
-    const subj=$('customSubject').value,top=$('customTopic').value,pool=customPool();
+    refreshCustomForm();
+    const pool=customPool();
     if(!pool.length){toast('No questions match these filters.');return;}
-    const requested=Number($('customCount').value);
-    if(!Number.isFinite(requested)||requested<1){toast('Enter a question count of at least 1.');return;}
-    const count=Math.min(Math.floor(requested),pool.length);
-    for(let i=pool.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[pool[i],pool[j]]=[pool[j],pool[i]];}
-    pool.length=count;
-    prepareExam(pool,`Custom practice · ${subj||'All subjects'}`,{subject:subj||null,topic:top||null});return;
+    const requested=Math.max(1,Math.floor(num(customBuilder.count)||1));
+    const durationMinutes=Math.max(1,Math.floor(num(customBuilder.durationMinutes)||1));
+    const count=Math.min(requested,pool.length);
+    const selected=[...pool];
+    for(let i=selected.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[selected[i],selected[j]]=[selected[j],selected[i]];}
+    selected.length=count;
+    const title=`Custom test · ${count} questions`;
+    const sourceLabel=({all:'Question bank',bookmarks:'Bookmarks',mistakes:'Mistakes'})[customBuilder.source]||'Question bank';
+    prepareExam(selected,title,{
+      customDurationSeconds:durationMinutes*60,
+      filterSummary:{subjects:[...customBuilder.subjects],topics:[...customBuilder.topics],types:[...customBuilder.types],durationMinutes,sourceLabel}
+    });return;
   }
  if(action==='resume'){if(user.activeExam){user.activeExam.questionStartedAt=Date.now();saveUser();}await enterExamFullscreen();view='exam';render();window.scrollTo(0,0);return;}
   if(action==='finish-later'){const e=user.activeExam;recordElapsedTime(e);saveUser();navigate('home');return;}
@@ -824,7 +879,7 @@ app.addEventListener('change',e=>{
     const button=app.querySelector(`[data-action="start-quick-practice"][data-kind="${e.target.dataset.kind}"]`);
     if(button)button.disabled=!e.target.value;
   }
-  if(e.target.matches('#customCount'))refreshCustomForm();
+  if(e.target.matches('#customCount,#customDuration,#customSourceSelect')){refreshCustomForm();if(e.target.id==='customSourceSelect')renderCustom();}
   if(e.target.matches('[data-action="toggle-todo"]')){user.todos[num(e.target.dataset.index)].done=e.target.checked;saveUser();}
 });
 dialog.addEventListener('click',e=>{
