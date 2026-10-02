@@ -7,6 +7,7 @@ let user = loadUser();
 let questions = [];
 let questionById = new Map();
 let subjects = [];
+let topicsBySubject = new Map();
 let view = 'home';
 let selectedSubject = null;
 let selectedTopic = null;
@@ -196,8 +197,33 @@ function dialogClose(){if(dialog.open)dialog.close();}
 function navigate(next, options={}) { view=next; if(options.subject!==undefined)selectedSubject=options.subject; if(options.topic!==undefined)selectedTopic=options.topic; if(options.result!==undefined)activeResult=options.result; collectionSearch=''; history.pushState({},'',`#${next}`); render(); window.scrollTo(0,0); }
 function countLabel(n, noun='question') { return `${n.toLocaleString()} ${noun}${n===1?'':'s'}`; }
 function allQuestionData() { return questions; }
-function topicsFor(subject) { return [...new Set(questions.filter(q=>q.subject===subject).map(q=>q.topic||'Uncategorized'))].sort((a,b)=>a.localeCompare(b)); }
-function qsForTopic(subject, topic) { return questions.filter(q=>q.subject===subject&&(q.topic||'Uncategorized')===topic).sort(compareQuestions); }
+function topicLabel(topic='') { return nice(topic||'Uncategorized')||'Uncategorized'; }
+function topicKey(topic='') { return topicLabel(topic).toLocaleLowerCase(); }
+function buildTopicsBySubject(list=questions) {
+  const grouped=new Map();
+  for(const q of list){
+    const subject=q.subject,key=topicKey(q.topic),label=topicLabel(q.topic);
+    if(!grouped.has(subject))grouped.set(subject,new Map());
+    const byKey=grouped.get(subject);
+    if(!byKey.has(key))byKey.set(key,new Map());
+    const labels=byKey.get(key);
+    labels.set(label,(labels.get(label)||0)+1);
+  }
+  const out=new Map();
+  for(const [subject,byKey] of grouped){
+    const canon=new Map();
+    for(const [key,labels] of byKey){
+      const picked=[...labels.entries()].sort((a,b)=>b[1]-a[1]||a[0].localeCompare(b[0]))[0]?.[0]||'Uncategorized';
+      canon.set(key,picked);
+    }
+    out.set(subject,canon);
+  }
+  return out;
+}
+function canonicalTopic(subject, topic='') { return topicsBySubject.get(subject)?.get(topicKey(topic))||topicLabel(topic); }
+function topicsFor(subject) { return [...(topicsBySubject.get(subject)?.values()||[])].sort((a,b)=>a.localeCompare(b)); }
+function qsForTopic(subject, topic) { const key=topicKey(topic); return questions.filter(q=>q.subject===subject&&topicKey(q.topic)===key).sort(compareQuestions); }
+function totalTopicCount() { return [...topicsBySubject.values()].reduce((sum,map)=>sum+map.size,0); }
 function compareQuestions(a,b) { return num(b.year)-num(a.year) || String(a.session||'').localeCompare(String(b.session||'')) || num(a.questionNo)-num(b.questionNo); }
 function pendingKeyCount() { return questions.filter(q=>q.answerStatus==='pending').length; }
 function subjectCounts() { const out=new Map(); for(const q of questions)out.set(q.subject,(out.get(q.subject)||0)+1); return out; }
@@ -242,6 +268,7 @@ async function loadDataset() {
   questions=JSON.parse(text);
   questionById=new Map(questions.map(q=>[q.id,q]));
   subjects=[...subjectCounts().keys()].sort((a,b)=>a.localeCompare(b));
+  topicsBySubject=buildTopicsBySubject();
   if(user.theme==='dark')document.body.classList.add('dark');
   const hash=location.hash.replace('#','').split('/')[0];
   if(hash==='results'&&user.history.length){view='results';activeResult=user.history[0].id;}
@@ -276,9 +303,9 @@ function render() {
 function practicePickerCards() {
   const subjectCount=subjectCounts();
   const subjectOptions=subjects.map(subject=>`<option value="${esc(subject)}">${esc(subject)} · ${countLabel(subjectCount.get(subject)||0)}</option>`).join('');
-  const topicOptions=[...new Map(questions.map(q=>[JSON.stringify([q.subject,q.topic||'Uncategorized']),[q.subject,q.topic||'Uncategorized']])).values()]
-    .sort((a,b)=>a[1].localeCompare(b[1])||a[0].localeCompare(b[0]))
-    .map(([subject,topic])=>`<option value="${esc(JSON.stringify([subject,topic]))}">${esc(topic)} · ${esc(subject)}</option>`).join('');
+  const topicOptions=subjects.flatMap(subject=>[...(topicsBySubject.get(subject)||new Map()).entries()].map(([key,label])=>[subject,key,label]))
+    .sort((a,b)=>a[2].localeCompare(b[2])||a[0].localeCompare(b[0]))
+    .map(([subject,key,label])=>`<option value="${esc(JSON.stringify([subject,key]))}">${esc(label)} · ${esc(subject)}</option>`).join('');
   const years=[...new Set(questions.map(q=>q.year))].sort((a,b)=>num(b)-num(a));
   const yearOptions=years.map(year=>`<option value="${esc(year)}">${esc(year)} · ${countLabel(questions.filter(q=>String(q.year)===String(year)).length)}</option>`).join('');
   const card=(kind,title,description,options)=>`<section class="surface quick-practice-card"><div class="quick-practice-icon">${iconSvg(kind==='subject'?'grid':kind==='topic'?'compass':'beam')}</div><div class="quick-practice-copy"><h3>Practice by ${title}</h3><p>${description}</p><select class="form-control practice-select" data-kind="${kind}" aria-label="Choose ${title.toLowerCase()}"><option value="">Choose ${title.toLowerCase()}…</option>${options}</select><button class="primary-button" data-action="start-quick-practice" data-kind="${kind}" disabled>Start practice</button></div></section>`;
@@ -286,7 +313,7 @@ function practicePickerCards() {
 }
 function homeDashboard() {
   const countdown=examCountdownParts();
-  return `<section class="hero home-hero"><div class="hero-row"><div><div class="eyebrow">GATE CE QUESTION BANK</div><h1>Choose your next practice set</h1><p>Explore 2,617 previous year questions by subject, topic, or exam year.</p><div class="exam-countdown" aria-label="Countdown to 1 February 2027"><span class="countdown-label">Countdown to <strong>1 Feb 2027</strong></span><span class="countdown-value"><b id="countdown-days">${countdown.days}</b><small>d</small><b id="countdown-hours">${String(countdown.hours).padStart(2,'0')}</b><small>h</small><b id="countdown-minutes">${String(countdown.minutes).padStart(2,'0')}</b><small>m</small><b id="countdown-seconds">${String(countdown.seconds).padStart(2,'0')}</b><small>s</small></span></div></div><div class="hero-stats"><div class="hero-stat"><strong>${questions.length.toLocaleString()}</strong><span>Questions</span></div><div class="hero-stat"><strong>${subjects.length}</strong><span>Subjects</span></div><div class="hero-stat"><strong>${new Set(questions.map(q=>q.topic).filter(Boolean)).size}</strong><span>Topics</span></div></div></div></section>
+  return `<section class="hero home-hero"><div class="hero-row"><div><div class="eyebrow">GATE CE QUESTION BANK</div><h1>Choose your next practice set</h1><p>Explore 2,617 previous year questions by subject, topic, or exam year.</p><div class="exam-countdown" aria-label="Countdown to 1 February 2027"><span class="countdown-label">Countdown to <strong>1 Feb 2027</strong></span><span class="countdown-value"><b id="countdown-days">${countdown.days}</b><small>d</small><b id="countdown-hours">${String(countdown.hours).padStart(2,'0')}</b><small>h</small><b id="countdown-minutes">${String(countdown.minutes).padStart(2,'0')}</b><small>m</small><b id="countdown-seconds">${String(countdown.seconds).padStart(2,'0')}</b><small>s</small></span></div></div><div class="hero-stats"><div class="hero-stat"><strong>${questions.length.toLocaleString()}</strong><span>Questions</span></div><div class="hero-stat"><strong>${subjects.length}</strong><span>Subjects</span></div><div class="hero-stat"><strong>${totalTopicCount()}</strong><span>Topics</span></div></div></div></section>
   ${user.activeExam?`<section class="resume-banner home-resume"><div><strong>Continue your practice</strong><span>${esc(user.activeExam.title)} · ${countLabel(user.activeExam.qids.length)} · ${fmtTime(Math.ceil((user.activeExam.deadline-Date.now())/1000))} left</span></div><div class="topic-actions"><button class="primary-button" data-action="resume">Resume exam</button><button class="outline-button" data-action="discard-exam">Discard</button></div></section>`:''}`;
 }
 function homeActivity() {
@@ -318,7 +345,7 @@ function homePracticeHistory() {
 }
 function renderHome() {
   const counts=subjectCounts();
-  const topicCount=new Set(questions.map(q=>q.topic).filter(Boolean)).size;
+  const topicCount=totalTopicCount();
   app.innerHTML=`${header()}<main class="page home-page">${homeDashboard()}<section class="home-practice"><div class="home-section-heading"><div><h2>Start practicing</h2><p>Choose the way you want to work through the question bank.</p></div><div class="topic-actions"><button class="primary-button custom-test-cta" data-action="go" data-view="custom">Build a custom test</button><button class="outline-button custom-practice-cta" data-action="go" data-view="custom">Custom practice</button></div></div>${practicePickerCards()}</section><section class="library-section home-library"><div class="library-section-head"><div><h2>Browse the question bank</h2><p>${countLabel(questions.length)} · ${topicCount} topics · GATE CE 2001–2026</p></div></div><div class="library-controls"><div class="search-wrap"><span class="search-icon">⌕</span><input class="search-input" id="librarySearch" placeholder="Search subjects and topics" autocomplete="off"></div><div class="segmented"><button class="segment-button active" data-action="go" data-view="home">By subject</button><button class="segment-button" data-action="go" data-view="year">By year</button></div></div><div class="subject-grid">${subjects.map(subject=>`<button class="surface subject-card browse-item" data-action="open-subject" data-subject="${esc(subject)}" data-search="${esc(`${subject} ${topicsFor(subject).join(' ')} ${questions.filter(q=>q.subject===subject).map(q=>q.year).join(' ')}`.toLowerCase())}"><span class="subject-icon">${iconFor(subject)}</span><span class="subject-copy"><strong>${esc(subject)}</strong><small>${countLabel(counts.get(subject)||0)} · ${topicsFor(subject).length} topics</small></span><span class="subject-arrow">›</span></button>`).join('')}</div></section>${homeActivity()}${homePracticeHistory()}<footer class="home-footer"><span>Made with <span class="footer-heart" aria-label="love">♥</span> by <a href="https://github.com/0xniru" target="_blank" rel="noopener noreferrer">Niru</a></span></footer></main>`;
 }
 function renderSubject() {
@@ -354,12 +381,18 @@ function uniqueById(list) {
 function customAvailableTopics() {
   let available=customSourcePool();
   if(customBuilder.subjects.length)available=available.filter(q=>customBuilder.subjects.includes(q.subject));
-  return [...new Set(available.map(q=>q.topic||'Uncategorized'))].sort((a,b)=>a.localeCompare(b));
+  const mapped=buildTopicsBySubject(available);
+  const chosen=customBuilder.subjects.length?customBuilder.subjects:[...mapped.keys()];
+  const topics=[...new Set(chosen.flatMap(subject=>[...(mapped.get(subject)?.values()||[])]))];
+  return topics.sort((a,b)=>a.localeCompare(b));
 }
 function customPool() {
   let pool=uniqueById(customSourcePool());
   if(customBuilder.subjects.length)pool=pool.filter(q=>customBuilder.subjects.includes(q.subject));
-  if(customBuilder.topics.length)pool=pool.filter(q=>customBuilder.topics.includes(q.topic||'Uncategorized'));
+  if(customBuilder.topics.length){
+    const selected=new Set(customBuilder.topics.map(topic=>topicKey(topic)));
+    pool=pool.filter(q=>selected.has(topicKey(q.topic)));
+  }
   if(customBuilder.types.length)pool=pool.filter(q=>customBuilder.types.includes(q.type));
   return pool;
 }
@@ -755,7 +788,8 @@ async function handleAction(action,el) {
     if(kind==='topic'){
       let pair;try{pair=JSON.parse(selection);}catch{return;}
       const [chosenSubject,chosenTopic]=pair,group=qsForTopic(chosenSubject,chosenTopic);
-      prepareExam(group,`${chosenSubject} · ${chosenTopic}`,{subject:chosenSubject,topic:chosenTopic});return;
+      const topicName=canonicalTopic(chosenSubject,chosenTopic);
+      prepareExam(group,`${chosenSubject} · ${topicName}`,{subject:chosenSubject,topic:topicName});return;
     }
     if(kind==='year'){
       const group=questions.filter(q=>String(q.year)===selection).sort((a,b)=>String(a.session||'').localeCompare(String(b.session||''))||num(a.questionNo)-num(b.questionNo));
