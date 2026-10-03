@@ -208,7 +208,17 @@
   async function submitReport(report) {
     if (!_client || !_session) throw new Error('Sign in to send a report.');
     const { data, error } = await _client.functions.invoke('report-question', { body: report });
-    if (error) throw error;
+    if (error) {
+      let message = error.message || 'Report request failed.';
+      if (error.context && typeof error.context.clone === 'function') {
+        try { const body = await error.context.clone().json(); if (body?.error) message = body.error; } catch {}
+      }
+      if (error.name === 'FunctionsFetchError') {
+        const detail = error.context?.cause?.message || error.context?.message;
+        message = `Could not reach the Supabase report function. Confirm report-question is deployed to this project${detail ? ` (${detail})` : ''}.`;
+      }
+      throw new Error(message);
+    }
     return data;
   }
 

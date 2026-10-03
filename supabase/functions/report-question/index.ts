@@ -33,12 +33,23 @@ Deno.serve(async (req) => {
   const question = `${String(body.year || '')} ${String(body.session || '')} · Q${String(body.question_no || '')} (${String(body.topic || '')})`;
   const details = String(body.details || '').trim().slice(0, 1000);
   const message = `GATE CE question report\nuser ${reporter} reported ${reason} for ${question}\nQuestion ID: ${questionId}${details ? `\nDetails: ${details}` : ''}`;
-  const response = await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
-    method: 'POST', headers: { 'content-type': 'application/json' },
-    body: JSON.stringify({ chat_id: chatId, text: message }),
-  });
-  const result = await response.json();
-  if (!response.ok || !result.ok) return json({ error: 'Telegram could not deliver this report.' }, 502);
+  let response: Response;
+  try {
+    response = await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
+      method: 'POST', headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ chat_id: chatId, text: message }),
+    });
+  } catch (error) {
+    console.error('Telegram request failed:', error);
+    return json({ error: 'Supabase could not reach Telegram. Check the Edge Function logs and try again.' }, 502);
+  }
+  let result: { ok?: boolean; description?: string };
+  try { result = await response.json(); }
+  catch { return json({ error: 'Telegram returned an unreadable response.' }, 502); }
+  if (!response.ok || !result.ok) {
+    const description = String(result.description || 'Check the bot token and destination chat ID.').slice(0, 240);
+    return json({ error: `Telegram could not deliver this report: ${description}` }, 502);
+  }
   return json({ ok: true }, 200);
 });
 
