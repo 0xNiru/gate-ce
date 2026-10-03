@@ -4,6 +4,7 @@ const dialog = $('appDialog');
 const STORE_KEY = 'gate-ce-practice-v1';
 const DEFAULT_USER = { bookmarks: [], mistakes: [], history: [], activeExam: null, answerOverrides: {}, todos: [], notes: '', theme: 'light' };
 let user = loadUser();
+let authUser = null; // { user, profile } when logged in via Supabase
 let questions = [];
 let questionById = new Map();
 let subjects = [];
@@ -35,6 +36,18 @@ function loadUser() {
 function saveUser() {
   localStorage.setItem(STORE_KEY, JSON.stringify(user));
   scheduleAutoBackup();
+  scheduleCloudSync();
+}
+let _cloudSyncTimer = null;
+function scheduleCloudSync(delay = 3000) {
+  if (!window.SupaAuth?.user()) return;
+  clearTimeout(_cloudSyncTimer);
+  _cloudSyncTimer = setTimeout(async () => {
+    try {
+      await SupaAuth.syncBookmarks(user.bookmarks || []);
+      await SupaAuth.syncMistakes(user.mistakes || []);
+    } catch (e) { console.warn('[CloudSync] bookmark/mistake sync error', e); }
+  }, delay);
 }
 function esc(value='') { return String(value).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
 function num(value) { return Number.isFinite(Number(value)) ? Number(value) : 0; }
@@ -277,6 +290,44 @@ async function loadDataset() {
   render();
 }
 
+function candidateBlock() {
+  const profile = window.SupaAuth?.profile();
+  const u = authUser;
+  if (u && profile) {
+    const name = profile.display_name || u.email || 'Candidate';
+    const avatarUrl = profile.avatar_url || '';
+    const initials = name.split(' ').map(w => w[0]).join('').toUpperCase().slice(0, 2);
+    const avatarHtml = avatarUrl
+      ? `<img src="${esc(avatarUrl)}" alt="${esc(name)}" class="candidate-photo">`
+      : `<span class="candidate-initials">${esc(initials)}</span>`;
+    return `<div class="candidate"><div class="candidate-avatar candidate-avatar-auth">${avatarHtml}</div><strong>${esc(name)}</strong></div>`;
+  }
+  return `<div class="candidate"><div class="candidate-avatar">👤</div><strong>Candidate</strong></div>`;
+}
+
+function authHeaderButton() {
+  if (!window.SupaAuth) return '';
+  const u = authUser;
+  if (!u) {
+    return `<button class="auth-login-button" data-action="auth-login" title="Sign in with Google">
+      <svg width="16" height="16" viewBox="0 0 48 48" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.18 1.48-4.97 2.29-8.16 2.29-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
+      <span>Sign in</span>
+    </button>`;
+  }
+  const profile = SupaAuth.profile();
+  const avatarUrl = profile?.avatar_url || '';
+  const name = profile?.display_name || u.email || 'User';
+  const initials = name.split(' ').map(w => w[0]).join('').toUpperCase().slice(0, 2);
+  const avatar = avatarUrl
+    ? `<img src="${esc(avatarUrl)}" alt="${esc(name)}" class="auth-avatar-img">`
+    : `<span class="auth-avatar-initials">${esc(initials)}</span>`;
+  return `<div class="auth-user-widget">
+    <div class="auth-avatar" title="${esc(name)}">${avatar}</div>
+    <span class="auth-user-name">${esc(name.split(' ')[0])}</span>
+    <button class="auth-logout-button" data-action="auth-logout" title="Sign out">↩</button>
+  </div>`;
+}
+
 function header() {
   const examView=view==='exam';
   if(examView)return `<header class="exam-masthead"><button class="masthead-seal" data-action="finish-later" title="Save and exit"><img src="assets/iitmadras.png?v=2" alt="IIT Madras logo"></button><div class="masthead-title"><strong>GRADUATE APTITUDE TEST IN ENGINEERING <span>(GATE 2027)</span></strong><small>Organizing Institute: INDIAN INSTITUTE OF TECHNOLOGY MADRAS</small></div><span class="masthead-brand" title="GATE CE"><img src="assets/gate-ce-mark.png?v=1" alt="GATE CE"></span></header>`;
@@ -284,7 +335,7 @@ function header() {
   return `<header class="app-header ${examView?'exam-app-header':''}">
     <a class="brand" href="#home" data-action="go" data-view="home"><span class="brand-mark"><img src="assets/gate-ce-mark.png?v=1" alt=""></span><span class="brand-copy"><strong>GATE CE</strong><small>PREVIOUS YEAR PRACTICE</small></span></a>
     <nav class="header-nav"><button class="nav-link ${active.home?.includes(view)?'active':''}" data-action="go" data-view="home">${iconSvg('grid')}<span>Question Library</span></button><button class="nav-link ${view==='analytics'?'active':''}" data-action="go" data-view="analytics">${iconSvg('math')}<span>Analytics</span></button><button class="nav-link ${view==='bookmarks'?'active':''}" data-action="go" data-view="bookmarks">${iconSvg('bookmark')}<span>Bookmarks</span><span class="nav-count">${user.bookmarks.length||''}</span></button><button class="nav-link ${view==='mistakes'?'active':''}" data-action="go" data-view="mistakes">${iconSvg('mistake')}<span>Mistakes</span><span class="nav-count">${user.mistakes.length||''}</span></button></nav>
-    <div class="header-tools"><button class="header-button" data-action="backup">${iconSvg('backup')}<span>Backup</span>${backupAttention()}</button><button class="header-button" data-action="restore">${iconSvg('restore')}<span>Restore</span></button><button class="icon-button" data-action="theme" aria-label="${user.theme==='dark'?'Switch to light theme':'Switch to dark theme'}" title="${user.theme==='dark'?'Switch to light theme':'Switch to dark theme'}">${iconSvg(user.theme==='dark'?'sun':'moon')}</button></div>
+    <div class="header-tools"><button class="header-button" data-action="backup">${iconSvg('backup')}<span>Backup</span>${backupAttention()}</button><button class="header-button" data-action="restore">${iconSvg('restore')}<span>Restore</span></button><button class="icon-button" data-action="theme" aria-label="${user.theme==='dark'?'Switch to light theme':'Switch to dark theme'}" title="${user.theme==='dark'?'Switch to light theme':'Switch to dark theme'}">${iconSvg(user.theme==='dark'?'sun':'moon')}</button>${authHeaderButton()}</div>
   </header>`;
 }
 function render() {
@@ -573,7 +624,7 @@ function renderExam() {
   }).join('');
   const isNat=type==='NAT';
   const negative=negativeMark(q);
-  app.innerHTML=`${header()}<main class="exam-page"><section class="exam-workspace"><div class="exam-ribbon"><strong>${esc(e.title)}</strong><div class="exam-ribbon-actions"><button data-action="instructions">ⓘ Instructions</button><button data-action="paper">▤ Question Paper</button></div></div><div class="exam-row"><button class="exam-chevron" aria-label="Previous subject">◀</button><span class="exam-chip">${esc(e.subject||q.subject)}</span><button class="exam-chevron">▶</button><button class="exam-chevron push calculator-trigger" data-action="calculator" title="Calculator" aria-label="Open calculator"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4.5" y="2.5" width="15" height="19" rx="2"/><path d="M8 6.5h8v4H8zM8 14h1m3 0h1m3 0h1M8 17.5h1m3 0h1m3 0h1"/></svg></button></div><div class="section-label-row"><strong>Sections</strong><span class="time-label">Time Left : <b id="timerValue">${fmtTime(Math.max(0,(e.deadline-Date.now())/1000))}</b></span></div><div class="exam-row section-row-small"><button class="exam-chevron">◀</button><span class="exam-chip secondary">${esc(e.topic||q.topic||'GATE CE PYQ')}</span><button class="exam-chevron push">▶</button></div><div class="exam-meta"><span>Question Type: <b>${esc(type)}</b></span><span>Marks for correct answer: <b class="green">${num(q.marks)}</b> | Negative Marks: <b class="red">${negative?negative.toFixed(2):'0'}</b></span></div><article class="question-card"><div class="question-card-title">Question No. ${q.questionNo??e.index+1}<span class="question-context">${q.year} ${q.session?`· ${esc(q.session)}`:''}</span></div><div class="question-body question-markup">${renderQuestionContent(q)}${q.sourceUrl?`<div class="question-source">(GATE CE ${q.year})</div>`:''}</div>${isNat?`<div class="nat-answer"><label for="natResponse">Your answer</label><input id="natResponse" class="answer-input nat-input" inputmode="decimal" type="text" value="${esc(answer??'')}" placeholder="Enter numerical value" autocomplete="off"></div>${q.answerStatus==='pending'?'<div class="nat-note">Answer key pending verification. Your response will be saved and excluded from scoring.</div>':''}`:`<fieldset class="answer-options" aria-label="Answer options">${options}</fieldset>`}</article><div class="exam-actions"><div class="action-group"><button class="outline-button" data-action="mark-next">Mark for Review &amp; Next</button><button class="outline-button" data-action="clear-answer">Clear Response</button></div><div class="action-group"><button class="outline-button" data-action="previous" ${e.index===0?'disabled':''}>Previous</button><button class="primary-button" data-action="next">Save &amp; Next</button></div></div></section><aside class="candidate-panel"><div class="candidate"><div class="candidate-avatar">👤</div><strong>Candidate</strong></div><div class="status-legend"><div class="status-item"><i class="status-badge answered">${statusCounts.answered}</i> Answered</div><div class="status-item"><i class="status-badge not-answered">${statusCounts['not-answered']}</i> Not Answered</div><div class="status-item"><i class="status-badge not-visited">${statusCounts['not-visited']}</i> Not Visited</div><div class="status-item"><i class="status-badge review">${statusCounts.review}</i> Marked for Review</div><div class="status-item wide"><i class="status-badge answered-review">${statusCounts['answered-review']}</i> Answered &amp; Marked for Review</div></div><div class="palette-title">${esc(e.topic||q.topic||'GATE CE PYQ')}</div><div class="palette-label">Choose a Question</div><div class="question-palette">${qs.map((item,i)=>`<button class="palette-button ${answerStatus(i)} ${i===e.index?'current':''}" data-action="jump" data-index="${i}" aria-label="Question ${i+1}: ${answerStatus(i)}">${i+1}</button>`).join('')}</div><div class="submit-dock"><button class="primary-button" data-action="submit">Submit</button></div></aside></main>`;
+  app.innerHTML=`${header()}<main class="exam-page"><section class="exam-workspace"><div class="exam-ribbon"><strong>${esc(e.title)}</strong><div class="exam-ribbon-actions"><button data-action="instructions">ⓘ Instructions</button><button data-action="paper">▤ Question Paper</button></div></div><div class="exam-row"><button class="exam-chevron" aria-label="Previous subject">◀</button><span class="exam-chip">${esc(e.subject||q.subject)}</span><button class="exam-chevron">▶</button><button class="exam-chevron push calculator-trigger" data-action="calculator" title="Calculator" aria-label="Open calculator"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4.5" y="2.5" width="15" height="19" rx="2"/><path d="M8 6.5h8v4H8zM8 14h1m3 0h1m3 0h1M8 17.5h1m3 0h1m3 0h1"/></svg></button></div><div class="section-label-row"><strong>Sections</strong><span class="time-label">Time Left : <b id="timerValue">${fmtTime(Math.max(0,(e.deadline-Date.now())/1000))}</b></span></div><div class="exam-row section-row-small"><button class="exam-chevron">◀</button><span class="exam-chip secondary">${esc(e.topic||q.topic||'GATE CE PYQ')}</span><button class="exam-chevron push">▶</button></div><div class="exam-meta"><span>Question Type: <b>${esc(type)}</b></span><span>Marks for correct answer: <b class="green">${num(q.marks)}</b> | Negative Marks: <b class="red">${negative?negative.toFixed(2):'0'}</b></span></div><article class="question-card"><div class="question-card-title">Question No. ${q.questionNo??e.index+1}<span class="question-context">${q.year} ${q.session?`· ${esc(q.session)}`:''}</span></div><div class="question-body question-markup">${renderQuestionContent(q)}${q.sourceUrl?`<div class="question-source">(GATE CE ${q.year})</div>`:''}</div>${isNat?`<div class="nat-answer"><label for="natResponse">Your answer</label><input id="natResponse" class="answer-input nat-input" inputmode="decimal" type="text" value="${esc(answer??'')}" placeholder="Enter numerical value" autocomplete="off"></div>${q.answerStatus==='pending'?'<div class="nat-note">Answer key pending verification. Your response will be saved and excluded from scoring.</div>':''}`:`<fieldset class="answer-options" aria-label="Answer options">${options}</fieldset>`}</article><div class="exam-actions"><div class="action-group"><button class="outline-button" data-action="mark-next">Mark for Review &amp; Next</button><button class="outline-button" data-action="clear-answer">Clear Response</button></div><div class="action-group"><button class="outline-button" data-action="previous" ${e.index===0?'disabled':''}>Previous</button><button class="primary-button" data-action="next">Save &amp; Next</button></div></div></section><aside class="candidate-panel">${candidateBlock()}<div class="status-legend"><div class="status-item"><i class="status-badge answered">${statusCounts.answered}</i> Answered</div><div class="status-item"><i class="status-badge not-answered">${statusCounts['not-answered']}</i> Not Answered</div><div class="status-item"><i class="status-badge not-visited">${statusCounts['not-visited']}</i> Not Visited</div><div class="status-item"><i class="status-badge review">${statusCounts.review}</i> Marked for Review</div><div class="status-item wide"><i class="status-badge answered-review">${statusCounts['answered-review']}</i> Answered &amp; Marked for Review</div></div><div class="palette-title">${esc(e.topic||q.topic||'GATE CE PYQ')}</div><div class="palette-label">Choose a Question</div><div class="question-palette">${qs.map((item,i)=>`<button class="palette-button ${answerStatus(i)} ${i===e.index?'current':''}" data-action="jump" data-index="${i}" aria-label="Question ${i+1}: ${answerStatus(i)}">${i+1}</button>`).join('')}</div><div class="submit-dock"><button class="primary-button" data-action="submit">Submit</button></div></aside></main>`;
 }
 function startTimer() {
   timerHandle=setInterval(()=>{const e=user.activeExam;if(!e)return;const remaining=Math.ceil((e.deadline-Date.now())/1000);const label=$('timerValue');if(label){label.textContent=fmtTime(remaining);label.classList.toggle('red',remaining<300);}if(remaining<=0){clearInterval(timerHandle);submitExam(true);}},1000);
@@ -631,6 +682,7 @@ function finalizeExam() {
   for(const q of qs){const answer=e.answers[q.id];const grade=scoreQuestion(q,answer);evaluations[q.id]=grade;if(grade.status==='correct'){correct++;earned+=grade.score;}else if(grade.status==='incorrect'){incorrect++;negative+=Math.abs(grade.score);}else if(grade.status==='unanswered')unanswered++;else pending++;}
   const attempt={id:`result-${Date.now()}`,title:e.title,subject:e.subject,topic:e.topic,year:e.year,session:e.session,questionIds:[...e.qids],answers:{...e.answers},evaluations,endedAt:Date.now(),durationSeconds:e.durationSeconds,remainingSeconds:Math.max(0,Math.ceil((e.deadline-Date.now())/1000)),totalMarks:qs.reduce((n,q)=>n+num(q.marks),0),earned,negative,score:earned-negative,correct,incorrect,unanswered,pending,times:{...e.times},visited:[...e.visited]};
   user.history.unshift(attempt);user.history=user.history.slice(0,150);user.activeExam=null;saveUser();activeResult=attempt.id;dialogClose();navigate('results',{result:attempt.id});
+  if(window.SupaAuth?.user())SupaAuth.saveTestAttempt(attempt).catch(e=>console.warn('[CloudSync] test attempt save error',e));
 }
 function answerLabel(q,value) {
   if(!answerExists(value))return 'Not attempted';
@@ -895,6 +947,8 @@ async function handleAction(action,el) {
   if(action==='add-todo'){const text=$('todoInput')?.value.trim();if(!text)return;user.todos.unshift({text,done:false});user.todos=user.todos.slice(0,30);saveUser();renderHome();return;}
   if(action==='delete-todo'){user.todos.splice(num(el.dataset.index),1);saveUser();renderHome();return;}
   if(action==='show-pending'){dialogShow('Answer keys pending',`<p><strong>${pendingKeyCount()}</strong> questions are currently unverified: ${questions.filter(q=>q.type==='NAT'&&q.answerStatus==='pending').length} NAT questions and ${questions.filter(q=>q.type!=='NAT'&&q.answerStatus==='pending').length} MCQ/MSQ records with no correct option.</p><p>They remain linked to the answer backlog by question ID and will be excluded from grading until verified.</p>`,'<button class="primary-button" data-dialog="close">Close</button>');return;}
+  if(action==='auth-login'){if(window.SupaAuth)SupaAuth.signInWithGoogle();return;}
+  if(action==='auth-logout'){if(window.SupaAuth){await SupaAuth.signOut();authUser=null;render();}return;}
 }
 
 app.addEventListener('click',e=>{const el=e.target.closest('[data-action]');if(el)handleAction(el.dataset.action,el);else if(!e.target.closest('.custom-dropdown'))app.querySelectorAll('.custom-dropdown-menu').forEach(menu=>{menu.hidden=true;menu.closest('.custom-dropdown')?.querySelector('.custom-dropdown-trigger')?.setAttribute('aria-expanded','false');});if(!e.target.closest('.review-filter')){const menu=$('reviewFilterMenu'),trigger=$('reviewFilterTrigger');if(menu&&!menu.hidden){menu.hidden=true;trigger?.setAttribute('aria-expanded','false');}}});
@@ -952,3 +1006,45 @@ document.addEventListener('keydown',e=>{
 loadDataset().catch(error=>{app.innerHTML=`<main class="boot-screen"><strong>Could not load the question bank</strong><small>${esc(error.message)}. Start the site with a local web server from the project folder.</small></main>`;console.error(error);});
 setInterval(updateExamCountdown,1000);
 initBackupFolder().then(()=>{if(backupFolder.state==='granted')scheduleAutoBackup(3000);});
+
+// ── Supabase auth bootstrap ──────────────────────────────────────────────────
+if(window.SupaAuth){
+  SupaAuth.init().then(()=>{
+    SupaAuth.onAuthChange(async(event,session,profile)=>{
+      const prevUser=authUser;
+      authUser=session?.user??null;
+
+      if(authUser && !prevUser){
+        // Freshly logged in – load cloud data and merge into local state
+        try{
+          const [cloudBookmarks,cloudMistakes,cloudHistory]=await Promise.all([
+            SupaAuth.loadBookmarks(),
+            SupaAuth.loadMistakes(),
+            SupaAuth.loadTestHistory(),
+          ]);
+          let changed=false;
+          if(cloudBookmarks){
+            // Merge: union of cloud + local, cloud wins for order
+            const merged=[...new Set([...cloudBookmarks,...user.bookmarks])];
+            if(merged.length!==user.bookmarks.length||merged.some((id,i)=>id!==user.bookmarks[i])){user.bookmarks=merged;changed=true;}
+          }
+          if(cloudMistakes){
+            const merged=[...new Set([...cloudMistakes,...user.mistakes])];
+            if(merged.length!==user.mistakes.length||merged.some((id,i)=>id!==user.mistakes[i])){user.mistakes=merged;changed=true;}
+          }
+          if(cloudHistory&&cloudHistory.length){
+            // Add cloud attempts that aren't in local history (by id)
+            const localIds=new Set(user.history.map(a=>a.id));
+            const newAttempts=cloudHistory.filter(a=>!localIds.has(a.id));
+            if(newAttempts.length){user.history=[...newAttempts,...user.history].slice(0,150);changed=true;}
+          }
+          if(changed){localStorage.setItem(STORE_KEY,JSON.stringify(user));}
+        }catch(e){console.warn('[Auth] cloud data merge error',e);}
+      }
+
+      if(event==='SIGNED_OUT'){authUser=null;}
+
+      if(questions.length)render();
+    });
+  }).catch(e=>console.warn('[Auth] init error',e));
+}

@@ -201,3 +201,20 @@ body.dark .home-page .home-footer a{color:#f0c15f}
 body.dark .custom-chip.active{background:#3a2d20;border-color:#d5ad57;color:#f0c15f}
 body.dark .custom-test-summary{background:#30271d;border-color:#59452a}
 @media(max-width:860px){.custom-builder-grid,.custom-form.custom-form-compact{grid-template-columns:1fr}}
+
+/* ── Auth: header login/logout button & user widget ─────────────────────── */
+.auth-login-button{display:flex;align-items:center;gap:6px;padding:5px 10px;border:1px solid var(--line);border-radius:6px;background:var(--soft);color:var(--ink);font-size:12px;font-weight:600;cursor:pointer;white-space:nowrap;transition:background .15s}
+.auth-login-button:hover{background:var(--hover)}
+.auth-login-button svg{flex-shrink:0}
+.auth-user-widget{display:flex;align-items:center;gap:6px;padding:2px 4px;border-radius:6px}
+.auth-avatar{width:28px;height:28px;border-radius:50%;overflow:hidden;flex-shrink:0;background:#e0e7ef;display:flex;align-items:center;justify-content:center}
+.auth-avatar-img{width:100%;height:100%;object-fit:cover;border-radius:50%}
+.auth-avatar-initials{font-size:11px;font-weight:700;color:#555}
+.auth-user-name{font-size:12px;font-weight:600;max-width:80px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.auth-logout-button{background:none;border:none;cursor:pointer;color:var(--muted);font-size:14px;padding:2px 4px;border-radius:4px;line-height:1}
+.auth-logout-button:hover{color:var(--ink);background:var(--hover)}
+
+/* ── Candidate panel: auth photo ─────────────────────────────────────────── */
+.candidate-avatar-auth{display:flex;align-items:center;justify-content:center;width:48px;height:48px;border-radius:50%;overflow:hidden;background:#e0e7ef;font-size:13px;font-weight:700;color:#555}
+.candidate-photo{width:100%;height:100%;object-fit:cover;border-radius:50%}
+.candidate-initials{font-size:16px;font-weight:700}
