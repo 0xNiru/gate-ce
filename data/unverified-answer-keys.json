@@ -126,15 +126,6 @@
     "reason": "No official CE answer-key PDF was located for 2015–2017."
   },
   {
-    "id": "fd0937104b486b7ae886d0a6",
-    "year": 2015,
-    "session": "SET-1",
-    "questionNo": 198,
-    "natAnswerRaw": "{\"value1\":\"2.32\",\"value2\":\"2.34\",\"value3\":\"0\"}",
-    "questionText": "The quadratic equation $x^{2}-4x+4=0$ is to be solved numerically, starting with the initial guess $x_0=3$ . The Newton-Raphson method is applied once to get a new estimate and then the Secant method is applied once using the initial guess and this new estimate. The estimated value of the root after the application of the Secant method is __________.",
-    "reason": "No official CE answer-key PDF was located for 2015–2017."
-  },
-  {
     "id": "f648fde64a4eb113c0c48b70",
     "year": 2015,
     "session": "SET-1",
