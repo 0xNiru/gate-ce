@@ -42,6 +42,7 @@
     loadMistakes,
     saveTestAttempt,
     loadTestHistory,
+    deleteTestAttempt,
     saveQuestionProgress,
     loadQuestionProgress,
     saveCloudState,
@@ -438,6 +439,13 @@
       visited:       responses.map((response, index) => response.question_index ?? index),
     });
     });
+  }
+
+  async function deleteTestAttempt(localId) {
+    if (!_client || !_session) throw new Error('Sign in to delete cloud history.');
+    const { data, error } = await _client.rpc('delete_own_test_attempt', { p_local_id: localId });
+    if (error) throw error;
+    return data;
   }
 
   /** Save per-question progress manually (called when marking a mistake/bookmark). */

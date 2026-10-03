@@ -21,6 +21,8 @@ The Google callback URI above is different from the app redirect URL. If the Goo
 
 Apply `supabase-profile-cloud-reports-migration.sql` in the Supabase SQL Editor. It adds a private full-state cloud snapshot, profile image storage, aggregate leaderboard access, and profile statistics. Existing test-attempt and response rows remain protected by their per-user RLS policies; the leaderboard RPC exposes aggregate counts and profile name/photo only.
 
+The same additive migration also installs `delete_own_test_attempt`, used by the Recent Practice delete control. Re-run the updated SQL after pulling code changes so this RPC is present in your project.
+
 After linking the repository to your Supabase project (`supabase link --project-ref <project-ref>`), deploy the Telegram report function from the repository root:
 
 ```sh

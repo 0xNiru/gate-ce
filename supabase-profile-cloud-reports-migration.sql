@@ -21,6 +21,61 @@ $$;
 REVOKE ALL ON FUNCTION public.get_public_leaderboard() FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION public.get_public_leaderboard() TO anon, authenticated;
 
+-- Delete one of the signed-in user's completed tests and recalculate affected
+-- per-question aggregates so history deletion stays consistent with the board.
+CREATE OR REPLACE FUNCTION public.delete_own_test_attempt(p_local_id TEXT)
+RETURNS BOOLEAN
+LANGUAGE plpgsql SECURITY DEFINER SET search_path = public
+AS $$
+DECLARE
+  target_id BIGINT;
+  affected_questions TEXT[];
+  qid TEXT;
+  attempt_total INTEGER;
+  correct_total INTEGER;
+  latest_status TEXT;
+  latest_time TIMESTAMPTZ;
+BEGIN
+  IF auth.uid() IS NULL THEN RAISE EXCEPTION 'Authentication required'; END IF;
+
+  SELECT id INTO target_id FROM public.test_attempts
+    WHERE user_id = auth.uid() AND local_id = p_local_id FOR UPDATE;
+  IF target_id IS NULL THEN RETURN FALSE; END IF;
+
+  SELECT array_agg(DISTINCT question_id) INTO affected_questions
+    FROM public.question_responses WHERE user_id = auth.uid() AND test_attempt_id = target_id;
+  DELETE FROM public.test_attempts WHERE id = target_id AND user_id = auth.uid();
+
+  FOREACH qid IN ARRAY COALESCE(affected_questions, ARRAY[]::TEXT[]) LOOP
+    SELECT
+      COUNT(*) FILTER (WHERE qr.status <> 'unanswered'),
+      COUNT(*) FILTER (WHERE qr.status = 'correct'),
+      (array_agg(qr.status ORDER BY ta.completed_at DESC))[1],
+      MAX(ta.completed_at)
+    INTO attempt_total, correct_total, latest_status, latest_time
+    FROM public.question_responses qr
+    JOIN public.test_attempts ta ON ta.id = qr.test_attempt_id
+    WHERE qr.user_id = auth.uid() AND qr.question_id = qid;
+
+    IF COALESCE(attempt_total, 0) = 0 THEN
+      DELETE FROM public.question_progress WHERE user_id = auth.uid() AND question_id = qid;
+    ELSE
+      INSERT INTO public.question_progress(user_id, question_id, attempt_count, correct_count, last_correct, last_incorrect, last_attempted)
+      VALUES (auth.uid(), qid, attempt_total, COALESCE(correct_total, 0), latest_status = 'correct', latest_status = 'incorrect', latest_time)
+      ON CONFLICT (user_id, question_id) DO UPDATE SET
+        attempt_count = EXCLUDED.attempt_count,
+        correct_count = EXCLUDED.correct_count,
+        last_correct = EXCLUDED.last_correct,
+        last_incorrect = EXCLUDED.last_incorrect,
+        last_attempted = EXCLUDED.last_attempted;
+    END IF;
+  END LOOP;
+  RETURN TRUE;
+END;
+$$;
+REVOKE ALL ON FUNCTION public.delete_own_test_attempt(TEXT) FROM PUBLIC;
+GRANT EXECUTE ON FUNCTION public.delete_own_test_attempt(TEXT) TO authenticated;
+
 -- Store the app's complete per-user state (notes, active test, detailed history,
 -- overrides, theme, bookmarks, mistakes, and todos) as a private JSON snapshot.
 CREATE TABLE IF NOT EXISTS public.user_cloud_state (
