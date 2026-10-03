@@ -93,10 +93,14 @@
   // ── Auth Actions ──────────────────────────────────────────────────────────
   async function signInWithGoogle() {
     if (!_client) return;
+    // This is the app destination after Supabase finishes OAuth. Google's
+    // authorized redirect URI is the Supabase callback URL shown in
+    // supabase-config.js, not this application URL.
+    const redirectTo = window.__APP_AUTH_REDIRECT_URL__ || window.location.href.split('#')[0];
     await _client.auth.signInWithOAuth({
       provider: 'google',
       options: {
-        redirectTo: window.location.origin + window.location.pathname,
+        redirectTo,
         queryParams: { access_type: 'offline', prompt: 'consent' },
       }
     });
