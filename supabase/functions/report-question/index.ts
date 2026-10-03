@@ -7,7 +7,7 @@ const corsHeaders = {
 };
 
 Deno.serve(async (req) => {
-  if (req.method === 'OPTIONS') return new Response('ok', { headers: corsHeaders });
+  if (req.method === 'OPTIONS') return new Response('ok', { headers: corsHeadersFor(req) });
   if (req.method !== 'POST') return json({ error: 'Method not allowed' }, 405);
 
   const token = Deno.env.get('TELEGRAM_BOT_TOKEN');
@@ -55,4 +55,13 @@ Deno.serve(async (req) => {
 
 function json(body: unknown, status: number) {
   return new Response(JSON.stringify(body), { status, headers: { ...corsHeaders, 'content-type': 'application/json' } });
+}
+
+function corsHeadersFor(req: Request) {
+  // Reflect the browser SDK's requested headers so SDK updates do not break
+  // the preflight with a CORS NetworkError.
+  return {
+    ...corsHeaders,
+    'Access-Control-Allow-Headers': req.headers.get('Access-Control-Request-Headers') || corsHeaders['Access-Control-Allow-Headers'],
+  };
 }
