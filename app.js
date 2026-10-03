@@ -2,7 +2,7 @@ const $ = (id) => document.getElementById(id);
 const app = $('app');
 const dialog = $('appDialog');
 const STORE_KEY = 'gate-ce-practice-v1';
-const DEFAULT_USER = { bookmarks: [], mistakes: [], history: [], activeExam: null, answerOverrides: {}, todos: [], notes: '', questionNotes: {}, theme: 'light' };
+const DEFAULT_USER = { bookmarks: [], mistakes: [], history: [], activeExam: null, answerOverrides: {}, todos: [], questionNotes: {}, theme: 'light' };
 let user = loadUser();
 let authUser = null; // { user, profile } when logged in via Supabase
 let questions = [];
@@ -69,7 +69,7 @@ function whenLabel(ts) { const d = new Date(ts); return ts && !Number.isNaN(d.ge
 function backupStamp(d = new Date()) { const p = n => String(n).padStart(2, '0'); return `${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())}`; }
 function backupPayload() { return { app: 'gate-ce-practice', version: 1, exportedAt: new Date().toISOString(), data: user }; }
 function dataCounts(u) { return `${plural((u.history || []).length, 'attempt')} · ${plural((u.bookmarks || []).length, 'bookmark')} · ${plural((u.mistakes || []).length, 'mistake')}`; }
-function isEmptyUser(u = user) { return !u.history.length && !u.bookmarks.length && !u.mistakes.length && !u.todos.length && !u.notes && !Object.keys(u.questionNotes || {}).length && !Object.keys(u.answerOverrides || {}).length; }
+function isEmptyUser(u = user) { return !u.history.length && !u.bookmarks.length && !u.mistakes.length && !u.todos.length && !Object.keys(u.questionNotes || {}).length && !Object.keys(u.answerOverrides || {}).length; }
 function readBackupMeta() { try { return JSON.parse(localStorage.getItem(BACKUP_META_KEY) || '{}') || {}; } catch { return {}; } }
 function writeBackupMeta(patch) { try { localStorage.setItem(BACKUP_META_KEY, JSON.stringify({ ...readBackupMeta(), ...patch })); } catch {} }
 function readPreRestore() { try { const snap = JSON.parse(localStorage.getItem(PRE_RESTORE_KEY) || 'null'); return snap && snap.data ? snap : null; } catch { return null; } }
@@ -137,14 +137,13 @@ function scheduleAutoBackup(delay = 4000) {
 function normalizeBackup(raw) {
   const incoming = raw && typeof raw === 'object' ? (raw.data && typeof raw.data === 'object' ? raw.data : raw) : null;
   if (!incoming || Array.isArray(incoming)) throw new Error('This file is not a practice backup.');
-  if (!['bookmarks', 'mistakes', 'history', 'todos', 'notes', 'answerOverrides', 'theme'].some(key => key in incoming)) throw new Error('This file does not look like a GATE CE practice backup.');
+  if (!['bookmarks', 'mistakes', 'history', 'todos', 'answerOverrides', 'theme'].some(key => key in incoming)) throw new Error('This file does not look like a GATE CE practice backup.');
   const list = v => Array.isArray(v) ? v : [];
   const map = v => v && typeof v === 'object' && !Array.isArray(v) ? v : {};
   const next = {
     ...DEFAULT_USER, ...incoming,
     bookmarks: list(incoming.bookmarks), mistakes: list(incoming.mistakes), history: list(incoming.history), todos: list(incoming.todos),
     answerOverrides: map(incoming.answerOverrides), questionNotes: map(incoming.questionNotes),
-    notes: typeof incoming.notes === 'string' ? incoming.notes : '',
     theme: incoming.theme === 'dark' ? 'dark' : 'light',
     activeExam: incoming.activeExam && typeof incoming.activeExam === 'object' ? incoming.activeExam : null
   };
@@ -248,6 +247,7 @@ function pendingKeyCount() { return questions.filter(q=>q.answerStatus==='pendin
 function subjectCounts() { const out=new Map(); for(const q of questions)out.set(q.subject,(out.get(q.subject)||0)+1); return out; }
 function iconSvg(name) {
   const paths={
+    logout:'<path d="M10 17l5-5-5-5M15 12H3"/><path d="M12 3h6a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-6"/>',
     math:'<path d="M5 6h14M5 12h14M5 18h14M8 4v16M16 4v16"/>',
     aptitude:'<path d="m12 3 2.6 5.3L20 9l-4 4 .9 5.8L12 16l-4.9 2.8L8 13 4 9l5.4-.7L12 3Z"/>',
     water:'<path d="M12 3s6 6.6 6 11a6 6 0 0 1-12 0c0-4.4 6-11 6-11Z"/><path d="M9 15a3 3 0 0 0 3 3"/>',
@@ -329,7 +329,7 @@ function authHeaderButton() {
     : `<span class="auth-avatar-initials">${esc(initials)}</span>`;
   return `<div class="auth-user-widget">
     <button class="profile-open-button" data-action="go" data-view="profile" title="Open profile"><span class="auth-avatar">${avatar}</span><span class="auth-user-name">${esc(name.split(' ')[0])}</span></button>
-    <button class="auth-logout-button" data-action="auth-logout" title="Sign out">↩</button>
+    <button class="auth-logout-button" data-action="auth-logout" title="Sign out" aria-label="Sign out">${iconSvg('logout')}</button>
   </div>`;
 }
 
@@ -375,7 +375,114 @@ function homeDashboard() {
 }
 function homeActivity() {
   const doneToday=user.history.some(a=>new Date(a.endedAt).toDateString()===new Date().toDateString());
-  return `<section class="home-activity"><div class="home-section-heading"><div><h2>Your routine</h2><p>Track consistency and keep short notes for your next session.</p></div></div><div class="dashboard-row"><section class="surface dashboard-card"><div class="card-heading"><h2>Daily practice</h2><div class="streak-total"><div class="streak-fire">✓</div><div><strong>${user.history.length?Math.min(user.history.length,99):0} sessions</strong><small>${doneToday?'You practiced today':'Build a steady routine'}</small></div></div></div>${practiceCalendarHtml()}</section><section class="surface dashboard-card"><div class="card-heading"><h2>Daily notes</h2><button class="small-action" data-action="save-note">Save note</button></div><textarea id="dailyNote" class="form-control" rows="3" style="width:100%;resize:vertical" placeholder="Plan your next practice session…">${esc(user.notes||'')}</textarea><div class="todo-line"><input id="todoInput" placeholder="Add a to-do…"><button class="add-button" data-action="add-todo" aria-label="Add to-do">+</button></div><ul class="todo-list">${user.todos.slice(0,4).map((todo,i)=>`<li class="todo-item"><input type="checkbox" data-action="toggle-todo" data-index="${i}" ${todo.done?'checked':''}><span>${esc(todo.text)}</span><button data-action="delete-todo" data-index="${i}" aria-label="Delete">×</button></li>`).join('')}</ul></section></div></section>`;
+  const quote=DAILY_QUOTES[quoteOfTheDayIndex()];
+  return `<section class="home-activity"><div class="home-section-heading"><div><h2>Your routine</h2><p>Build a steady practice habit and keep track of what’s next.</p></div></div><div class="dashboard-row"><section class="surface dashboard-card"><div class="card-heading"><h2>Daily practice</h2><div class="streak-total"><div class="streak-fire">✓</div><div><strong>${user.history.length?Math.min(user.history.length,99):0} sessions</strong><small>${doneToday?'You practiced today':'Build a steady routine'}</small></div></div></div>${practiceCalendarHtml()}</section><section class="surface dashboard-card home-routine-card"><article class="daily-quote"><span class="quote-kicker">QUOTE OF THE DAY</span><blockquote>“${esc(quote)}”</blockquote><span class="quote-counter">${quoteOfTheDayIndex()+1} / ${DAILY_QUOTES.length}</span></article><div class="todo-section"><h2>To-do list</h2><div class="todo-line"><input id="todoInput" placeholder="Add a to-do…"><button class="add-button" data-action="add-todo" aria-label="Add to-do">+</button></div><ul class="todo-list">${user.todos.slice(0,4).map((todo,i)=>`<li class="todo-item"><input type="checkbox" data-action="toggle-todo" data-index="${i}" ${todo.done?'checked':''}><span>${esc(todo.text)}</span><button data-action="delete-todo" data-index="${i}" aria-label="Delete">×</button></li>`).join('')}</ul></div></section></div></section>`;
+}
+const DAILY_QUOTES = [
+  'Great things are done by a series of small things brought together. — Vincent van Gogh',
+  'It always seems impossible until it is done. — Nelson Mandela',
+  'The secret of getting ahead is getting started. — Mark Twain',
+  'Well done is better than well said. — Benjamin Franklin',
+  'Success is the sum of small efforts, repeated day in and day out. — Robert Collier',
+  'The future depends on what you do today. — Mahatma Gandhi',
+  'It does not matter how slowly you go as long as you do not stop. — Confucius',
+  'A journey of a thousand miles begins with a single step. — Lao Tzu',
+  'The expert in anything was once a beginner. — Helen Hayes',
+  'Energy and persistence conquer all things. — Benjamin Franklin',
+  'Dreams do not work unless you do. — John C. Maxwell',
+  'The way to get started is to quit talking and begin doing. — Walt Disney',
+  'You are capable of more than you know.',
+  'Little by little, one travels far. — J. R. R. Tolkien',
+  'Great acts are made up of small deeds. — Lao Tzu',
+  'The secret of success is constancy to purpose. — Benjamin Disraeli',
+  'A goal without a plan is just a wish. — Antoine de Saint-Exupéry',
+  'What we learn with pleasure we never forget. — Alfred Mercier',
+  'Learning never exhausts the mind. — Leonardo da Vinci',
+  'The beautiful thing about learning is nobody can take it away from you. — B. B. King',
+  'The more that you read, the more things you will know. — Dr. Seuss',
+  'Knowledge is power. — Francis Bacon',
+  'An investment in knowledge pays the best interest. — Benjamin Franklin',
+  'The roots of education are bitter, but the fruit is sweet. — Aristotle',
+  'Education is the passport to the future. — Malcolm X',
+  'Learning is not attained by chance; it must be sought for with ardor. — Abigail Adams',
+  'The mind is not a vessel to be filled but a fire to be kindled. — Plutarch',
+  'The more I learn, the more I realize how much I do not know. — Albert Einstein',
+  'Study hard what interests you the most in the most undisciplined, irreverent and original manner possible. — Richard Feynman',
+  'Curiosity is the wick in the candle of learning. — William Arthur Ward',
+  'Success is the progressive realization of a worthy goal. — Earl Nightingale',
+  'If you can dream it, you can do it. — Walt Disney',
+  'Nothing will work unless you do. — Maya Angelou',
+  'Act as if what you do makes a difference. It does. — William James',
+  'Believe you can and you’re halfway there. — Theodore Roosevelt',
+  'Keep your eyes on the stars, and your feet on the ground. — Theodore Roosevelt',
+  'You miss 100% of the shots you don’t take. — Wayne Gretzky',
+  'The only limit to our realization of tomorrow is our doubts of today. — Franklin D. Roosevelt',
+  'Start where you are. Use what you have. Do what you can. — Arthur Ashe',
+  'Everything you can imagine is real. — Pablo Picasso',
+  'Quality is not an act, it is a habit. — Aristotle',
+  'We are what we repeatedly do. — Will Durant',
+  'Motivation gets you going and habit gets you there. — Zig Ziglar',
+  'The secret of your future is hidden in your daily routine. — Mike Murdock',
+  'A year from now you may wish you had started today. — Karen Lamb',
+  'The best way out is always through. — Robert Frost',
+  'Difficulties strengthen the mind, as labor does the body. — Seneca',
+  'Fall seven times and stand up eight. — Japanese proverb',
+  'Our greatest glory is not in never falling, but in rising every time we fall. — Confucius',
+  'Failure is success in progress. — Albert Einstein',
+  'A person who never made a mistake never tried anything new. — Albert Einstein',
+  'Courage is resistance to fear, mastery of fear, not absence of fear. — Mark Twain',
+  'Perseverance is not a long race; it is many short races one after another. — Walter Elliot',
+  'You don’t have to see the whole staircase, just take the first step. — Martin Luther King Jr.',
+  'Great works are performed not by strength but by perseverance. — Samuel Johnson',
+  'Patience and perseverance have a magical effect before which difficulties disappear. — John Quincy Adams',
+  'He who has a why to live can bear almost any how. — Friedrich Nietzsche',
+  'Doubt kills more dreams than failure ever will. — Suzy Kassem',
+  'Your limitation—it’s only your imagination.',
+  'Push yourself, because no one else is going to do it for you.',
+  'Work hard in silence; let success make the noise.',
+  'Don’t watch the clock; do what it does. Keep going. — Sam Levenson',
+  'The only place where success comes before work is in the dictionary. — Vidal Sassoon',
+  'Success usually comes to those who are too busy to be looking for it. — Henry David Thoreau',
+  'There are no shortcuts to any place worth going. — Beverly Sills',
+  'The harder I work, the luckier I get. — Samuel Goldwyn',
+  'Opportunities are usually disguised as hard work. — Ann Landers',
+  'The difference between ordinary and extraordinary is that little extra. — Jimmy Johnson',
+  'Do what you can, with what you have, where you are. — Theodore Roosevelt',
+  'If opportunity doesn’t knock, build a door. — Milton Berle',
+  'Action is the foundational key to all success. — Pablo Picasso',
+  'Nothing is particularly hard if you divide it into small jobs. — Henry Ford',
+  'Well begun is half done. — Aristotle',
+  'Start by doing what’s necessary; then do what’s possible. — Francis of Assisi',
+  'One day or day one. You decide.',
+  'Make each day your masterpiece. — John Wooden',
+  'The best preparation for tomorrow is doing your best today. — H. Jackson Brown Jr.',
+  'Every accomplishment starts with the decision to try. — John F. Kennedy',
+  'Don’t let what you cannot do interfere with what you can do. — John Wooden',
+  'The only way to achieve the impossible is to believe it is possible. — Charles Kingsleigh',
+  'If you have a positive attitude and constantly strive to give your best effort, eventually you will overcome your immediate problems. — Pat Riley',
+  'Success is not final, failure is not fatal: it is the courage to continue that counts. — Winston Churchill',
+  'The best view comes after the hardest climb.',
+  'Small disciplines repeated with consistency every day lead to great achievements. — John C. Maxwell',
+  'The man who moves a mountain begins by carrying away small stones. — Confucius',
+  'Be so good they can’t ignore you. — Steve Martin',
+  'Nothing great was ever achieved without enthusiasm. — Ralph Waldo Emerson',
+  'To improve is to change; to be perfect is to change often. — Winston Churchill',
+  'The secret to getting results is to never stop making improvements. — James Dyson',
+  'If you get tired, learn to rest, not to quit.',
+  'Be stronger than your excuses.',
+  'Discipline is choosing between what you want now and what you want most. — Abraham Lincoln',
+  'You don’t need to be extreme, just consistent.',
+  'Every day is a chance to get better.',
+  'Progress, not perfection.',
+  'Focus on the step in front of you, not the whole staircase.',
+  'In the middle of difficulty lies opportunity. — Albert Einstein',
+  'Success is walking from failure to failure with no loss of enthusiasm. — Winston Churchill',
+  'If you want to lift yourself up, lift up someone else. — Booker T. Washington',
+  'Nothing can dim the light that shines from within. — Maya Angelou'
+];
+function quoteOfTheDayIndex(date=new Date()) {
+  const day=Math.floor(Date.UTC(date.getFullYear(),date.getMonth(),date.getDate())/86400000);
+  return ((day%DAILY_QUOTES.length)+DAILY_QUOTES.length)%DAILY_QUOTES.length;
 }
 function practiceCalendarHtml() {
   const year=calendarMonth.getFullYear(),month=calendarMonth.getMonth();
@@ -989,7 +1096,6 @@ async function handleAction(action,el) {
   if(action==='clear-collection'){
     dialogShow('Clear saved questions?',`This removes all ${el.dataset.kind} from this browser.`,`<button class="outline-button" data-dialog="close">Cancel</button><button class="danger-button" data-dialog="clear-${el.dataset.kind}">Clear all</button>`);return;
   }
-  if(action==='save-note'){user.notes=$('dailyNote')?.value||'';saveUser();toast('Note saved');return;}
   if(action==='add-todo'){const text=$('todoInput')?.value.trim();if(!text)return;user.todos.unshift({text,done:false});user.todos=user.todos.slice(0,30);saveUser();renderHome();return;}
   if(action==='delete-todo'){user.todos.splice(num(el.dataset.index),1);saveUser();renderHome();return;}
   if(action==='show-pending'){dialogShow('Answer keys pending',`<p><strong>${pendingKeyCount()}</strong> questions are currently unverified: ${questions.filter(q=>q.type==='NAT'&&q.answerStatus==='pending').length} NAT questions and ${questions.filter(q=>q.type!=='NAT'&&q.answerStatus==='pending').length} MCQ/MSQ records with no correct option.</p><p>They remain linked to the answer backlog by question ID and will be excluded from grading until verified.</p>`,'<button class="primary-button" data-dialog="close">Close</button>');return;}
@@ -1089,7 +1195,6 @@ if(window.SupaAuth){
               const todos=new Map();for(const todo of [...cloudState.todos,...user.todos])if(todo?.text)todos.set(todo.text,{...(todos.get(todo.text)||{}),...todo});
               user.todos=[...todos.values()].slice(0,30);changed=true;
             }
-            if(typeof cloudState.notes==='string'&&cloudState.notes)user.notes=cloudState.notes;
             if(cloudState.answerOverrides)user.answerOverrides={...cloudState.answerOverrides,...user.answerOverrides};
             if(cloudState.questionNotes)user.questionNotes={...cloudState.questionNotes,...(user.questionNotes||{})};
             if(cloudState.theme)user.theme=cloudState.theme;

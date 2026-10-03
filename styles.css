@@ -264,3 +264,34 @@ body.dark .profile-page .profile-hero{background:#30271d;border-color:#59452a;co
 .boot-screen>strong{font-size:17px;letter-spacing:.01em;color:#342823}.boot-screen>small{color:#82736a;font-size:12px}.loading-dots::after{content:"…";display:inline-block;width:1em;text-align:left;animation:loading-dots 1.25s steps(4,end) infinite}
 @keyframes anime-scene-arrive{from{opacity:0;transform:translateY(12px) scale(.97)}to{opacity:1;transform:translateY(0) scale(1)}}@keyframes anime-halo-spin{to{transform:rotate(360deg)}}@keyframes anime-spark-float{0%,100%{opacity:.45;transform:translateY(3px) scale(.8)}50%{opacity:1;transform:translateY(-6px) scale(1.12)}}@keyframes anime-screen-sweep{0%,22%{left:-45%;opacity:0}34%{opacity:.9}67%,100%{left:125%;opacity:0}}@keyframes loading-dots{0%{content:""}25%{content:"."}50%{content:".."}75%,100%{content:"…"}}
 @media(prefers-reduced-motion:reduce){.loader-scene,.anime-spark,.anime-speedline{animation:none}.anime-speedline{display:none}}
+
+/* Daily quote and to-do card. */
+.home-routine-card{display:flex;flex-direction:column;gap:17px}
+.daily-quote{position:relative;min-height:132px;padding:16px 18px 14px;border:1px solid #eadcbf;border-radius:9px;background:linear-gradient(135deg,#fffaf0,#fbf4e7)}
+.quote-kicker{display:block;color:#98752e;font-size:9px;font-weight:800;letter-spacing:.12em}
+.daily-quote blockquote{margin:12px 18px 15px 0;color:#49382f;font-family:Georgia,serif;font-size:16px;line-height:1.48}
+.quote-counter{position:absolute;right:14px;bottom:12px;color:#947d5a;font-size:9px;font-weight:700}
+.todo-section h2{margin:0 0 9px;color:#3a312a;font-size:13px}
+.todo-section .todo-line{margin-top:0}
+.auth-logout-button{display:grid;place-items:center;width:28px;height:28px;padding:0;color:#8b1e18}
+.auth-logout-button .line-icon{width:17px;height:17px}
+
+/* Softer charcoal surfaces with the site's maroon and gold accents. */
+body.dark{--ink:#eee9e2;--muted:#b6ada2;--panel:#292725;--line:#47413b;--soft:#35312b;--blue:#c76555;--blue2:#ad5145;background:#242321;color:#eee9e2}
+body.dark .app-header{background:#292725;border-color:#47413b}
+body.dark .brand-copy strong{color:#f0d9c9}
+body.dark .nav-link,body.dark .header-button{color:#d2c8bd}
+body.dark .nav-link:hover,body.dark .header-button:hover,body.dark .nav-link.active{background:#38312c;color:#e9b888}
+body.dark .icon-button{background:#302e2a;border-color:#514940;color:#e9b888}
+body.dark .home-page .surface,body.dark .home-library .library-controls{background:#2b2926;border-color:#47413b}
+body.dark .home-page .hero.home-hero{background:linear-gradient(115deg,#382825,#3d3028 60%,#41382b);border-color:#5a453b;color:#f1e9df}
+body.dark .home-hero h1,body.dark .home-section-heading h2,body.dark .home-library .library-section-head h2,body.dark .quick-practice-copy h3,body.dark .home-library .subject-copy strong,body.dark .home-activity .card-heading h2,body.dark .todo-section h2{color:#f1e9df}
+body.dark .home-hero p,body.dark .home-section-heading p,body.dark .home-library .library-section-head p,body.dark .quick-practice-copy p,body.dark .home-library .subject-copy small{color:#c2b8ac}
+body.dark .home-page .home-resume,body.dark .answer-key-note{background:#342c25;border-color:#5b4935}
+body.dark .quick-practice-icon,body.dark .home-library .subject-icon,body.dark .home-activity .streak-fire{background:#3c3028;color:#e8bd82}
+body.dark .quick-practice-copy select,body.dark .home-library .search-input,body.dark .home-activity .form-control,body.dark .home-activity .todo-line input{background:#242321;color:#eee9e2;border-color:#514940}
+body.dark .home-library .segment-button.active{background:#3b3028;color:#edc789}
+body.dark .daily-quote{background:linear-gradient(135deg,#352b25,#302c27);border-color:#58483b}
+body.dark .daily-quote blockquote{color:#f0e3d2}
+body.dark .quote-kicker,body.dark .quote-counter{color:#e5bd7a}
+body.dark .todo-item{color:#d4ccc2}
