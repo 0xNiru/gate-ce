@@ -795,10 +795,12 @@ function currentPracticeStats() {
 function leaderboardMarkup(rows) {
   if (!rows.length) return '<p class="muted">No leaderboard entries yet.</p>';
   const person = (row, rank, podium = false) => `<article class="${podium ? `leaderboard-podium-item podium-rank-${rank}` : 'leaderboard-list-row'}${row.is_current_user ? ' is-current-user' : ''}"${row.is_current_user ? ' aria-current="true"' : ''}>${podium ? `<div class="podium-medal">${rank === 1 ? '👑' : rank === 2 ? '🥈' : '🥉'}</div>` : ''}<span class="leaderboard-list-rank">${rank}</span>${row.avatar_url ? `<img class="${podium ? 'leaderboard-podium-avatar' : ''}" src="${esc(row.avatar_url)}" alt="">` : `<span class="${podium ? 'leaderboard-podium-avatar ' : ''}leaderboard-avatar">👤</span>`}<span class="leaderboard-person"><strong>${esc(row.display_name || 'Candidate')}${row.is_current_user ? '<em>You</em>' : ''}</strong><span class="leaderboard-solved">${num(row.questions_solved).toLocaleString()} <small>questions solved</small></span><span class="leaderboard-streak">🔥 ${num(row.streak_days)} day${num(row.streak_days) === 1 ? '' : 's'}</span></span>${podium ? `<div class="podium-step"><b>#${rank}</b></div>` : ''}</article>`;
-  const podiumOrder = [{ row: rows[1], rank: 2 }, { row: rows[0], rank: 1 }, { row: rows[2], rank: 3 }].filter(item => item.row);
+  const podiumOrder = rows.length < 3
+    ? rows.map((row, index) => ({ row, rank: index + 1 }))
+    : [{ row: rows[1], rank: 2 }, { row: rows[0], rank: 1 }, { row: rows[2], rank: 3 }];
   const podium = podiumOrder.map(({ row, rank }) => person(row, rank, true)).join('');
   const rest = rows.slice(3).map(row => person(row, row.rank)).join('');
-  return `${podium ? `<div class="leaderboard-podium">${podium}</div>` : ''}${rest ? `<div class="leaderboard-list">${rest}</div>` : ''}`;
+  return `${podium ? `<div class="leaderboard-podium podium-count-${podiumOrder.length}">${podium}</div>` : ''}${rest ? `<div class="leaderboard-list">${rest}</div>` : ''}`;
 }
 async function renderProfile() {
   if (!authUser) { app.innerHTML = `${header()}<main class="page home-page"><section class="surface empty-state"><strong>Sign in to view your profile</strong><button class="primary-button" data-action="auth-login">Sign in with Google</button></section></main>`; return; }

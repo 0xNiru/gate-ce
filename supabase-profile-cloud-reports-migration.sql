@@ -47,36 +47,36 @@ BEGIN
 
   SELECT id INTO target_id FROM public.test_attempts
     WHERE user_id = auth.uid() AND local_id = p_local_id FOR UPDATE;
-  IF target_id IS NULL THEN RETURN FALSE; END IF;
+  IF target_id IS NOT NULL THEN
+    SELECT array_agg(DISTINCT question_id) INTO affected_questions
+      FROM public.question_responses WHERE user_id = auth.uid() AND test_attempt_id = target_id;
+    DELETE FROM public.test_attempts WHERE id = target_id AND user_id = auth.uid();
 
-  SELECT array_agg(DISTINCT question_id) INTO affected_questions
-    FROM public.question_responses WHERE user_id = auth.uid() AND test_attempt_id = target_id;
-  DELETE FROM public.test_attempts WHERE id = target_id AND user_id = auth.uid();
+    FOREACH qid IN ARRAY COALESCE(affected_questions, ARRAY[]::TEXT[]) LOOP
+      SELECT
+        COUNT(*) FILTER (WHERE qr.status <> 'unanswered'),
+        COUNT(*) FILTER (WHERE qr.status = 'correct'),
+        (array_agg(qr.status ORDER BY ta.completed_at DESC))[1],
+        MAX(ta.completed_at)
+      INTO attempt_total, correct_total, latest_status, latest_time
+      FROM public.question_responses qr
+      JOIN public.test_attempts ta ON ta.id = qr.test_attempt_id
+      WHERE qr.user_id = auth.uid() AND qr.question_id = qid;
 
-  FOREACH qid IN ARRAY COALESCE(affected_questions, ARRAY[]::TEXT[]) LOOP
-    SELECT
-      COUNT(*) FILTER (WHERE qr.status <> 'unanswered'),
-      COUNT(*) FILTER (WHERE qr.status = 'correct'),
-      (array_agg(qr.status ORDER BY ta.completed_at DESC))[1],
-      MAX(ta.completed_at)
-    INTO attempt_total, correct_total, latest_status, latest_time
-    FROM public.question_responses qr
-    JOIN public.test_attempts ta ON ta.id = qr.test_attempt_id
-    WHERE qr.user_id = auth.uid() AND qr.question_id = qid;
-
-    IF COALESCE(attempt_total, 0) = 0 THEN
-      DELETE FROM public.question_progress WHERE user_id = auth.uid() AND question_id = qid;
-    ELSE
-      INSERT INTO public.question_progress(user_id, question_id, attempt_count, correct_count, last_correct, last_incorrect, last_attempted)
-      VALUES (auth.uid(), qid, attempt_total, COALESCE(correct_total, 0), latest_status = 'correct', latest_status = 'incorrect', latest_time)
-      ON CONFLICT (user_id, question_id) DO UPDATE SET
-        attempt_count = EXCLUDED.attempt_count,
-        correct_count = EXCLUDED.correct_count,
-        last_correct = EXCLUDED.last_correct,
-        last_incorrect = EXCLUDED.last_incorrect,
-        last_attempted = EXCLUDED.last_attempted;
-    END IF;
-  END LOOP;
+      IF COALESCE(attempt_total, 0) = 0 THEN
+        DELETE FROM public.question_progress WHERE user_id = auth.uid() AND question_id = qid;
+      ELSE
+        INSERT INTO public.question_progress(user_id, question_id, attempt_count, correct_count, last_correct, last_incorrect, last_attempted)
+        VALUES (auth.uid(), qid, attempt_total, COALESCE(correct_total, 0), latest_status = 'correct', latest_status = 'incorrect', latest_time)
+        ON CONFLICT (user_id, question_id) DO UPDATE SET
+          attempt_count = EXCLUDED.attempt_count,
+          correct_count = EXCLUDED.correct_count,
+          last_correct = EXCLUDED.last_correct,
+          last_incorrect = EXCLUDED.last_incorrect,
+          last_attempted = EXCLUDED.last_attempted;
+      END IF;
+    END LOOP;
+  END IF;
 
   -- Keep the private backup snapshot in sync so login cannot restore the
   -- deleted attempt from its cached history array.
@@ -117,6 +117,8 @@ BEGIN
     stats_updated_at = now()
   WHERE p.id = auth.uid();
 
+  -- Make deletion idempotent: some attempts may exist only in the private
+  -- snapshot (for example, imported history without a normalized DB row).
   RETURN TRUE;
 END;
 $$;
