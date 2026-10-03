@@ -19,7 +19,7 @@ The Google callback URI above is different from the app redirect URL. If the Goo
 
 ### Profile, cloud backup, and question reports
 
-Apply `supabase-profile-cloud-reports-migration.sql` in the Supabase SQL Editor. It adds a private full-state cloud snapshot, profile image storage, aggregate leaderboard access, and profile statistics. Existing test-attempt and response rows remain protected by their per-user RLS policies; the leaderboard RPC exposes profile name/photo, solved-question and test counts, streaks, and rank only.
+Apply `supabase-profile-cloud-reports-migration.sql` in the Supabase SQL Editor. It adds a private full-state cloud snapshot, profile image storage, aggregate leaderboard access, and profile statistics. Existing test-attempt and response rows remain protected by their per-user RLS policies; the `get_public_leaderboard_v2` RPC exposes profile name/photo, solved-question and test counts, streaks, and rank only.
 
 The same additive migration installs `delete_own_test_attempt`, used by the Recent Practice delete control. Re-run the updated SQL after pulling code changes. It sends a PostgREST schema reload notification so the RPC is available immediately; if Supabase still reports it missing, refresh the app and wait a few seconds before trying again.
 

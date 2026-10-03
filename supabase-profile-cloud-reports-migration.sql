@@ -8,8 +8,7 @@ ALTER TABLE public.profiles ADD COLUMN IF NOT EXISTS stats_updated_at TIMESTAMPT
 
 -- This RPC exposes only profile display fields and aggregate counts.
 -- Test history and response tables keep their existing per-user RLS policies.
-DROP FUNCTION IF EXISTS public.get_public_leaderboard();
-CREATE FUNCTION public.get_public_leaderboard()
+CREATE OR REPLACE FUNCTION public.get_public_leaderboard_v2()
 RETURNS TABLE(display_name TEXT, avatar_url TEXT, questions_solved INTEGER, tests_taken INTEGER, streak_days INTEGER, rank INTEGER, is_current_user BOOLEAN)
 LANGUAGE sql STABLE SECURITY DEFINER SET search_path = public
 AS $$
@@ -26,8 +25,8 @@ AS $$
   WHERE r.position <= 20 OR r.id = auth.uid()
   ORDER BY r.position
 $$;
-REVOKE ALL ON FUNCTION public.get_public_leaderboard() FROM PUBLIC;
-GRANT EXECUTE ON FUNCTION public.get_public_leaderboard() TO anon, authenticated;
+REVOKE ALL ON FUNCTION public.get_public_leaderboard_v2() FROM PUBLIC;
+GRANT EXECUTE ON FUNCTION public.get_public_leaderboard_v2() TO anon, authenticated;
 
 -- Delete one of the signed-in user's completed tests and recalculate affected
 -- per-question aggregates so history deletion stays consistent with the board.

@@ -201,7 +201,7 @@
 
   async function loadLeaderboard() {
     if (!_client) return [];
-    const { data, error } = await _client.rpc('get_public_leaderboard');
+    const { data, error } = await _client.rpc('get_public_leaderboard_v2');
     if (error) throw error;
     return data || [];
   }
