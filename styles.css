@@ -295,3 +295,6 @@ body.dark .daily-quote{background:linear-gradient(135deg,#352b25,#302c27);border
 body.dark .daily-quote blockquote{color:#f0e3d2}
 body.dark .quote-kicker,body.dark .quote-counter{color:#e5bd7a}
 body.dark .todo-item{color:#d4ccc2}
+/* Invert the complete day-mode surface, including fixed-color exam UI. */
+body.dark #app,body.dark #appDialog{filter:invert(1) hue-rotate(180deg)}
+body.dark #app img,body.dark #app video,body.dark #app canvas,body.dark #appDialog img{filter:invert(1) hue-rotate(180deg)}
