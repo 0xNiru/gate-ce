@@ -16,3 +16,16 @@ In the Supabase Dashboard, enable Google under **Authentication → Sign In / Pr
 `https://gate-ce.vercel.app/`
 
 The Google callback URI above is different from the app redirect URL. If the Google error still occurs, confirm the request's `client_id` belongs to the OAuth client where that callback was added, then save the Google and Supabase provider settings.
+
+### Profile, cloud backup, and question reports
+
+Apply `supabase-profile-cloud-reports-migration.sql` in the Supabase SQL Editor. It adds a private full-state cloud snapshot, profile image storage, aggregate leaderboard access, and profile statistics. Existing test-attempt and response rows remain protected by their per-user RLS policies; the leaderboard RPC exposes aggregate counts and profile name/photo only.
+
+After linking the repository to your Supabase project (`supabase link --project-ref <project-ref>`), deploy the Telegram report function from the repository root:
+
+```sh
+supabase functions deploy report-question
+supabase secrets set TELEGRAM_BOT_TOKEN='your-rotated-bot-token' TELEGRAM_REPORT_CHAT_ID='your-chat-id'
+```
+
+Never put the Telegram bot token in a browser file or Git. The bot must have access to the destination chat; start a direct chat with it and obtain the numeric chat ID before setting the secret.

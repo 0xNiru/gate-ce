@@ -2,7 +2,7 @@ const $ = (id) => document.getElementById(id);
 const app = $('app');
 const dialog = $('appDialog');
 const STORE_KEY = 'gate-ce-practice-v1';
-const DEFAULT_USER = { bookmarks: [], mistakes: [], history: [], activeExam: null, answerOverrides: {}, todos: [], notes: '', theme: 'light' };
+const DEFAULT_USER = { bookmarks: [], mistakes: [], history: [], activeExam: null, answerOverrides: {}, todos: [], notes: '', questionNotes: {}, theme: 'light' };
 let user = loadUser();
 let authUser = null; // { user, profile } when logged in via Supabase
 let questions = [];
@@ -46,7 +46,8 @@ function scheduleCloudSync(delay = 3000) {
     try {
       await SupaAuth.syncBookmarks(user.bookmarks || []);
       await SupaAuth.syncMistakes(user.mistakes || []);
-    } catch (e) { console.warn('[CloudSync] bookmark/mistake sync error', e); }
+      await SupaAuth.saveCloudState(user);
+    } catch (e) { console.warn('[CloudSync] sync error', e); }
   }, delay);
 }
 function esc(value='') { return String(value).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
@@ -184,19 +185,19 @@ function folderSectionMarkup() {
   const f = backupFolder, meta = readBackupMeta(), row = 'style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px"';
   const last = meta.lastFolderAt ? `<p><small>Last saved ${esc(whenLabel(meta.lastFolderAt))}</small></p>` : '';
   const err = f.error ? `<p><small>${esc(f.error)}</small></p>` : '';
-  if (!folderBackupSupported()) return '<p>Automatic folder backup needs Chrome or Edge, opened from <code>localhost</code> or an https address. In this browser, use the download option above.</p>';
-  if (f.state === 'granted') return `<p>Saving to <strong>${esc(f.name)}</strong> a few seconds after every change. Your last ${BACKUP_KEEP_DAYS} daily files are kept, plus a <code>latest</code> file.</p>${last}${err}<div ${row}><button class="primary-button" data-action="backup-folder-now">Back up now</button><button class="outline-button" data-action="backup-folder-restore">Restore latest</button><button class="outline-button" data-action="backup-folder-pick">Change folder</button><button class="outline-button" data-action="backup-folder-disconnect">Turn off</button></div>`;
-  if (f.state === 'prompt') return `<p>Your browser needs your permission again to write to <strong>${esc(f.name)}</strong>. This is normal after a browser restart. Automatic backups are paused until you allow it.</p>${err}<div ${row}><button class="primary-button" data-action="backup-folder-now">Re-authorize folder</button><button class="outline-button" data-action="backup-folder-pick">Change folder</button><button class="outline-button" data-action="backup-folder-disconnect">Turn off</button></div>`;
-  if (f.state === 'error') return `<p>The backup folder <strong>${esc(f.name)}</strong> could not be used${f.error ? `: ${esc(f.error)}` : '.'}</p><div ${row}><button class="primary-button" data-action="backup-folder-pick">Choose another folder</button><button class="outline-button" data-action="backup-folder-disconnect">Turn off</button></div>`;
-  return `<p>Pick a folder once and this app saves a fresh backup there automatically whenever your data changes. Cloud-synced folders (OneDrive, Google Drive, Dropbox) make it double as an offsite copy.</p><p><small>Choose a dedicated subfolder such as <code>GATE-backups</code>. Browsers refuse system folders like Documents or Downloads themselves.</small></p>${err}<div ${row}><button class="primary-button" data-action="backup-folder-pick">Choose backup folder</button></div>`;
+  if (!folderBackupSupported()) return '<p>Automatic folder backup is unavailable here. Use Download backup.</p>';
+  if (f.state === 'granted') return `<p>Automatic local copies are saved in <strong>${esc(f.name)}</strong>. Keeps the latest file and ${BACKUP_KEEP_DAYS} daily copies.</p>${last}${err}<div ${row}><button class="primary-button" data-action="backup-folder-now">Back up now</button><button class="outline-button" data-action="backup-folder-restore">Restore latest</button><button class="outline-button" data-action="backup-folder-pick">Change folder</button><button class="outline-button" data-action="backup-folder-disconnect">Turn off</button></div>`;
+  if (f.state === 'prompt') return `<p>Allow access again to continue saving in <strong>${esc(f.name)}</strong>.</p>${err}<div ${row}><button class="primary-button" data-action="backup-folder-now">Allow and back up</button><button class="outline-button" data-action="backup-folder-pick">Change folder</button><button class="outline-button" data-action="backup-folder-disconnect">Turn off</button></div>`;
+  if (f.state === 'error') return `<p>Could not access <strong>${esc(f.name)}</strong>.</p><div ${row}><button class="primary-button" data-action="backup-folder-pick">Choose another folder</button><button class="outline-button" data-action="backup-folder-disconnect">Turn off</button></div>`;
+  return `<p>Save automatic copies to a folder on this device.</p>${err}<div ${row}><button class="primary-button" data-action="backup-folder-pick">Choose backup folder</button></div>`;
 }
 function renderBackupDialog(message = '') {
   const meta = readBackupMeta(), snap = readPreRestore();
   const note = message ? `<div class="backup-setup-note"><strong>${esc(message)}</strong></div>` : '';
   const lastDownload = meta.lastDownloadAt ? `<p><small>Last downloaded ${esc(whenLabel(meta.lastDownloadAt))}</small></p>` : '';
   const undo = snap ? `<p><small>A safety copy from before your last restore (${esc(whenLabel(snap.savedAt))}) is available.</small></p><button class="outline-button" data-action="restore-undo">Undo last restore</button>` : '';
-  const markup = `${note}<div class="backup-options">
-    <section class="backup-option"><span class="backup-option-icon">↓</span><div><h3>Download to this device</h3><p>Save your bookmarks, practice history, notes, and settings as one JSON file (${esc(dataCounts(user))}).</p>${lastDownload}<button class="primary-button" data-action="backup-download">Download backup</button></div></section>
+  const markup = `${note}<p class="backup-local-note">This option creates a local backup on your device. For a permanent cloud backup across devices, sign in with Google.</p><div class="backup-options">
+    <section class="backup-option"><span class="backup-option-icon">↓</span><div><h3>Download to this device</h3><p>Save your practice data as one JSON file (${esc(dataCounts(user))}).</p>${lastDownload}<button class="primary-button" data-action="backup-download">Download backup</button></div></section>
     <section class="backup-option"><span class="backup-option-icon">↑</span><div><h3>Restore from a file</h3><p>Load a backup you saved earlier. You’ll see a summary and confirm before anything is replaced.</p><button class="outline-button" data-action="restore">Choose backup file</button>${undo}</div></section>
     <section class="backup-option"><span class="backup-option-icon">⟳</span><div><h3>Automatic backup to a folder</h3>${folderSectionMarkup()}</div></section>
   </div>`;
@@ -205,6 +206,11 @@ function renderBackupDialog(message = '') {
 function showBackupDialog() { renderBackupDialog(); }
 function toast(message) { let el=$('toast'); if(!el){el=document.createElement('div');el.id='toast';el.className='toast';document.body.append(el);} el.textContent=message; clearTimeout(toastHandle); toastHandle=setTimeout(()=>el.remove(),2400); }
 function dialogShow(title, body, footer='') { dialog.classList.toggle('calculator-modal',body.includes('class="gate-calc"'));dialog.innerHTML=`<div class="modal-head"><h2>${title}</h2><button class="modal-close" data-dialog="close" aria-label="Close">×</button></div><div class="modal-body">${body}</div>${footer?`<div class="modal-footer">${footer}</div>`:''}`; if(!dialog.open)dialog.showModal(); }
+function showQuestionReport(id) {
+  const q = questionById.get(id); if (!q) return;
+  if (!authUser) { toast('Sign in with Google to report an issue.'); return; }
+  dialogShow('Report this question', `<p>Tell us what needs attention for <strong>${esc(q.year)} ${esc(q.session || '')} · Q${esc(q.questionNo)}</strong>.</p><label class="form-label" for="reportReason">Issue type</label><select id="reportReason" class="form-control"><option>Wrong question</option><option>Wrong answer key</option><option>Missing data</option><option>Question formatting or image issue</option><option>Other</option></select><label class="form-label" for="reportDetails">Details (optional)</label><textarea id="reportDetails" class="form-control" rows="4" maxlength="1000" placeholder="What should be corrected?"></textarea>`, '<button class="outline-button" data-dialog="close">Cancel</button><button class="primary-button" data-action="send-question-report" data-id="'+esc(id)+'">Send report</button>');
+}
 function showCalculator() { dialog.classList.add('calculator-modal');dialog.classList.remove('calculator-minimized');dialog.innerHTML=window.buildScientificCalculator();dialog.showModal(); }
 function dialogClose(){if(dialog.open)dialog.close();}
 function navigate(next, options={}) { view=next; if(options.subject!==undefined)selectedSubject=options.subject; if(options.topic!==undefined)selectedTopic=options.topic; if(options.result!==undefined)activeResult=options.result; collectionSearch=''; history.pushState({},'',`#${next}`); render(); window.scrollTo(0,0); }
@@ -322,8 +328,7 @@ function authHeaderButton() {
     ? `<img src="${esc(avatarUrl)}" alt="${esc(name)}" class="auth-avatar-img">`
     : `<span class="auth-avatar-initials">${esc(initials)}</span>`;
   return `<div class="auth-user-widget">
-    <div class="auth-avatar" title="${esc(name)}">${avatar}</div>
-    <span class="auth-user-name">${esc(name.split(' ')[0])}</span>
+    <button class="profile-open-button" data-action="go" data-view="profile" title="Open profile"><span class="auth-avatar">${avatar}</span><span class="auth-user-name">${esc(name.split(' ')[0])}</span></button>
     <button class="auth-logout-button" data-action="auth-logout" title="Sign out">↩</button>
   </div>`;
 }
@@ -335,7 +340,7 @@ function header() {
   return `<header class="app-header ${examView?'exam-app-header':''}">
     <a class="brand" href="#home" data-action="go" data-view="home"><span class="brand-mark"><img src="assets/gate-ce-mark.png?v=1" alt=""></span><span class="brand-copy"><strong>GATE CE</strong><small>PREVIOUS YEAR PRACTICE</small></span></a>
     <nav class="header-nav"><button class="nav-link ${active.home?.includes(view)?'active':''}" data-action="go" data-view="home">${iconSvg('grid')}<span>Question Library</span></button><button class="nav-link ${view==='analytics'?'active':''}" data-action="go" data-view="analytics">${iconSvg('math')}<span>Analytics</span></button><button class="nav-link ${view==='bookmarks'?'active':''}" data-action="go" data-view="bookmarks">${iconSvg('bookmark')}<span>Bookmarks</span><span class="nav-count">${user.bookmarks.length||''}</span></button><button class="nav-link ${view==='mistakes'?'active':''}" data-action="go" data-view="mistakes">${iconSvg('mistake')}<span>Mistakes</span><span class="nav-count">${user.mistakes.length||''}</span></button></nav>
-    <div class="header-tools"><button class="header-button" data-action="backup">${iconSvg('backup')}<span>Backup</span>${backupAttention()}</button><button class="header-button" data-action="restore">${iconSvg('restore')}<span>Restore</span></button><button class="icon-button" data-action="theme" aria-label="${user.theme==='dark'?'Switch to light theme':'Switch to dark theme'}" title="${user.theme==='dark'?'Switch to light theme':'Switch to dark theme'}">${iconSvg(user.theme==='dark'?'sun':'moon')}</button>${authHeaderButton()}</div>
+    <div class="header-tools"><button class="header-button" data-action="backup">${iconSvg('backup')}<span>Backup</span>${backupAttention()}</button><button class="icon-button" data-action="theme" aria-label="${user.theme==='dark'?'Switch to light theme':'Switch to dark theme'}" title="${user.theme==='dark'?'Switch to light theme':'Switch to dark theme'}">${iconSvg(user.theme==='dark'?'sun':'moon')}</button>${authHeaderButton()}</div>
   </header>`;
 }
 function render() {
@@ -348,6 +353,7 @@ function render() {
   if(view==='year'){renderYear();return;}
   if(view==='custom'){renderCustom();return;}
   if(view==='analytics'){renderAnalytics();return;}
+  if(view==='profile'){renderProfile();return;}
   if(view==='bookmarks'||view==='mistakes'){renderCollection(view);return;}
   renderHome();
 }
@@ -624,7 +630,7 @@ function renderExam() {
   }).join('');
   const isNat=type==='NAT';
   const negative=negativeMark(q);
-  app.innerHTML=`${header()}<main class="exam-page"><section class="exam-workspace"><div class="exam-ribbon"><strong>${esc(e.title)}</strong><div class="exam-ribbon-actions"><button data-action="instructions">ⓘ Instructions</button><button data-action="paper">▤ Question Paper</button></div></div><div class="exam-row"><button class="exam-chevron" aria-label="Previous subject">◀</button><span class="exam-chip">${esc(e.subject||q.subject)}</span><button class="exam-chevron">▶</button><button class="exam-chevron push calculator-trigger" data-action="calculator" title="Calculator" aria-label="Open calculator"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4.5" y="2.5" width="15" height="19" rx="2"/><path d="M8 6.5h8v4H8zM8 14h1m3 0h1m3 0h1M8 17.5h1m3 0h1m3 0h1"/></svg></button></div><div class="section-label-row"><strong>Sections</strong><span class="time-label">Time Left : <b id="timerValue">${fmtTime(Math.max(0,(e.deadline-Date.now())/1000))}</b></span></div><div class="exam-row section-row-small"><button class="exam-chevron">◀</button><span class="exam-chip secondary">${esc(e.topic||q.topic||'GATE CE PYQ')}</span><button class="exam-chevron push">▶</button></div><div class="exam-meta"><span>Question Type: <b>${esc(type)}</b></span><span>Marks for correct answer: <b class="green">${num(q.marks)}</b> | Negative Marks: <b class="red">${negative?negative.toFixed(2):'0'}</b></span></div><article class="question-card"><div class="question-card-title">Question No. ${q.questionNo??e.index+1}<span class="question-context">${q.year} ${q.session?`· ${esc(q.session)}`:''}</span></div><div class="question-body question-markup">${renderQuestionContent(q)}${q.sourceUrl?`<div class="question-source">(GATE CE ${q.year})</div>`:''}</div>${isNat?`<div class="nat-answer"><label for="natResponse">Your answer</label><input id="natResponse" class="answer-input nat-input" inputmode="decimal" type="text" value="${esc(answer??'')}" placeholder="Enter numerical value" autocomplete="off"></div>${q.answerStatus==='pending'?'<div class="nat-note">Answer key pending verification. Your response will be saved and excluded from scoring.</div>':''}`:`<fieldset class="answer-options" aria-label="Answer options">${options}</fieldset>`}</article><div class="exam-actions"><div class="action-group"><button class="outline-button" data-action="mark-next">Mark for Review &amp; Next</button><button class="outline-button" data-action="clear-answer">Clear Response</button></div><div class="action-group"><button class="outline-button" data-action="previous" ${e.index===0?'disabled':''}>Previous</button><button class="primary-button" data-action="next">Save &amp; Next</button></div></div></section><aside class="candidate-panel">${candidateBlock()}<div class="status-legend"><div class="status-item"><i class="status-badge answered">${statusCounts.answered}</i> Answered</div><div class="status-item"><i class="status-badge not-answered">${statusCounts['not-answered']}</i> Not Answered</div><div class="status-item"><i class="status-badge not-visited">${statusCounts['not-visited']}</i> Not Visited</div><div class="status-item"><i class="status-badge review">${statusCounts.review}</i> Marked for Review</div><div class="status-item wide"><i class="status-badge answered-review">${statusCounts['answered-review']}</i> Answered &amp; Marked for Review</div></div><div class="palette-title">${esc(e.topic||q.topic||'GATE CE PYQ')}</div><div class="palette-label">Choose a Question</div><div class="question-palette">${qs.map((item,i)=>`<button class="palette-button ${answerStatus(i)} ${i===e.index?'current':''}" data-action="jump" data-index="${i}" aria-label="Question ${i+1}: ${answerStatus(i)}">${i+1}</button>`).join('')}</div><div class="submit-dock"><button class="primary-button" data-action="submit">Submit</button></div></aside></main>`;
+  app.innerHTML=`${header()}<main class="exam-page"><section class="exam-workspace"><div class="exam-ribbon"><strong>${esc(e.title)}</strong><div class="exam-ribbon-actions"><button data-action="instructions">ⓘ Instructions</button><button data-action="paper">▤ Question Paper</button></div></div><div class="exam-row"><button class="exam-chevron" aria-label="Previous subject">◀</button><span class="exam-chip">${esc(e.subject||q.subject)}</span><button class="exam-chevron">▶</button><button class="exam-chevron push calculator-trigger" data-action="calculator" title="Calculator" aria-label="Open calculator"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4.5" y="2.5" width="15" height="19" rx="2"/><path d="M8 6.5h8v4H8zM8 14h1m3 0h1m3 0h1M8 17.5h1m3 0h1m3 0h1"/></svg></button></div><div class="section-label-row"><strong>Sections</strong><span class="time-label">Time Left : <b id="timerValue">${fmtTime(Math.max(0,(e.deadline-Date.now())/1000))}</b></span></div><div class="exam-row section-row-small"><button class="exam-chevron">◀</button><span class="exam-chip secondary">${esc(e.topic||q.topic||'GATE CE PYQ')}</span><button class="exam-chevron push">▶</button></div><div class="exam-meta"><span>Question Type: <b>${esc(type)}</b></span><span>Marks for correct answer: <b class="green">${num(q.marks)}</b> | Negative Marks: <b class="red">${negative?negative.toFixed(2):'0'}</b></span></div><article class="question-card"><div class="question-card-title">Question No. ${q.questionNo??e.index+1}<button class="report-question-button" data-action="report-question" data-id="${esc(q.id)}" title="Report an issue" aria-label="Report question">◢</button><span class="question-context">${q.year} ${q.session?`· ${esc(q.session)}`:''}</span></div><div class="question-body question-markup">${renderQuestionContent(q)}${q.sourceUrl?`<div class="question-source">(GATE CE ${q.year})</div>`:''}</div>${isNat?`<div class="nat-answer"><label for="natResponse">Your answer</label><input id="natResponse" class="answer-input nat-input" inputmode="decimal" type="text" value="${esc(answer??'')}" placeholder="Enter numerical value" autocomplete="off"></div>${q.answerStatus==='pending'?'<div class="nat-note">Answer key pending verification. Your response will be saved and excluded from scoring.</div>':''}`:`<fieldset class="answer-options" aria-label="Answer options">${options}</fieldset>`}</article><div class="exam-actions"><div class="action-group"><button class="outline-button" data-action="mark-next">Mark for Review &amp; Next</button><button class="outline-button" data-action="clear-answer">Clear Response</button></div><div class="action-group"><button class="outline-button" data-action="previous" ${e.index===0?'disabled':''}>Previous</button><button class="primary-button" data-action="next">Save &amp; Next</button></div></div></section><aside class="candidate-panel">${candidateBlock()}<div class="status-legend"><div class="status-item"><i class="status-badge answered">${statusCounts.answered}</i> Answered</div><div class="status-item"><i class="status-badge not-answered">${statusCounts['not-answered']}</i> Not Answered</div><div class="status-item"><i class="status-badge not-visited">${statusCounts['not-visited']}</i> Not Visited</div><div class="status-item"><i class="status-badge review">${statusCounts.review}</i> Marked for Review</div><div class="status-item wide"><i class="status-badge answered-review">${statusCounts['answered-review']}</i> Answered &amp; Marked for Review</div></div><div class="palette-title">${esc(e.topic||q.topic||'GATE CE PYQ')}</div><div class="palette-label">Choose a Question</div><div class="question-palette">${qs.map((item,i)=>`<button class="palette-button ${answerStatus(i)} ${i===e.index?'current':''}" data-action="jump" data-index="${i}" aria-label="Question ${i+1}: ${answerStatus(i)}">${i+1}</button>`).join('')}</div><div class="submit-dock"><button class="primary-button" data-action="submit">Submit</button></div></aside></main>`;
 }
 function startTimer() {
   timerHandle=setInterval(()=>{const e=user.activeExam;if(!e)return;const remaining=Math.ceil((e.deadline-Date.now())/1000);const label=$('timerValue');if(label){label.textContent=fmtTime(remaining);label.classList.toggle('red',remaining<300);}if(remaining<=0){clearInterval(timerHandle);submitExam(true);}},1000);
@@ -682,7 +688,7 @@ function finalizeExam() {
   for(const q of qs){const answer=e.answers[q.id];const grade=scoreQuestion(q,answer);evaluations[q.id]=grade;if(grade.status==='correct'){correct++;earned+=grade.score;}else if(grade.status==='incorrect'){incorrect++;negative+=Math.abs(grade.score);}else if(grade.status==='unanswered')unanswered++;else pending++;}
   const attempt={id:`result-${Date.now()}`,title:e.title,subject:e.subject,topic:e.topic,year:e.year,session:e.session,questionIds:[...e.qids],answers:{...e.answers},evaluations,endedAt:Date.now(),durationSeconds:e.durationSeconds,remainingSeconds:Math.max(0,Math.ceil((e.deadline-Date.now())/1000)),totalMarks:qs.reduce((n,q)=>n+num(q.marks),0),earned,negative,score:earned-negative,correct,incorrect,unanswered,pending,times:{...e.times},visited:[...e.visited]};
   user.history.unshift(attempt);user.history=user.history.slice(0,150);user.activeExam=null;saveUser();activeResult=attempt.id;dialogClose();navigate('results',{result:attempt.id});
-  if(window.SupaAuth?.user())SupaAuth.saveTestAttempt(attempt).catch(e=>console.warn('[CloudSync] test attempt save error',e));
+  if(window.SupaAuth?.user())SupaAuth.saveTestAttempt(attempt).then(()=>SupaAuth.saveCloudState(user)).catch(e=>console.warn('[CloudSync] test attempt save error',e));
 }
 function answerLabel(q,value) {
   if(!answerExists(value))return 'Not attempted';
@@ -707,7 +713,7 @@ function reviewCard(q,attempt,grade,index) {
   const options=q.type==='NAT'?'':`<div class="review-options">${(q.options||[]).map(o=>{const isCorrect=keySet.includes(String(o.key));const isSelected=selected.includes(String(o.key));let cls=isCorrect?'correct':isSelected&&status==='incorrect'?'selected-wrong':'';return `<div class="review-option ${cls}">${isCorrect?'✓ ':isSelected&&status==='incorrect'?'× ':''}<strong>${esc(o.key)}.</strong> ${renderRich(o.html||esc(o.text||''),q,true)}</div>`;}).join('')}</div>`;
   const keyPending=status==='pending';const explanation=q.explanationHtml?renderRich(q.explanationHtml,q):esc(q.explanationText||'No explanation has been provided for this question.');
   const verifiedAnswer=q.type==='NAT'?natKeyLabel(user.answerOverrides[q.id]??q.natAnswer):answerLabel(q,keySet);
-  return `<article class="surface review-card ${status}" data-review-status="${esc(status)}" id="review-${esc(q.id)}"><div class="review-card-head"><strong>Question ${esc(q.questionNo??index+1)} (${esc(q.type)})</strong><span>🗓 ${esc(q.year)}${q.session?` · ${esc(q.session)}`:''}</span><span class="review-topic">▦ ${esc(q.topic||attempt?.topic||q.subject||'Uncategorized')}</span><span>⏱ ${questionWasVisited?fmtDuration(elapsed):'Not visited'}</span><span>+${num(q.marks).toFixed(2)} marks</span><span class="question-status ${status}">${statusText}</span></div><div class="review-question question-markup">${renderQuestionContent(q)}</div>${options}<div class="review-note"><strong>Your answer:</strong> ${esc(answerLabel(q,answer))}<br><strong>${keyPending?'Verified answer:':'Correct answer:'}</strong> ${keyPending?'Pending verification':esc(verifiedAnswer)}</div><div class="review-actions"><button data-action="toggle-bookmark" data-id="${esc(q.id)}">${user.bookmarks.includes(q.id)?'📌 Bookmarked':'📌 Bookmark'}</button><button data-action="toggle-mistake" data-id="${esc(q.id)}">${user.mistakes.includes(q.id)?'🤦 Mistake recorded':'🤦 Silly mistake'}</button><button data-action="toggle-explanation" data-id="${esc(q.id)}">📖 ${q.explanationHtml||q.explanationText?'View explanation':'Explanation unavailable'}</button><button data-action="edit-note" data-id="${esc(q.id)}">📝 Notes</button></div><div class="review-explanation hidden" id="explanation-${esc(q.id)}">${explanation}</div><div class="review-explanation hidden" id="note-${esc(q.id)}"><textarea class="form-control question-note" data-id="${esc(q.id)}" placeholder="Add a note for this question…" style="width:100%">${esc(user.questionNotes?.[q.id]||'')}</textarea><button class="small-action" data-action="save-question-note" data-id="${esc(q.id)}">Save note</button></div></article>`;
+  return `<article class="surface review-card ${status}" data-review-status="${esc(status)}" id="review-${esc(q.id)}"><div class="review-card-head"><strong>Question ${esc(q.questionNo??index+1)} (${esc(q.type)})</strong><span>🗓 ${esc(q.year)}${q.session?` · ${esc(q.session)}`:''}</span><span class="review-topic">▦ ${esc(q.topic||attempt?.topic||q.subject||'Uncategorized')}</span><span>⏱ ${questionWasVisited?fmtDuration(elapsed):'Not visited'}</span><span>+${num(q.marks).toFixed(2)} marks</span><span class="question-status ${status}">${statusText}</span><button class="report-question-button" data-action="report-question" data-id="${esc(q.id)}" title="Report a question or answer-key issue" aria-label="Report question">◢</button></div><div class="review-question question-markup">${renderQuestionContent(q)}</div>${options}<div class="review-note"><strong>Your answer:</strong> ${esc(answerLabel(q,answer))}<br><strong>${keyPending?'Verified answer:':'Correct answer:'}</strong> ${keyPending?'Pending verification':esc(verifiedAnswer)}</div><div class="review-actions"><button data-action="toggle-bookmark" data-id="${esc(q.id)}">${user.bookmarks.includes(q.id)?'📌 Bookmarked':'📌 Bookmark'}</button><button data-action="toggle-mistake" data-id="${esc(q.id)}">${user.mistakes.includes(q.id)?'🤦 Mistake recorded':'🤦 Silly mistake'}</button><button data-action="toggle-explanation" data-id="${esc(q.id)}">📖 ${q.explanationHtml||q.explanationText?'View explanation':'Explanation unavailable'}</button><button data-action="edit-note" data-id="${esc(q.id)}">📝 Notes</button></div><div class="review-explanation hidden" id="explanation-${esc(q.id)}">${explanation}</div><div class="review-explanation hidden" id="note-${esc(q.id)}"><textarea class="form-control question-note" data-id="${esc(q.id)}" placeholder="Add a note for this question…" style="width:100%">${esc(user.questionNotes?.[q.id]||'')}</textarea><button class="small-action" data-action="save-question-note" data-id="${esc(q.id)}">Save note</button></div></article>`;
 }
 function questionTimingChart(qs,attempt) {
   const rows=qs.map((q,i)=>{const seconds=Math.max(0,num(attempt.times?.[q.id])),index=attempt.questionIds.indexOf(q.id);const visited=Array.isArray(attempt.visited)?attempt.visited.includes(index):seconds>0;return {q,i,seconds,visited,status:attempt.evaluations[q.id]?.status||'unanswered'};});
@@ -776,6 +782,21 @@ function renderAnalytics() {
   for(const a of attempts)for(const id of a.questionIds){const q=questionById.get(id);if(!q)continue;const item=subjectsSeen.get(q.subject)||{right:0,total:0};const g=a.evaluations[id]?.status;if(g==='correct')item.right++;if(g==='correct'||g==='incorrect')item.total++;subjectsSeen.set(q.subject,item);}
   const ranked=[...subjectsSeen.entries()].sort((a,b)=>(b[1].right/(b[1].total||1))-(a[1].right/(a[1].total||1)));
   app.innerHTML=`${header()}<main class="page analytics-page"><section class="hero analytics-hero"><div class="eyebrow">YOUR PERFORMANCE</div><h1>Analytics dashboard</h1><p>Review your practice history and accuracy across subjects.</p></section>${attempts.length?`<div class="analytics-grid"><div class="surface analytics-card"><span class="analytics-card-icon">↗</span><strong>${attempts.length}</strong><small>Completed sets</small></div><div class="surface analytics-card"><span class="analytics-card-icon">✓</span><strong>${correct}<small class="metric-denominator"> / ${totalAnswered||0}</small></strong><small>Questions correct</small></div><div class="surface analytics-card"><span class="analytics-card-icon">✦</span><strong>${score.toFixed(2)}</strong><small>Total practice marks</small></div></div><div class="analytics-chart-grid"><section class="surface dashboard-card chart-card"><div class="chart-card-head"><div><span class="chart-kicker">SCORE TREND</span><h2 class="section-title">Practice performance</h2></div><span class="chart-caption">Last ${Math.min(8,attempts.length)} sets</span></div>${analyticsTrendChart(attempts)}</section><section class="surface dashboard-card chart-card"><div class="chart-card-head"><div><span class="chart-kicker">QUESTION BREAKDOWN</span><h2 class="section-title">Response mix</h2></div></div><div class="chart-legend"><span><i class="legend-correct"></i>Correct</span><span><i class="legend-incorrect"></i>Incorrect</span><span><i class="legend-unanswered"></i>Unanswered</span></div>${outcomeChart(attempts)}</section></div><section class="surface dashboard-card analytics-subjects"><div class="chart-card-head"><div><span class="chart-kicker">BY SUBJECT</span><h2 class="section-title">Subject accuracy</h2></div></div>${ranked.length?ranked.map(([name,v])=>{const pct=v.total?Math.round(v.right/v.total*100):0;return `<div class="progress-row"><span>${esc(name)}</span><div class="progress-track"><div class="progress-fill" style="width:${pct}%"></div></div><strong>${pct}% <small>${v.right}/${v.total}</small></strong></div>`;}).join(''):`<p class="muted">Answer more questions to see subject accuracy.</p>`}</section><section class="surface dashboard-card analytics-recent"><div class="chart-card-head"><div><span class="chart-kicker">HISTORY</span><h2 class="section-title">Recent practice</h2></div><span class="chart-caption">${attempts.length} total sets</span></div>${attempts.slice(0,12).map(a=>`<div class="topic-table-row"><span>${esc(a.title)}</span><span>${dateLabel(a.endedAt)}</span><strong>${num(a.score).toFixed(2)} / ${num(a.totalMarks).toFixed(2)}</strong><button class="small-action" data-action="view-result" data-result="${esc(a.id)}">Review →</button></div>`).join('')}</section>`:`<section class="surface empty-state"><strong>No exam history yet</strong>Start a practice set to see your scores and subject accuracy here.<p><button class="primary-button" data-action="go" data-view="home">Browse questions</button></p></section>`}</main>`;
+}
+function currentPracticeStats() {
+  const solved = new Set();
+  for (const attempt of user.history || []) for (const [id, grade] of Object.entries(attempt.evaluations || {})) if (grade?.status && grade.status !== 'unanswered' && grade.status !== 'pending') solved.add(id);
+  const days = new Set((user.history || []).map(a => new Date(a.endedAt).toLocaleDateString('en-CA')));
+  let streak = 0, day = new Date();
+  if (!days.has(day.toLocaleDateString('en-CA'))) day.setDate(day.getDate() - 1);
+  while (days.has(day.toLocaleDateString('en-CA'))) { streak++; day.setDate(day.getDate() - 1); }
+  return { solved: solved.size, tests: (user.history || []).length, streak };
+}
+async function renderProfile() {
+  if (!authUser) { app.innerHTML = `${header()}<main class="page"><section class="surface empty-state"><strong>Sign in to view your profile</strong><button class="primary-button" data-action="auth-login">Sign in with Google</button></section></main>`; return; }
+  const profile = SupaAuth.profile() || {}, stats = currentPracticeStats();
+  app.innerHTML = `${header()}<main class="page profile-page"><section class="hero"><div class="eyebrow">YOUR ACCOUNT</div><h1>Profile</h1><p>Your practice progress and public leaderboard stats.</p></section><section class="surface profile-editor"><div class="profile-photo-preview">${profile.avatar_url ? `<img src="${esc(profile.avatar_url)}" alt="Profile photo">` : '<span>👤</span>'}</div><div><h2>${esc(profile.display_name || authUser.email || 'Candidate')}</h2><small>${esc(authUser.email || '')}</small><div class="profile-form-row"><label class="small-action" for="profilePhotoInput">Change photo</label><input id="profilePhotoInput" type="file" accept="image/*" hidden><input id="profileNameInput" class="form-control" maxlength="80" value="${esc(profile.display_name || '')}" placeholder="Your name"><button class="primary-button" data-action="save-profile">Save profile</button></div></div></section><div class="profile-stats-grid"><div class="surface profile-stat"><strong>${stats.streak}</strong><span>day streak</span></div><div class="surface profile-stat"><strong>${stats.solved}</strong><span>questions solved</span></div><div class="surface profile-stat"><strong>${stats.tests}</strong><span>tests taken</span></div></div><section class="surface leaderboard-card"><div class="card-heading"><h2>Leaderboard</h2><small>Top 20 · questions solved, then tests taken</small></div><div id="leaderboardRows" class="leaderboard-rows"><p class="muted">Loading leaderboard…</p></div></section><p class="muted profile-privacy-note">Only your name, photo, solved-question count, and test count appear on the leaderboard. Test history remains private to your account.</p></main>`;
+  try { const rows = await SupaAuth.loadLeaderboard(); const host = $('leaderboardRows'); if (host) host.innerHTML = rows.length ? rows.map((row, i) => `<div class="leaderboard-row"><strong>${i + 1}</strong>${row.avatar_url ? `<img src="${esc(row.avatar_url)}" alt="">` : '<span class="leaderboard-avatar">👤</span>'}<span>${esc(row.display_name || 'Candidate')}</span><b>${num(row.questions_solved)} solved</b><small>${num(row.tests_taken)} tests</small></div>`).join('') : '<p class="muted">No leaderboard entries yet.</p>'; } catch (e) { const host = $('leaderboardRows'); if (host) host.innerHTML = '<p class="muted">Leaderboard is not available yet. Apply the latest Supabase migration.</p>'; }
 }
 function renderCollection(which) {
   const isBookmark=which==='bookmarks';const ids=isBookmark?user.bookmarks:user.mistakes;const items=ids.map(id=>questionById.get(id)).filter(Boolean).filter(q=>!collectionSearch||`${q.subject} ${q.topic} ${q.questionText} ${q.year}`.toLowerCase().includes(collectionSearch.toLowerCase()));
@@ -947,12 +968,26 @@ async function handleAction(action,el) {
   if(action==='add-todo'){const text=$('todoInput')?.value.trim();if(!text)return;user.todos.unshift({text,done:false});user.todos=user.todos.slice(0,30);saveUser();renderHome();return;}
   if(action==='delete-todo'){user.todos.splice(num(el.dataset.index),1);saveUser();renderHome();return;}
   if(action==='show-pending'){dialogShow('Answer keys pending',`<p><strong>${pendingKeyCount()}</strong> questions are currently unverified: ${questions.filter(q=>q.type==='NAT'&&q.answerStatus==='pending').length} NAT questions and ${questions.filter(q=>q.type!=='NAT'&&q.answerStatus==='pending').length} MCQ/MSQ records with no correct option.</p><p>They remain linked to the answer backlog by question ID and will be excluded from grading until verified.</p>`,'<button class="primary-button" data-dialog="close">Close</button>');return;}
+  if(action==='report-question'){showQuestionReport(el.dataset.id);return;}
+  if(action==='send-question-report'){
+    const q=questionById.get(el.dataset.id),reason=$('reportReason')?.value,details=$('reportDetails')?.value.trim()||'';
+    if(!q||!authUser)return;
+    el.disabled=true;el.textContent='Sending…';
+    try{await SupaAuth.submitReport({question_id:q.id,year:q.year,session:q.session||'',question_no:q.questionNo,topic:q.topic||'',reason,details,reporter_name:SupaAuth.profile()?.display_name||authUser.email||'Candidate'});dialogClose();toast('Report sent. Thank you.');}
+    catch(error){el.disabled=false;el.textContent='Send report';toast(error.message||'Could not send the report.');}
+    return;
+  }
+  if(action==='save-profile'){
+    const display_name=$('profileNameInput')?.value.trim()||'';if(!display_name){toast('Enter a display name.');return;}
+    try{await SupaAuth.updateProfile({display_name});render();toast('Profile saved.');}catch(error){toast(error.message||'Could not save profile.');}return;
+  }
   if(action==='auth-login'){if(window.SupaAuth)SupaAuth.signInWithGoogle();return;}
   if(action==='auth-logout'){if(window.SupaAuth){await SupaAuth.signOut();authUser=null;render();}return;}
 }
 
 app.addEventListener('click',e=>{const el=e.target.closest('[data-action]');if(el)handleAction(el.dataset.action,el);else if(!e.target.closest('.custom-dropdown'))app.querySelectorAll('.custom-dropdown-menu').forEach(menu=>{menu.hidden=true;menu.closest('.custom-dropdown')?.querySelector('.custom-dropdown-trigger')?.setAttribute('aria-expanded','false');});if(!e.target.closest('.review-filter')){const menu=$('reviewFilterMenu'),trigger=$('reviewFilterTrigger');if(menu&&!menu.hidden){menu.hidden=true;trigger?.setAttribute('aria-expanded','false');}}});
 app.addEventListener('input',e=>{
+  if(e.target.id==='profilePhotoInput'&&e.target.files?.[0]){SupaAuth.uploadAvatar(e.target.files[0]).then(()=>{render();toast('Profile photo updated.');}).catch(error=>toast(error.message||'Could not upload photo.'));}
   if(e.target.id==='librarySearch'){
     const needle=e.target.value.toLowerCase();app.querySelectorAll('.browse-item').forEach(el=>el.classList.toggle('hidden',!el.dataset.search?.includes(needle)));
   }
@@ -993,7 +1028,7 @@ getRestoreInput().addEventListener('change',async e=>{
   catch(error){toast(error.message||'Could not read this backup file.');}
   finally{e.target.value='';}
 });
-window.addEventListener('popstate',()=>{const path=location.hash.replace('#','').split('/')[0];if(path==='results'&&user.history.length){view='results';activeResult=user.history[0].id;}else if(['home','subject','topic','year','custom','analytics','bookmarks','mistakes'].includes(path))view=path;else view=user.activeExam?'exam':'home';render();});
+window.addEventListener('popstate',()=>{const path=location.hash.replace('#','').split('/')[0];if(path==='results'&&user.history.length){view='results';activeResult=user.history[0].id;}else if(['home','subject','topic','year','custom','analytics','bookmarks','mistakes','profile'].includes(path))view=path;else view=user.activeExam?'exam':'home';render();});
 document.addEventListener('keydown',e=>{
   if(e.key==='Escape')app.querySelectorAll('.custom-dropdown-menu').forEach(menu=>{menu.hidden=true;menu.closest('.custom-dropdown')?.querySelector('.custom-dropdown-trigger')?.setAttribute('aria-expanded','false');});
   if(e.key==='Escape'){const menu=$('reviewFilterMenu'),trigger=$('reviewFilterTrigger');if(menu&&!menu.hidden){menu.hidden=true;trigger?.setAttribute('aria-expanded','false');trigger?.focus();}}
@@ -1017,12 +1052,29 @@ if(window.SupaAuth){
       if(authUser && !prevUser){
         // Freshly logged in – load cloud data and merge into local state
         try{
-          const [cloudBookmarks,cloudMistakes,cloudHistory]=await Promise.all([
+          const [cloudBookmarks,cloudMistakes,cloudHistory,cloudState]=await Promise.all([
             SupaAuth.loadBookmarks(),
             SupaAuth.loadMistakes(),
             SupaAuth.loadTestHistory(),
+            SupaAuth.loadCloudState(),
           ]);
           let changed=false;
+          if(cloudState){
+            if(Array.isArray(cloudState.todos)){
+              const todos=new Map();for(const todo of [...cloudState.todos,...user.todos])if(todo?.text)todos.set(todo.text,{...(todos.get(todo.text)||{}),...todo});
+              user.todos=[...todos.values()].slice(0,30);changed=true;
+            }
+            if(typeof cloudState.notes==='string'&&cloudState.notes)user.notes=cloudState.notes;
+            if(cloudState.answerOverrides)user.answerOverrides={...cloudState.answerOverrides,...user.answerOverrides};
+            if(cloudState.questionNotes)user.questionNotes={...cloudState.questionNotes,...(user.questionNotes||{})};
+            if(cloudState.theme)user.theme=cloudState.theme;
+            if(cloudState.activeExam&&!user.activeExam)user.activeExam=cloudState.activeExam;
+            if(Array.isArray(cloudState.history)&&cloudState.history.length){
+              const byId=new Map(cloudState.history.map(a=>[a.id,a]));
+              for(const attempt of user.history)if(!byId.has(attempt.id))byId.set(attempt.id,attempt);
+              user.history=[...byId.values()].sort((a,b)=>num(b.endedAt)-num(a.endedAt)).slice(0,150);changed=true;
+            }
+          }
           if(cloudBookmarks){
             // Merge: union of cloud + local, cloud wins for order
             const merged=[...new Set([...cloudBookmarks,...user.bookmarks])];
@@ -1039,6 +1091,7 @@ if(window.SupaAuth){
             if(newAttempts.length){user.history=[...newAttempts,...user.history].slice(0,150);changed=true;}
           }
           if(changed){localStorage.setItem(STORE_KEY,JSON.stringify(user));}
+          await SupaAuth.saveCloudState(user);
         }catch(e){console.warn('[Auth] cloud data merge error',e);}
       }
 

@@ -44,6 +44,12 @@
     loadTestHistory,
     saveQuestionProgress,
     loadQuestionProgress,
+    saveCloudState,
+    loadCloudState,
+    updateProfile,
+    uploadAvatar,
+    loadLeaderboard,
+    submitReport,
   };
   window.SupaAuth = api;
 
@@ -127,11 +133,12 @@
   async function upsertProfile(user) {
     if (!_client || !user) return;
     const meta = user.user_metadata || {};
+    const { data: existing } = await _client.from('profiles').select('display_name,avatar_url').eq('id', user.id).maybeSingle();
     const row = {
       id:           user.id,
       email:        user.email,
-      display_name: meta.full_name || meta.name || user.email,
-      avatar_url:   meta.avatar_url || meta.picture || null,
+      display_name: existing?.display_name || meta.full_name || meta.name || user.email,
+      avatar_url:   existing?.avatar_url || meta.avatar_url || meta.picture || null,
       updated_at:   new Date().toISOString(),
     };
     const { data, error } = await _client
@@ -141,6 +148,68 @@
       .single();
     if (error) { console.error('[SupaAuth] profile upsert error', error); return; }
     _profile = data;
+  }
+
+  async function updateProfile(fields) {
+    if (!_client || !_session) throw new Error('Sign in to update your profile.');
+    const allowed = { updated_at: new Date().toISOString() };
+    if (typeof fields.display_name === 'string') allowed.display_name = fields.display_name.trim().slice(0, 80);
+    if (typeof fields.avatar_url === 'string') allowed.avatar_url = fields.avatar_url;
+    const { data, error } = await _client.from('profiles').update(allowed).eq('id', _session.user.id).select().single();
+    if (error) throw error;
+    _profile = data;
+    return data;
+  }
+
+  async function uploadAvatar(file) {
+    if (!_client || !_session) throw new Error('Sign in to change your photo.');
+    if (!file || !file.type.startsWith('image/')) throw new Error('Choose an image file.');
+    if (file.size > 5 * 1024 * 1024) throw new Error('Profile photos must be 5 MB or smaller.');
+    const ext = (file.name.split('.').pop() || 'jpg').toLowerCase().replace(/[^a-z0-9]/g, '') || 'jpg';
+    const path = `${_session.user.id}/avatar.${ext}`;
+    const { error } = await _client.storage.from('avatars').upload(path, file, { upsert: true, contentType: file.type });
+    if (error) throw error;
+    const { data } = _client.storage.from('avatars').getPublicUrl(path);
+    return updateProfile({ avatar_url: `${data.publicUrl}?v=${Date.now()}` });
+  }
+
+  async function saveCloudState(state) {
+    if (!_client || !_session) return;
+    const { error } = await _client.from('user_cloud_state').upsert({ user_id: _session.user.id, state, updated_at: new Date().toISOString() }, { onConflict: 'user_id' });
+    if (error) throw error;
+    const attempts = state.history || [], solved = new Set();
+    for (const attempt of attempts) for (const [qid, grade] of Object.entries(attempt.evaluations || {})) if (grade?.status && !['unanswered', 'pending'].includes(grade.status)) solved.add(qid);
+    const practiceDays = new Set(attempts.map(a => new Date(a.endedAt).toISOString().slice(0, 10)));
+    let streak = 0, cursor = new Date();
+    if (!practiceDays.has(cursor.toISOString().slice(0, 10))) cursor.setUTCDate(cursor.getUTCDate() - 1);
+    while (practiceDays.has(cursor.toISOString().slice(0, 10))) { streak++; cursor.setUTCDate(cursor.getUTCDate() - 1); }
+    const [{ count: solvedCount, error: solvedError }, { count: testCount, error: testError }] = await Promise.all([
+      _client.from('question_progress').select('question_id', { count: 'exact', head: true }).eq('user_id', _session.user.id).gt('attempt_count', 0),
+      _client.from('test_attempts').select('id', { count: 'exact', head: true }).eq('user_id', _session.user.id),
+    ]);
+    const { error: profileError } = await _client.from('profiles').update({ questions_solved: Math.max(solved.size, solvedError ? 0 : (solvedCount || 0)), tests_taken: Math.max(attempts.length, testError ? 0 : (testCount || 0)), streak_days: streak, stats_updated_at: new Date().toISOString() }).eq('id', _session.user.id);
+    if (profileError) throw profileError;
+  }
+
+  async function loadCloudState() {
+    if (!_client || !_session) return null;
+    const { data, error } = await _client.from('user_cloud_state').select('state').eq('user_id', _session.user.id).maybeSingle();
+    if (error) throw error;
+    return data?.state || null;
+  }
+
+  async function loadLeaderboard() {
+    if (!_client) return [];
+    const { data, error } = await _client.rpc('get_public_leaderboard');
+    if (error) throw error;
+    return data || [];
+  }
+
+  async function submitReport(report) {
+    if (!_client || !_session) throw new Error('Sign in to send a report.');
+    const { data, error } = await _client.functions.invoke('report-question', { body: report });
+    if (error) throw error;
+    return data;
   }
 
   // ── Bookmarks ─────────────────────────────────────────────────────────────
@@ -308,17 +377,42 @@
       .order('completed_at', { ascending: false })
       .limit(150);
     if (error) { console.error('[SupaAuth] test history load error', error); return null; }
+    const attemptIds = data.map(r => r.id), allResponses = [];
+    // Keep each request below PostgREST's row cap, including large custom tests.
+    for (let i = 0; i < attemptIds.length; i += 5) {
+      let offset = 0;
+      while (true) {
+        const responseRows = await _client.from('question_responses').select('*').in('test_attempt_id', attemptIds.slice(i, i + 5)).order('question_index').range(offset, offset + 499);
+        if (responseRows.error) { console.error('[SupaAuth] test response load error', responseRows.error); return null; }
+        allResponses.push(...(responseRows.data || []));
+        if ((responseRows.data || []).length < 500) break;
+        offset += 500;
+      }
+    }
+    const responsesByAttempt = new Map();
+    for (const response of allResponses) {
+      if (!responsesByAttempt.has(response.test_attempt_id)) responsesByAttempt.set(response.test_attempt_id, []);
+      responsesByAttempt.get(response.test_attempt_id).push(response);
+    }
     // Re-shape to match the local attempt format app.js expects
-    return data.map(r => ({
+    return data.map(r => {
+      const responses = (responsesByAttempt.get(r.id) || []).sort((a, b) => (a.question_index || 0) - (b.question_index || 0));
+      const answers = {}, evaluations = {}, times = {};
+      for (const response of responses) {
+        if (response.selected_answer !== null) { try { answers[response.question_id] = JSON.parse(response.selected_answer); } catch { answers[response.question_id] = response.selected_answer; } }
+        evaluations[response.question_id] = { status: response.status || 'unanswered', score: 0 };
+        if (response.time_spent !== null) times[response.question_id] = Number(response.time_spent);
+      }
+      return ({
       id:            r.local_id,
       title:         r.title || 'Practice set',
       subject:       r.subject,
       topic:         r.topic,
       year:          r.year,
       session:       r.session,
-      questionIds:   [],   // full question list not stored in this table
-      answers:       {},
-      evaluations:   {},
+      questionIds:   responses.map(response => response.question_id),
+      answers,
+      evaluations,
       endedAt:       r.completed_at ? new Date(r.completed_at).getTime() : Date.now(),
       durationSeconds: r.duration_seconds || 0,
       remainingSeconds: r.remaining_seconds || 0,
@@ -330,9 +424,10 @@
       incorrect:     r.incorrect || 0,
       unanswered:    r.unanswered || 0,
       pending:       r.pending || 0,
-      times:         {},
-      visited:       [],
-    }));
+      times,
+      visited:       responses.map((response, index) => response.question_index ?? index),
+    });
+    });
   }
 
   /** Save per-question progress manually (called when marking a mistake/bookmark). */
