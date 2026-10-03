@@ -8,15 +8,23 @@ ALTER TABLE public.profiles ADD COLUMN IF NOT EXISTS stats_updated_at TIMESTAMPT
 
 -- This RPC exposes only profile display fields and aggregate counts.
 -- Test history and response tables keep their existing per-user RLS policies.
-CREATE OR REPLACE FUNCTION public.get_public_leaderboard()
-RETURNS TABLE(display_name TEXT, avatar_url TEXT, questions_solved INTEGER, tests_taken INTEGER)
+DROP FUNCTION IF EXISTS public.get_public_leaderboard();
+CREATE FUNCTION public.get_public_leaderboard()
+RETURNS TABLE(display_name TEXT, avatar_url TEXT, questions_solved INTEGER, tests_taken INTEGER, streak_days INTEGER, rank INTEGER, is_current_user BOOLEAN)
 LANGUAGE sql STABLE SECURITY DEFINER SET search_path = public
 AS $$
-  SELECT p.display_name, p.avatar_url, p.questions_solved, p.tests_taken
-  FROM public.profiles p
-  WHERE p.display_name IS NOT NULL
-  ORDER BY p.questions_solved DESC, p.tests_taken DESC, p.display_name ASC
-  LIMIT 20
+  WITH ranked AS (
+    SELECT p.id, p.display_name, p.avatar_url, p.questions_solved, p.tests_taken,
+      p.streak_days,
+      ROW_NUMBER() OVER (ORDER BY p.questions_solved DESC, p.tests_taken DESC, p.display_name ASC)::INTEGER AS position
+    FROM public.profiles p
+    WHERE p.display_name IS NOT NULL
+  )
+  SELECT r.display_name, r.avatar_url, r.questions_solved, r.tests_taken,
+    r.streak_days, r.position, (r.id = auth.uid())
+  FROM ranked r
+  WHERE r.position <= 20 OR r.id = auth.uid()
+  ORDER BY r.position
 $$;
 REVOKE ALL ON FUNCTION public.get_public_leaderboard() FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION public.get_public_leaderboard() TO anon, authenticated;
@@ -70,6 +78,46 @@ BEGIN
         last_attempted = EXCLUDED.last_attempted;
     END IF;
   END LOOP;
+
+  -- Keep the private backup snapshot in sync so login cannot restore the
+  -- deleted attempt from its cached history array.
+  UPDATE public.user_cloud_state ucs
+  SET state = jsonb_set(
+    ucs.state,
+    '{history}',
+    COALESCE(
+      (SELECT jsonb_agg(entry.value ORDER BY entry.ordinality)
+       FROM jsonb_array_elements(
+         CASE WHEN jsonb_typeof(ucs.state->'history') = 'array' THEN ucs.state->'history' ELSE '[]'::jsonb END
+       ) WITH ORDINALITY AS entry(value, ordinality)
+       WHERE entry.value->>'id' IS DISTINCT FROM p_local_id),
+      '[]'::jsonb
+    ),
+    TRUE
+  ), updated_at = now()
+  WHERE ucs.user_id = auth.uid();
+
+  -- Refresh the public aggregates now that this attempt has been removed.
+  WITH activity_days AS (
+    SELECT DISTINCT completed_at::date AS practice_day
+    FROM public.test_attempts
+    WHERE user_id = auth.uid() AND completed_at IS NOT NULL
+  ), streak_start AS (
+    SELECT CASE WHEN EXISTS (SELECT 1 FROM activity_days WHERE practice_day = CURRENT_DATE)
+      THEN CURRENT_DATE ELSE CURRENT_DATE - 1 END AS day
+  ), streak_rows AS (
+    SELECT d.practice_day,
+      s.day - d.practice_day - (ROW_NUMBER() OVER (ORDER BY d.practice_day DESC)::INTEGER - 1) AS gap
+    FROM activity_days d CROSS JOIN streak_start s
+    WHERE d.practice_day <= s.day
+  )
+  UPDATE public.profiles p SET
+    questions_solved = (SELECT COUNT(*)::INTEGER FROM public.question_progress qp WHERE qp.user_id = auth.uid() AND qp.attempt_count > 0),
+    tests_taken = (SELECT COUNT(*)::INTEGER FROM public.test_attempts ta WHERE ta.user_id = auth.uid() AND ta.completed_at IS NOT NULL),
+    streak_days = (SELECT COUNT(*)::INTEGER FROM streak_rows WHERE gap = 0),
+    stats_updated_at = now()
+  WHERE p.id = auth.uid();
+
   RETURN TRUE;
 END;
 $$;
@@ -89,6 +137,10 @@ DO $$ BEGIN
   CREATE POLICY "users manage own cloud state" ON public.user_cloud_state
     FOR ALL TO authenticated USING (auth.uid() = user_id) WITH CHECK (auth.uid() = user_id);
 EXCEPTION WHEN duplicate_object THEN NULL; END $$;
+
+-- Refresh PostgREST's function cache so the updated RPC signatures are usable
+-- immediately after this script is run in the Supabase SQL Editor.
+NOTIFY pgrst, 'reload schema';
 
 -- Publicly readable avatar objects; writes remain limited to the owner's folder.
 INSERT INTO storage.buckets (id, name, public, file_size_limit, allowed_mime_types)

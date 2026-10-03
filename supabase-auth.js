@@ -445,6 +445,7 @@
     if (!_client || !_session) throw new Error('Sign in to delete cloud history.');
     const { data, error } = await _client.rpc('delete_own_test_attempt', { p_local_id: localId });
     if (error) throw error;
+    if (data !== true) throw new Error('This saved attempt was not found in your cloud history. Nothing was removed.');
     return data;
   }
 
