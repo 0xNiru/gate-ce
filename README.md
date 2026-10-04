@@ -5,6 +5,16 @@ translation ; nothing much, i've accumulated every gate civil pyqs in a real GAT
 
 [check it out here](https://gate-ce.vercel.app/)
 
+### Maintaining the question bank
+
+Question data lives in `data/questions/`, with one JSON file per subject. Edit the relevant subject file to update questions, answer keys, or explanations, then rebuild the compressed files and manifest before deploying:
+
+```sh
+node scripts/build-question-bank.mjs
+```
+
+The home page starts from the small summary manifest. Opening a subject loads only that subject’s questions; year-wide practice, custom tests, analytics, and saved-question views load the full bank when opened.
+
 ### Google sign-in configuration
 
 For the Supabase project configured in `supabase-config.js`, add this exact URL to the Google OAuth client's **Authorized redirect URIs** in Google Cloud Console:

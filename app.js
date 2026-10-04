@@ -9,6 +9,9 @@ let questions = [];
 let questionById = new Map();
 let subjects = [];
 let topicsBySubject = new Map();
+let questionManifest = null;
+const loadedQuestionFiles = new Set();
+const questionFileLoads = new Map();
 let view = 'home';
 let selectedSubject = null;
 let selectedTopic = null;
@@ -212,7 +215,7 @@ function showQuestionReport(id) {
 }
 function showCalculator() { dialog.classList.add('calculator-modal');dialog.classList.remove('calculator-minimized');dialog.innerHTML=window.buildScientificCalculator();dialog.showModal(); }
 function dialogClose(){if(dialog.open)dialog.close();}
-function navigate(next, options={}) { view=next; if(options.subject!==undefined)selectedSubject=options.subject; if(options.topic!==undefined)selectedTopic=options.topic; if(options.result!==undefined)activeResult=options.result; collectionSearch=''; history.pushState({},'',`#${next}`); render(); window.scrollTo(0,0); }
+async function navigate(next, options={}) { view=next; if(options.subject!==undefined)selectedSubject=options.subject; if(options.topic!==undefined)selectedTopic=options.topic; if(options.result!==undefined)activeResult=options.result; collectionSearch=''; history.pushState({},'',`#${next}`); await ensureViewQuestions(next); render(); window.scrollTo(0,0); }
 function countLabel(n, noun='question') { return `${n.toLocaleString()} ${noun}${n===1?'':'s'}`; }
 function allQuestionData() { return questions; }
 function topicLabel(topic='') { return nice(topic||'Uncategorized')||'Uncategorized'; }
@@ -241,10 +244,51 @@ function buildTopicsBySubject(list=questions) {
 function canonicalTopic(subject, topic='') { return topicsBySubject.get(subject)?.get(topicKey(topic))||topicLabel(topic); }
 function topicsFor(subject) { return [...(topicsBySubject.get(subject)?.values()||[])].sort((a,b)=>a.localeCompare(b)); }
 function qsForTopic(subject, topic) { const key=topicKey(topic); return questions.filter(q=>q.subject===subject&&topicKey(q.topic)===key).sort(compareQuestions); }
-function totalTopicCount() { return [...topicsBySubject.values()].reduce((sum,map)=>sum+map.size,0); }
+function totalTopicCount() { return questionManifest?.subjects.reduce((sum,entry)=>sum+entry.topics.length,0) ?? [...topicsBySubject.values()].reduce((sum,map)=>sum+map.size,0); }
 function compareQuestions(a,b) { return num(b.year)-num(a.year) || String(a.session||'').localeCompare(String(b.session||'')) || num(a.questionNo)-num(b.questionNo); }
-function pendingKeyCount() { return questions.filter(q=>q.answerStatus==='pending').length; }
-function subjectCounts() { const out=new Map(); for(const q of questions)out.set(q.subject,(out.get(q.subject)||0)+1); return out; }
+function pendingKeyCount() { return questionManifest?.pendingCount ?? questions.filter(q=>q.answerStatus==='pending').length; }
+function subjectCounts() { return new Map((questionManifest?.subjects||[]).map(entry=>[entry.subject,entry.count])); }
+function questionCount() { return questionManifest?.questionCount ?? questions.length; }
+function manifestEntry(subject) { return questionManifest?.subjects.find(entry=>entry.subject===subject); }
+async function loadQuestionEntry(entry) {
+  if(!entry||loadedQuestionFiles.has(entry.file))return;
+  if(questionFileLoads.has(entry.file))return questionFileLoads.get(entry.file);
+  const task=(async()=>{
+    let response;
+    let loaded=[];
+    if('DecompressionStream' in window){
+      try{response=await fetch(`data/questions/${entry.file}.gz`);}catch{response=null;}
+      if(response?.ok){
+        try{
+          const compressed=await response.arrayBuffer();
+          const text=await new Response(new Blob([compressed]).stream().pipeThrough(new DecompressionStream('gzip'))).text();
+          loaded=JSON.parse(text);
+        }catch(error){console.warn(`Could not read compressed question data for ${entry.subject}; trying the JSON source.`,error);response=null;}
+      }
+    }
+    if(!loadedQuestionFiles.has(entry.file)&&(!response||!response.ok||!('DecompressionStream' in window))){
+      response=await fetch(`data/questions/${entry.file}`);
+      if(!response.ok)throw new Error(`Question data unavailable for ${entry.subject} (${response.status})`);
+      loaded=await response.json();
+    }
+    loadedQuestionFiles.add(entry.file);
+    questions.push(...loaded);
+    for(const q of loaded)questionById.set(q.id,q);
+    topicsBySubject.set(entry.subject,new Map(entry.topics.map(topic=>[topicKey(topic.name),topic.name])));
+  })().finally(()=>questionFileLoads.delete(entry.file));
+  questionFileLoads.set(entry.file,task);
+  return task;
+}
+async function ensureQuestionsForSubjects(names) {
+  const wanted=names?.length?questionManifest.subjects.filter(entry=>names.includes(entry.subject)):questionManifest.subjects;
+  await Promise.all(wanted.map(loadQuestionEntry));
+}
+async function ensureViewQuestions(target=view) {
+  if(!questionManifest)return;
+  if(target==='subject'||target==='topic')return ensureQuestionsForSubjects([selectedSubject||subjects[0]]);
+  if(target==='exam'&&user.activeExam?.subject)return ensureQuestionsForSubjects([user.activeExam.subject]);
+  if(['exam','results','year','custom','analytics','bookmarks','mistakes'].includes(target))return ensureQuestionsForSubjects();
+}
 function iconSvg(name) {
   const paths={
     logout:'<path d="M10 17l5-5-5-5M15 12H3"/><path d="M12 3h6a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-6"/>',
@@ -273,26 +317,19 @@ function iconSvg(name) {
 function iconFor(text='') { const key=text.toLowerCase(); const icons=[['mathematics','math'],['aptitude','aptitude'],['hydrology','water'],['environmental','leaf'],['fluid','fluid'],['geomatics','compass'],['geotechnical','ground'],['transportation','transport'],['steel','beam'],['rcc','building'],['structural','building'],['irrigation','water'],['construction','grid'],['mechanics','gear'],['solid','solid']]; return iconSvg((icons.find(([word])=>key.includes(word))||['','grid'])[1]); }
 
 async function loadDataset() {
-  let response=await fetch('data/questions.json.gz');
-  if(!response.ok) throw new Error(`Question bank unavailable (${response.status})`);
-  let text;
-  if('DecompressionStream' in window){
-    const compressed=await response.arrayBuffer();
-    text=await new Response(new Blob([compressed]).stream().pipeThrough(new DecompressionStream('gzip'))).text();
-  } else {
-    response=await fetch('data/questions.json');
-    if(!response.ok) throw new Error('This browser cannot open the compressed question bank.');
-    text=await response.text();
-  }
-  questions=JSON.parse(text);
-  questionById=new Map(questions.map(q=>[q.id,q]));
-  subjects=[...subjectCounts().keys()].sort((a,b)=>a.localeCompare(b));
-  topicsBySubject=buildTopicsBySubject();
+  const manifestResponse=await fetch('data/questions-manifest.json');
+  if(!manifestResponse.ok) throw new Error(`Question bank manifest unavailable (${manifestResponse.status})`);
+  questionManifest=await manifestResponse.json();
+  if(!Array.isArray(questionManifest.subjects)||!questionManifest.subjects.length) throw new Error('Question bank manifest is empty or invalid.');
+  subjects=questionManifest.subjects.map(entry=>entry.subject).sort((a,b)=>a.localeCompare(b));
+  topicsBySubject=new Map(questionManifest.subjects.map(entry=>[entry.subject,new Map(entry.topics.map(topic=>[topicKey(topic.name),topic.name]))]));
   if(user.theme==='dark')document.body.classList.add('dark');
   const hash=location.hash.replace('#','').split('/')[0];
   if(hash==='results'&&user.history.length){view='results';activeResult=user.history[0].id;}
-  else if(['subject','topic','year','custom','analytics','bookmarks','mistakes'].includes(hash))view=hash;
+  else if(['subject','topic','year','custom','analytics','bookmarks','mistakes','profile'].includes(hash))view=hash;
   else if(hash==='exam'&&user.activeExam)view='exam';
+  if((view==='subject'||view==='topic')&&!selectedSubject)selectedSubject=subjects[0];
+  await ensureViewQuestions(view);
   render();
 }
 
@@ -345,7 +382,7 @@ function header() {
 }
 function render() {
   clearInterval(timerHandle); timerHandle=null;
-  if(!questions.length)return;
+  if(!questionManifest)return;
   if(view==='exam'&&user.activeExam){renderExam(); startTimer(); return;}
   if(view==='results'){renderResult();return;}
   if(view==='subject'){renderSubject();return;}
@@ -360,17 +397,19 @@ function render() {
 function practicePickerCards() {
   const subjectCount=subjectCounts();
   const subjectOptions=subjects.map(subject=>`<option value="${esc(subject)}">${esc(subject)} · ${countLabel(subjectCount.get(subject)||0)}</option>`).join('');
-  const topicOptions=subjects.flatMap(subject=>[...(topicsBySubject.get(subject)||new Map()).entries()].map(([key,label])=>[subject,key,label]))
+  const topicOptions=questionManifest.subjects.flatMap(entry=>entry.topics.map(topic=>[entry.subject,topicKey(topic.name),topic.name]))
     .sort((a,b)=>a[2].localeCompare(b[2])||a[0].localeCompare(b[0]))
     .map(([subject,key,label])=>`<option value="${esc(JSON.stringify([subject,key]))}">${esc(label)} · ${esc(subject)}</option>`).join('');
-  const years=[...new Set(questions.map(q=>q.year))].sort((a,b)=>num(b)-num(a));
-  const yearOptions=years.map(year=>`<option value="${esc(year)}">${esc(year)} · ${countLabel(questions.filter(q=>String(q.year)===String(year)).length)}</option>`).join('');
+  const yearCounts=new Map();
+  for(const entry of questionManifest.subjects)for(const year of entry.years)yearCounts.set(year.year,(yearCounts.get(year.year)||0)+year.count);
+  const years=[...yearCounts.keys()].sort((a,b)=>num(b)-num(a));
+  const yearOptions=years.map(year=>`<option value="${esc(year)}">${esc(year)} · ${countLabel(yearCounts.get(year))}</option>`).join('');
   const card=(kind,title,description,options)=>`<section class="surface quick-practice-card"><div class="quick-practice-icon">${iconSvg(kind==='subject'?'grid':kind==='topic'?'compass':'beam')}</div><div class="quick-practice-copy"><h3>Practice by ${title}</h3><p>${description}</p><select class="form-control practice-select" data-kind="${kind}" aria-label="Choose ${title.toLowerCase()}"><option value="">Choose ${title.toLowerCase()}…</option>${options}</select><button class="primary-button" data-action="start-quick-practice" data-kind="${kind}" disabled>Start practice</button></div></section>`;
   return `<div class="quick-practice-grid">${card('subject','Subject','Practice questions from one subject.',subjectOptions)}${card('topic','Topic','Focus on a specific topic.',topicOptions)}${card('year','Year','Build a set from a GATE CE year.',yearOptions)}</div>`;
 }
 function homeDashboard() {
   const countdown=examCountdownParts();
-  return `<section class="hero home-hero"><div class="hero-row"><div><div class="eyebrow">GATE CE QUESTION BANK</div><h1>Get the real feel of D-Day.</h1><p>Practice previous year questions in a GATE exam-like interface, with ${questions.length.toLocaleString()} questions across ${subjects.length} subjects and ${totalTopicCount()} topics.</p><div class="exam-countdown" aria-label="Countdown to 1 February 2027"><span class="countdown-label">Countdown to <strong>1 Feb 2027</strong></span><span class="countdown-value"><b id="countdown-days">${countdown.days}</b><small>d</small><b id="countdown-hours">${String(countdown.hours).padStart(2,'0')}</b><small>h</small><b id="countdown-minutes">${String(countdown.minutes).padStart(2,'0')}</b><small>m</small><b id="countdown-seconds">${String(countdown.seconds).padStart(2,'0')}</b><small>s</small></span></div></div><div class="hero-stats"><div class="hero-stat"><strong>${questions.length.toLocaleString()}</strong><span>Questions</span></div><div class="hero-stat"><strong>${subjects.length}</strong><span>Subjects</span></div><div class="hero-stat"><strong>${totalTopicCount()}</strong><span>Topics</span></div></div></div></section>
+  return `<section class="hero home-hero"><div class="hero-row"><div><div class="eyebrow">GATE CE QUESTION BANK</div><h1>Get the real feel of D-Day.</h1><p>Practice previous year questions in a GATE exam-like interface, with ${questionCount().toLocaleString()} questions across ${subjects.length} subjects and ${totalTopicCount()} topics.</p><div class="exam-countdown" aria-label="Countdown to 1 February 2027"><span class="countdown-label">Countdown to <strong>1 Feb 2027</strong></span><span class="countdown-value"><b id="countdown-days">${countdown.days}</b><small>d</small><b id="countdown-hours">${String(countdown.hours).padStart(2,'0')}</b><small>h</small><b id="countdown-minutes">${String(countdown.minutes).padStart(2,'0')}</b><small>m</small><b id="countdown-seconds">${String(countdown.seconds).padStart(2,'0')}</b><small>s</small></span></div></div><div class="hero-stats"><div class="hero-stat"><strong>${questionCount().toLocaleString()}</strong><span>Questions</span></div><div class="hero-stat"><strong>${subjects.length}</strong><span>Subjects</span></div><div class="hero-stat"><strong>${totalTopicCount()}</strong><span>Topics</span></div></div></div></section>
   ${user.activeExam?`<section class="resume-banner home-resume"><div><strong>Continue your practice</strong><span>${esc(user.activeExam.title)} · ${countLabel(user.activeExam.qids.length)} · ${fmtTime(Math.ceil((user.activeExam.deadline-Date.now())/1000))} left</span></div><div class="topic-actions"><button class="primary-button" data-action="resume">Resume exam</button><button class="outline-button" data-action="discard-exam">Discard</button></div></section>`:''}`;
 }
 function homeActivity() {
@@ -510,7 +549,7 @@ function homePracticeHistory() {
 function renderHome() {
   const counts=subjectCounts();
   const topicCount=totalTopicCount();
-  app.innerHTML=`${header()}<main class="page home-page">${homeDashboard()}<section class="home-practice"><div class="home-section-heading"><div><h2>Start practicing</h2><p>Choose the way you want to work through the question bank.</p></div><div class="topic-actions"><button class="primary-button custom-test-cta" data-action="go" data-view="custom">Build a custom test</button></div></div>${practicePickerCards()}</section><section class="library-section home-library"><div class="library-section-head"><div><h2>Browse the question bank</h2><p>${countLabel(questions.length)} · ${topicCount} topics · GATE CE 2001–2026</p></div></div><div class="library-controls"><div class="search-wrap"><span class="search-icon">⌕</span><input class="search-input" id="librarySearch" placeholder="Search subjects and topics" autocomplete="off"></div><div class="segmented"><button class="segment-button active" data-action="go" data-view="home">By subject</button><button class="segment-button" data-action="go" data-view="year">By year</button></div></div><div class="subject-grid">${subjects.map(subject=>`<button class="surface subject-card browse-item" data-action="open-subject" data-subject="${esc(subject)}" data-search="${esc(`${subject} ${topicsFor(subject).join(' ')} ${questions.filter(q=>q.subject===subject).map(q=>q.year).join(' ')}`.toLowerCase())}"><span class="subject-icon">${iconFor(subject)}</span><span class="subject-copy"><strong>${esc(subject)}</strong><small>${countLabel(counts.get(subject)||0)} · ${topicsFor(subject).length} topics</small></span><span class="subject-arrow">›</span></button>`).join('')}</div></section>${homeActivity()}${homePracticeHistory()}<footer class="home-footer"><span>Made with <span class="footer-heart" aria-label="love">♥</span> by <a href="https://github.com/0xniru" target="_blank" rel="noopener noreferrer">Niru</a></span></footer></main>`;
+  app.innerHTML=`${header()}<main class="page home-page">${homeDashboard()}<section class="home-practice"><div class="home-section-heading"><div><h2>Start practicing</h2><p>Choose the way you want to work through the question bank.</p></div><div class="topic-actions"><button class="primary-button custom-test-cta" data-action="go" data-view="custom">Build a custom test</button></div></div>${practicePickerCards()}</section><section class="library-section home-library"><div class="library-section-head"><div><h2>Browse the question bank</h2><p>${countLabel(questionCount())} · ${topicCount} topics · GATE CE 2001–2026</p></div></div><div class="library-controls"><div class="search-wrap"><span class="search-icon">⌕</span><input class="search-input" id="librarySearch" placeholder="Search subjects and topics" autocomplete="off"></div><div class="segmented"><button class="segment-button active" data-action="go" data-view="home">By subject</button><button class="segment-button" data-action="go" data-view="year">By year</button></div></div><div class="subject-grid">${subjects.map(subject=>`<button class="surface subject-card browse-item" data-action="open-subject" data-subject="${esc(subject)}" data-search="${esc(`${subject} ${topicsFor(subject).join(' ')} ${manifestEntry(subject).years.map(y=>y.year).join(' ')}`.toLowerCase())}"><span class="subject-icon">${iconFor(subject)}</span><span class="subject-copy"><strong>${esc(subject)}</strong><small>${countLabel(counts.get(subject)||0)} · ${topicsFor(subject).length} topics</small></span><span class="subject-arrow">›</span></button>`).join('')}</div></section>${homeActivity()}${homePracticeHistory()}<footer class="home-footer"><span>Made with <span class="footer-heart" aria-label="love">♥</span> by <a href="https://github.com/0xniru" target="_blank" rel="noopener noreferrer">Niru</a></span></footer></main>`;
 }
 function renderSubject() {
   const subject=selectedSubject||subjects[0];const topics=topicsFor(subject);const counts=new Map(topics.map(t=>[t,qsForTopic(subject,t).length]));
@@ -973,16 +1012,18 @@ async function handleAction(action,el) {
     const kind=el.dataset.kind,selection=app.querySelector(`.practice-select[data-kind="${kind}"]`)?.value;
     if(!selection){toast(`Choose a ${kind} first.`);return;}
     if(kind==='subject'){
+      await ensureQuestionsForSubjects([selection]);
       const group=questions.filter(q=>q.subject===selection).sort(compareQuestions);
       prepareExam(group,`${selection} · All topics`,{subject:selection});return;
     }
     if(kind==='topic'){
       let pair;try{pair=JSON.parse(selection);}catch{return;}
-      const [chosenSubject,chosenTopic]=pair,group=qsForTopic(chosenSubject,chosenTopic);
+      const [chosenSubject,chosenTopic]=pair;await ensureQuestionsForSubjects([chosenSubject]);const group=qsForTopic(chosenSubject,chosenTopic);
       const topicName=canonicalTopic(chosenSubject,chosenTopic);
       prepareExam(group,`${chosenSubject} · ${topicName}`,{subject:chosenSubject,topic:topicName});return;
     }
     if(kind==='year'){
+      await ensureQuestionsForSubjects();
       const group=questions.filter(q=>String(q.year)===selection).sort((a,b)=>String(a.session||'').localeCompare(String(b.session||''))||num(a.questionNo)-num(b.questionNo));
       prepareExam(group,`GATE CE ${selection} · All sessions`,{year:Number(selection)});return;
     }
@@ -1015,7 +1056,7 @@ async function handleAction(action,el) {
       filterSummary:{subjects:[...customBuilder.subjects],topics:[...customBuilder.topics],types:[...customBuilder.types],durationMinutes,sourceLabel}
     });return;
   }
- if(action==='resume'){if(user.activeExam){user.activeExam.questionStartedAt=Date.now();saveUser();}await enterExamFullscreen();view='exam';render();window.scrollTo(0,0);return;}
+ if(action==='resume'){if(user.activeExam){user.activeExam.questionStartedAt=Date.now();saveUser();}await ensureViewQuestions('exam');await enterExamFullscreen();view='exam';render();window.scrollTo(0,0);return;}
   if(action==='finish-later'){const e=user.activeExam;recordElapsedTime(e);saveUser();navigate('home');return;}
   if(action==='discard-exam'){dialogShow('Discard unfinished exam?','Your in-progress responses will be removed.','<button class="outline-button" data-dialog="close">Keep exam</button><button class="danger-button" data-dialog="discard-active">Discard exam</button>');return;}
   if(action==='start-topic'&&pendingExam){beginPendingExam();return;}
@@ -1110,7 +1151,7 @@ async function handleAction(action,el) {
   }
   if(action==='add-todo'){const text=$('todoInput')?.value.trim();if(!text)return;user.todos.unshift({text,done:false});user.todos=user.todos.slice(0,30);saveUser();renderHome();return;}
   if(action==='delete-todo'){user.todos.splice(num(el.dataset.index),1);saveUser();renderHome();return;}
-  if(action==='show-pending'){dialogShow('Answer keys pending',`<p><strong>${pendingKeyCount()}</strong> questions are currently unverified: ${questions.filter(q=>q.type==='NAT'&&q.answerStatus==='pending').length} NAT questions and ${questions.filter(q=>q.type!=='NAT'&&q.answerStatus==='pending').length} MCQ/MSQ records with no correct option.</p><p>They remain linked to the answer backlog by question ID and will be excluded from grading until verified.</p>`,'<button class="primary-button" data-dialog="close">Close</button>');return;}
+  if(action==='show-pending'){await ensureQuestionsForSubjects();dialogShow('Answer keys pending',`<p><strong>${pendingKeyCount()}</strong> questions are currently unverified: ${questions.filter(q=>q.type==='NAT'&&q.answerStatus==='pending').length} NAT questions and ${questions.filter(q=>q.type!=='NAT'&&q.answerStatus==='pending').length} MCQ/MSQ records with no correct option.</p><p>They remain linked to the answer backlog by question ID and will be excluded from grading until verified.</p>`,'<button class="primary-button" data-dialog="close">Close</button>');return;}
   if(action==='report-question'){showQuestionReport(el.dataset.id);return;}
   if(action==='send-question-report'){
     const q=questionById.get(el.dataset.id),reason=$('reportReason')?.value,details=$('reportDetails')?.value.trim()||'';
@@ -1171,7 +1212,7 @@ getRestoreInput().addEventListener('change',async e=>{
   catch(error){toast(error.message||'Could not read this backup file.');}
   finally{e.target.value='';}
 });
-window.addEventListener('popstate',()=>{const path=location.hash.replace('#','').split('/')[0];if(path==='results'&&user.history.length){view='results';activeResult=user.history[0].id;}else if(['home','subject','topic','year','custom','analytics','bookmarks','mistakes','profile'].includes(path))view=path;else view=user.activeExam?'exam':'home';render();});
+window.addEventListener('popstate',async()=>{const path=location.hash.replace('#','').split('/')[0];if(path==='results'&&user.history.length){view='results';activeResult=user.history[0].id;}else if(['home','subject','topic','year','custom','analytics','bookmarks','mistakes','profile'].includes(path))view=path;else view=user.activeExam?'exam':'home';if((view==='subject'||view==='topic')&&!selectedSubject)selectedSubject=subjects[0];await ensureViewQuestions(view);render();});
 document.addEventListener('keydown',e=>{
   if(e.key==='Escape')app.querySelectorAll('.custom-dropdown-menu').forEach(menu=>{menu.hidden=true;menu.closest('.custom-dropdown')?.querySelector('.custom-dropdown-trigger')?.setAttribute('aria-expanded','false');});
   if(e.key==='Escape'){const menu=$('reviewFilterMenu'),trigger=$('reviewFilterTrigger');if(menu&&!menu.hidden){menu.hidden=true;trigger?.setAttribute('aria-expanded','false');trigger?.focus();}}
@@ -1239,7 +1280,7 @@ if(window.SupaAuth){
 
       if(event==='SIGNED_OUT'){authUser=null;}
 
-      if(questions.length)render();
+      if(questionManifest)render();
     });
   }).catch(e=>console.warn('[Auth] init error',e));
 }

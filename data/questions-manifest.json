@@ -1,0 +1,3341 @@
+{
+  "version": 1,
+  "subjects": [
+    {
+      "subject": "Construction Materials and Management",
+      "file": "construction-materials-and-management.json",
+      "count": 36,
+      "topics": [
+        {
+          "name": "Construction Materials and Management",
+          "count": 1,
+          "years": [
+            2026
+          ]
+        },
+        {
+          "name": "Uncategorized",
+          "count": 35,
+          "years": [
+            2025,
+            2024,
+            2022,
+            2021,
+            2019,
+            2018,
+            2017,
+            2016
+          ]
+        }
+      ],
+      "years": [
+        {
+          "year": 2026,
+          "count": 1
+        },
+        {
+          "year": 2025,
+          "count": 5
+        },
+        {
+          "year": 2024,
+          "count": 6
+        },
+        {
+          "year": 2022,
+          "count": 2
+        },
+        {
+          "year": 2021,
+          "count": 8
+        },
+        {
+          "year": 2019,
+          "count": 1
+        },
+        {
+          "year": 2018,
+          "count": 2
+        },
+        {
+          "year": 2017,
+          "count": 5
+        },
+        {
+          "year": 2016,
+          "count": 6
+        }
+      ]
+    },
+    {
+      "subject": "Design of Steel Structures",
+      "file": "design-of-steel-structures.json",
+      "count": 94,
+      "topics": [
+        {
+          "name": "Beams",
+          "count": 14,
+          "years": [
+            2026,
+            2025,
+            2023,
+            2020,
+            2019,
+            2018,
+            2016,
+            2011,
+            2005,
+            2004,
+            2003,
+            2002
+          ]
+        },
+        {
+          "name": "Compression Member",
+          "count": 9,
+          "years": [
+            2024,
+            2019,
+            2009,
+            2006,
+            2004,
+            2003,
+            2001
+          ]
+        },
+        {
+          "name": "Plastic Analysis",
+          "count": 28,
+          "years": [
+            2026,
+            2025,
+            2024,
+            2022,
+            2021,
+            2020,
+            2019,
+            2018,
+            2016,
+            2015,
+            2014,
+            2013,
+            2011,
+            2009,
+            2008,
+            2007,
+            2006,
+            2005,
+            2004,
+            2003,
+            2002
+          ]
+        },
+        {
+          "name": "Plate Griders and Industrial Roofs",
+          "count": 2,
+          "years": [
+            2004,
+            2003
+          ]
+        },
+        {
+          "name": "Structural Fasteners",
+          "count": 33,
+          "years": [
+            2026,
+            2025,
+            2022,
+            2021,
+            2020,
+            2019,
+            2018,
+            2017,
+            2016,
+            2015,
+            2014,
+            2012,
+            2011,
+            2010,
+            2009,
+            2008,
+            2007,
+            2005,
+            2004,
+            2002,
+            2001
+          ]
+        },
+        {
+          "name": "Tension Member",
+          "count": 8,
+          "years": [
+            2015,
+            2007,
+            2006,
+            2005,
+            2004,
+            2003,
+            2002
+          ]
+        }
+      ],
+      "years": [
+        {
+          "year": 2026,
+          "count": 3
+        },
+        {
+          "year": 2025,
+          "count": 4
+        },
+        {
+          "year": 2024,
+          "count": 2
+        },
+        {
+          "year": 2023,
+          "count": 1
+        },
+        {
+          "year": 2022,
+          "count": 2
+        },
+        {
+          "year": 2021,
+          "count": 2
+        },
+        {
+          "year": 2020,
+          "count": 3
+        },
+        {
+          "year": 2019,
+          "count": 7
+        },
+        {
+          "year": 2018,
+          "count": 6
+        },
+        {
+          "year": 2017,
+          "count": 2
+        },
+        {
+          "year": 2016,
+          "count": 5
+        },
+        {
+          "year": 2015,
+          "count": 5
+        },
+        {
+          "year": 2014,
+          "count": 4
+        },
+        {
+          "year": 2013,
+          "count": 3
+        },
+        {
+          "year": 2012,
+          "count": 2
+        },
+        {
+          "year": 2011,
+          "count": 3
+        },
+        {
+          "year": 2010,
+          "count": 2
+        },
+        {
+          "year": 2009,
+          "count": 4
+        },
+        {
+          "year": 2008,
+          "count": 3
+        },
+        {
+          "year": 2007,
+          "count": 3
+        },
+        {
+          "year": 2006,
+          "count": 3
+        },
+        {
+          "year": 2005,
+          "count": 5
+        },
+        {
+          "year": 2004,
+          "count": 7
+        },
+        {
+          "year": 2003,
+          "count": 6
+        },
+        {
+          "year": 2002,
+          "count": 5
+        },
+        {
+          "year": 2001,
+          "count": 2
+        }
+      ]
+    },
+    {
+      "subject": "Engineering Hydrology",
+      "file": "engineering-hydrology.json",
+      "count": 99,
+      "topics": [
+        {
+          "name": "Evaporation, Transpiration and Stream Flow Measurement",
+          "count": 7,
+          "years": [
+            2023,
+            2022,
+            2015,
+            2012,
+            2003,
+            2001
+          ]
+        },
+        {
+          "name": "Flood Routing and Flood Control",
+          "count": 21,
+          "years": [
+            2026,
+            2025,
+            2022,
+            2020,
+            2019,
+            2018,
+            2016,
+            2014,
+            2013,
+            2010,
+            2008,
+            2005,
+            2001
+          ]
+        },
+        {
+          "name": "Infiltration, Runoff and Hydrographs",
+          "count": 57,
+          "years": [
+            2026,
+            2025,
+            2024,
+            2023,
+            2022,
+            2021,
+            2020,
+            2019,
+            2018,
+            2017,
+            2016,
+            2015,
+            2014,
+            2013,
+            2012,
+            2011,
+            2009,
+            2007,
+            2006,
+            2005,
+            2004,
+            2003,
+            2002,
+            2001
+          ]
+        },
+        {
+          "name": "Precipitation and General Aspects of Hydrology",
+          "count": 14,
+          "years": [
+            2026,
+            2025,
+            2024,
+            2023,
+            2021,
+            2019,
+            2018,
+            2017,
+            2015,
+            2013,
+            2005,
+            2003
+          ]
+        }
+      ],
+      "years": [
+        {
+          "year": 2026,
+          "count": 5
+        },
+        {
+          "year": 2025,
+          "count": 5
+        },
+        {
+          "year": 2024,
+          "count": 4
+        },
+        {
+          "year": 2023,
+          "count": 6
+        },
+        {
+          "year": 2022,
+          "count": 3
+        },
+        {
+          "year": 2021,
+          "count": 5
+        },
+        {
+          "year": 2020,
+          "count": 5
+        },
+        {
+          "year": 2019,
+          "count": 5
+        },
+        {
+          "year": 2018,
+          "count": 5
+        },
+        {
+          "year": 2017,
+          "count": 5
+        },
+        {
+          "year": 2016,
+          "count": 3
+        },
+        {
+          "year": 2015,
+          "count": 3
+        },
+        {
+          "year": 2014,
+          "count": 4
+        },
+        {
+          "year": 2013,
+          "count": 4
+        },
+        {
+          "year": 2012,
+          "count": 5
+        },
+        {
+          "year": 2011,
+          "count": 3
+        },
+        {
+          "year": 2010,
+          "count": 1
+        },
+        {
+          "year": 2009,
+          "count": 2
+        },
+        {
+          "year": 2008,
+          "count": 1
+        },
+        {
+          "year": 2007,
+          "count": 3
+        },
+        {
+          "year": 2006,
+          "count": 3
+        },
+        {
+          "year": 2005,
+          "count": 4
+        },
+        {
+          "year": 2004,
+          "count": 2
+        },
+        {
+          "year": 2003,
+          "count": 6
+        },
+        {
+          "year": 2002,
+          "count": 3
+        },
+        {
+          "year": 2001,
+          "count": 4
+        }
+      ]
+    },
+    {
+      "subject": "Engineering Mathematics",
+      "file": "engineering-mathematics.json",
+      "count": 325,
+      "topics": [
+        {
+          "name": "Calculus",
+          "count": 99,
+          "years": [
+            2026,
+            2025,
+            2024,
+            2023,
+            2022,
+            2021,
+            2020,
+            2019,
+            2018,
+            2017,
+            2016,
+            2015,
+            2014,
+            2013,
+            2012,
+            2011,
+            2010,
+            2009,
+            2008,
+            2007,
+            2006,
+            2005,
+            2004,
+            2003,
+            2002
+          ]
+        },
+        {
+          "name": "Linear Algebra",
+          "count": 72,
+          "years": [
+            2026,
+            2025,
+            2024,
+            2023,
+            2022,
+            2021,
+            2020,
+            2019,
+            2018,
+            2017,
+            2016,
+            2015,
+            2014,
+            2013,
+            2012,
+            2011,
+            2010,
+            2009,
+            2008,
+            2007,
+            2006,
+            2005,
+            2004,
+            2003,
+            2002,
+            2001
+          ]
+        },
+        {
+          "name": "Numerical Methods",
+          "count": 30,
+          "years": [
+            2026,
+            2025,
+            2024,
+            2023,
+            2022,
+            2021,
+            2020,
+            2019,
+            2018,
+            2017,
+            2016,
+            2015,
+            2012,
+            2011,
+            2010,
+            2009,
+            2008,
+            2007,
+            2005
+          ]
+        },
+        {
+          "name": "Ordinary Differential Equation",
+          "count": 56,
+          "years": [
+            2026,
+            2025,
+            2024,
+            2023,
+            2022,
+            2021,
+            2020,
+            2019,
+            2018,
+            2017,
+            2016,
+            2015,
+            2012,
+            2011,
+            2010,
+            2009,
+            2008,
+            2007,
+            2006,
+            2005,
+            2004,
+            2001
+          ]
+        },
+        {
+          "name": "Partial Differential Equation",
+          "count": 24,
+          "years": [
+            2026,
+            2025,
+            2024,
+            2023,
+            2022,
+            2020,
+            2019,
+            2018,
+            2016,
+            2012,
+            2009,
+            2004,
+            2003,
+            2002,
+            2001
+          ]
+        },
+        {
+          "name": "Probability and Statistics",
+          "count": 44,
+          "years": [
+            2026,
+            2025,
+            2024,
+            2023,
+            2022,
+            2021,
+            2020,
+            2019,
+            2018,
+            2017,
+            2016,
+            2015,
+            2014,
+            2013,
+            2012,
+            2011,
+            2010,
+            2009,
+            2008,
+            2006,
+            2005,
+            2004,
+            2003
+          ]
+        }
+      ],
+      "years": [
+        {
+          "year": 2026,
+          "count": 18
+        },
+        {
+          "year": 2025,
+          "count": 17
+        },
+        {
+          "year": 2024,
+          "count": 16
+        },
+        {
+          "year": 2023,
+          "count": 18
+        },
+        {
+          "year": 2022,
+          "count": 16
+        },
+        {
+          "year": 2021,
+          "count": 16
+        },
+        {
+          "year": 2020,
+          "count": 16
+        },
+        {
+          "year": 2019,
+          "count": 15
+        },
+        {
+          "year": 2018,
+          "count": 15
+        },
+        {
+          "year": 2017,
+          "count": 19
+        },
+        {
+          "year": 2016,
+          "count": 19
+        },
+        {
+          "year": 2015,
+          "count": 17
+        },
+        {
+          "year": 2014,
+          "count": 13
+        },
+        {
+          "year": 2013,
+          "count": 5
+        },
+        {
+          "year": 2012,
+          "count": 8
+        },
+        {
+          "year": 2011,
+          "count": 8
+        },
+        {
+          "year": 2010,
+          "count": 9
+        },
+        {
+          "year": 2009,
+          "count": 9
+        },
+        {
+          "year": 2008,
+          "count": 11
+        },
+        {
+          "year": 2007,
+          "count": 10
+        },
+        {
+          "year": 2006,
+          "count": 11
+        },
+        {
+          "year": 2005,
+          "count": 12
+        },
+        {
+          "year": 2004,
+          "count": 7
+        },
+        {
+          "year": 2003,
+          "count": 5
+        },
+        {
+          "year": 2002,
+          "count": 7
+        },
+        {
+          "year": 2001,
+          "count": 8
+        }
+      ]
+    },
+    {
+      "subject": "Engineering Mechanics",
+      "file": "engineering-mechanics.json",
+      "count": 15,
+      "topics": [
+        {
+          "name": "Uncategorized",
+          "count": 15,
+          "years": [
+            2025,
+            2024,
+            2023,
+            2022,
+            2021,
+            2019,
+            2018,
+            2016,
+            2014,
+            2010,
+            2006
+          ]
+        }
+      ],
+      "years": [
+        {
+          "year": 2025,
+          "count": 1
+        },
+        {
+          "year": 2024,
+          "count": 1
+        },
+        {
+          "year": 2023,
+          "count": 1
+        },
+        {
+          "year": 2022,
+          "count": 1
+        },
+        {
+          "year": 2021,
+          "count": 1
+        },
+        {
+          "year": 2019,
+          "count": 1
+        },
+        {
+          "year": 2018,
+          "count": 4
+        },
+        {
+          "year": 2016,
+          "count": 2
+        },
+        {
+          "year": 2014,
+          "count": 1
+        },
+        {
+          "year": 2010,
+          "count": 1
+        },
+        {
+          "year": 2006,
+          "count": 1
+        }
+      ]
+    },
+    {
+      "subject": "Environmental Engineering",
+      "file": "environmental-engineering.json",
+      "count": 292,
+      "topics": [
+        {
+          "name": "Air and Noise Pollution",
+          "count": 51,
+          "years": [
+            2026,
+            2025,
+            2024,
+            2023,
+            2022,
+            2021,
+            2020,
+            2019,
+            2017,
+            2016,
+            2015,
+            2014,
+            2013,
+            2011,
+            2010,
+            2009,
+            2008,
+            2007,
+            2006
+          ]
+        },
+        {
+          "name": "Design of Sewers and Sewerage System",
+          "count": 5,
+          "years": [
+            2023,
+            2016,
+            2012,
+            2008,
+            2004
+          ]
+        },
+        {
+          "name": "Disposal of Sewage Effluents",
+          "count": 9,
+          "years": [
+            2025,
+            2024,
+            2023,
+            2022,
+            2018,
+            2017,
+            2005,
+            2003
+          ]
+        },
+        {
+          "name": "Municipal Solid Waste Management",
+          "count": 22,
+          "years": [
+            2025,
+            2024,
+            2023,
+            2022,
+            2021,
+            2019,
+            2018,
+            2017,
+            2015,
+            2010,
+            2007,
+            2006
+          ]
+        },
+        {
+          "name": "Quality and Characteristics of Waste Water",
+          "count": 26,
+          "years": [
+            2026,
+            2022,
+            2021,
+            2019,
+            2018,
+            2017,
+            2016,
+            2015,
+            2013,
+            2010,
+            2008,
+            2006,
+            2005,
+            2004,
+            2002,
+            2001
+          ]
+        },
+        {
+          "name": "Quality Characteristics of Water",
+          "count": 47,
+          "years": [
+            2022,
+            2021,
+            2020,
+            2019,
+            2018,
+            2017,
+            2016,
+            2015,
+            2014,
+            2012,
+            2011,
+            2010,
+            2009,
+            2008,
+            2007,
+            2006,
+            2005,
+            2004,
+            2003,
+            2002,
+            2001
+          ]
+        },
+        {
+          "name": "Source of Water Supply, Distribution System and Well Hydraulics",
+          "count": 17,
+          "years": [
+            2025,
+            2024,
+            2022,
+            2021,
+            2018,
+            2016,
+            2015,
+            2011,
+            2010,
+            2009,
+            2008,
+            2006,
+            2005,
+            2003,
+            2002
+          ]
+        },
+        {
+          "name": "Treatment of Waste Water",
+          "count": 51,
+          "years": [
+            2026,
+            2025,
+            2024,
+            2023,
+            2022,
+            2021,
+            2019,
+            2018,
+            2017,
+            2016,
+            2015,
+            2014,
+            2012,
+            2011,
+            2009,
+            2008,
+            2007,
+            2005,
+            2004,
+            2003,
+            2002,
+            2001
+          ]
+        },
+        {
+          "name": "Water Demand",
+          "count": 5,
+          "years": [
+            2022,
+            2020,
+            2004
+          ]
+        },
+        {
+          "name": "Water Treatment",
+          "count": 59,
+          "years": [
+            2026,
+            2025,
+            2024,
+            2023,
+            2022,
+            2021,
+            2020,
+            2019,
+            2018,
+            2017,
+            2016,
+            2015,
+            2014,
+            2013,
+            2012,
+            2011,
+            2009,
+            2008,
+            2007,
+            2006,
+            2005,
+            2004,
+            2003,
+            2002,
+            2001
+          ]
+        }
+      ],
+      "years": [
+        {
+          "year": 2026,
+          "count": 14
+        },
+        {
+          "year": 2025,
+          "count": 15
+        },
+        {
+          "year": 2024,
+          "count": 11
+        },
+        {
+          "year": 2023,
+          "count": 16
+        },
+        {
+          "year": 2022,
+          "count": 17
+        },
+        {
+          "year": 2021,
+          "count": 17
+        },
+        {
+          "year": 2020,
+          "count": 13
+        },
+        {
+          "year": 2019,
+          "count": 11
+        },
+        {
+          "year": 2018,
+          "count": 13
+        },
+        {
+          "year": 2017,
+          "count": 13
+        },
+        {
+          "year": 2016,
+          "count": 16
+        },
+        {
+          "year": 2015,
+          "count": 11
+        },
+        {
+          "year": 2014,
+          "count": 11
+        },
+        {
+          "year": 2013,
+          "count": 5
+        },
+        {
+          "year": 2012,
+          "count": 6
+        },
+        {
+          "year": 2011,
+          "count": 8
+        },
+        {
+          "year": 2010,
+          "count": 7
+        },
+        {
+          "year": 2009,
+          "count": 9
+        },
+        {
+          "year": 2008,
+          "count": 9
+        },
+        {
+          "year": 2007,
+          "count": 9
+        },
+        {
+          "year": 2006,
+          "count": 10
+        },
+        {
+          "year": 2005,
+          "count": 13
+        },
+        {
+          "year": 2004,
+          "count": 12
+        },
+        {
+          "year": 2003,
+          "count": 12
+        },
+        {
+          "year": 2002,
+          "count": 8
+        },
+        {
+          "year": 2001,
+          "count": 6
+        }
+      ]
+    },
+    {
+      "subject": "Fluid Mechanics and Hydraulics",
+      "file": "fluid-mechanics-and-hydraulics.json",
+      "count": 225,
+      "topics": [
+        {
+          "name": "Boundary Layer Theory, Drag and Lift",
+          "count": 12,
+          "years": [
+            2023,
+            2022,
+            2020,
+            2019,
+            2008,
+            2006,
+            2004,
+            2003,
+            2002
+          ]
+        },
+        {
+          "name": "Buoyancy and Floatation",
+          "count": 4,
+          "years": [
+            2021,
+            2020,
+            2011,
+            2001
+          ]
+        },
+        {
+          "name": "Dimensional Analysis",
+          "count": 15,
+          "years": [
+            2025,
+            2022,
+            2021,
+            2018,
+            2015,
+            2013,
+            2008,
+            2007,
+            2006,
+            2004,
+            2003,
+            2001
+          ]
+        },
+        {
+          "name": "Flow Through Pipes",
+          "count": 30,
+          "years": [
+            2026,
+            2025,
+            2024,
+            2022,
+            2021,
+            2020,
+            2019,
+            2017,
+            2015,
+            2014,
+            2013,
+            2012,
+            2011,
+            2009,
+            2004,
+            2003,
+            2001
+          ]
+        },
+        {
+          "name": "Fluid Dynamics and Flow Measurements",
+          "count": 13,
+          "years": [
+            2024,
+            2022,
+            2021,
+            2019,
+            2017,
+            2014,
+            2010,
+            2005,
+            2004
+          ]
+        },
+        {
+          "name": "Fluid Kinematics",
+          "count": 25,
+          "years": [
+            2025,
+            2024,
+            2020,
+            2019,
+            2018,
+            2015,
+            2014,
+            2013,
+            2006,
+            2005,
+            2004,
+            2003
+          ]
+        },
+        {
+          "name": "Fluid Properties and Manometry",
+          "count": 12,
+          "years": [
+            2025,
+            2024,
+            2023,
+            2018,
+            2017,
+            2016,
+            2014,
+            2004,
+            2003
+          ]
+        },
+        {
+          "name": "Hydraulic Pumps",
+          "count": 6,
+          "years": [
+            2026,
+            2022,
+            2017,
+            2006,
+            2004,
+            2002
+          ]
+        },
+        {
+          "name": "Hydrostatic Forces",
+          "count": 8,
+          "years": [
+            2026,
+            2025,
+            2024,
+            2016,
+            2015,
+            2006,
+            2005,
+            2002
+          ]
+        },
+        {
+          "name": "Impact of Jets and Turbines",
+          "count": 9,
+          "years": [
+            2023,
+            2019,
+            2016,
+            2014,
+            2007,
+            2005,
+            2003
+          ]
+        },
+        {
+          "name": "Open Channel Flow",
+          "count": 82,
+          "years": [
+            2026,
+            2025,
+            2024,
+            2023,
+            2022,
+            2021,
+            2020,
+            2019,
+            2018,
+            2017,
+            2016,
+            2015,
+            2014,
+            2013,
+            2012,
+            2011,
+            2010,
+            2009,
+            2008,
+            2007,
+            2006,
+            2005,
+            2004,
+            2003,
+            2002,
+            2001
+          ]
+        },
+        {
+          "name": "Turbulent Flow",
+          "count": 3,
+          "years": [
+            2020,
+            2018,
+            2008
+          ]
+        },
+        {
+          "name": "Viscous Flow of Incompressible Fluid",
+          "count": 6,
+          "years": [
+            2026,
+            2017,
+            2014,
+            2007,
+            2006
+          ]
+        }
+      ],
+      "years": [
+        {
+          "year": 2026,
+          "count": 8
+        },
+        {
+          "year": 2025,
+          "count": 10
+        },
+        {
+          "year": 2024,
+          "count": 9
+        },
+        {
+          "year": 2023,
+          "count": 9
+        },
+        {
+          "year": 2022,
+          "count": 10
+        },
+        {
+          "year": 2021,
+          "count": 8
+        },
+        {
+          "year": 2020,
+          "count": 12
+        },
+        {
+          "year": 2019,
+          "count": 9
+        },
+        {
+          "year": 2018,
+          "count": 11
+        },
+        {
+          "year": 2017,
+          "count": 10
+        },
+        {
+          "year": 2016,
+          "count": 8
+        },
+        {
+          "year": 2015,
+          "count": 13
+        },
+        {
+          "year": 2014,
+          "count": 15
+        },
+        {
+          "year": 2013,
+          "count": 5
+        },
+        {
+          "year": 2012,
+          "count": 3
+        },
+        {
+          "year": 2011,
+          "count": 5
+        },
+        {
+          "year": 2010,
+          "count": 5
+        },
+        {
+          "year": 2009,
+          "count": 4
+        },
+        {
+          "year": 2008,
+          "count": 8
+        },
+        {
+          "year": 2007,
+          "count": 8
+        },
+        {
+          "year": 2006,
+          "count": 10
+        },
+        {
+          "year": 2005,
+          "count": 10
+        },
+        {
+          "year": 2004,
+          "count": 16
+        },
+        {
+          "year": 2003,
+          "count": 11
+        },
+        {
+          "year": 2002,
+          "count": 4
+        },
+        {
+          "year": 2001,
+          "count": 4
+        }
+      ]
+    },
+    {
+      "subject": "General Aptitude",
+      "file": "general-aptitude.json",
+      "count": 290,
+      "topics": [
+        {
+          "name": "Numerical Ability",
+          "count": 156,
+          "years": [
+            2026,
+            2025,
+            2024,
+            2023,
+            2022,
+            2021,
+            2020,
+            2019,
+            2018,
+            2017,
+            2016,
+            2015,
+            2014,
+            2013,
+            2012,
+            2011
+          ]
+        },
+        {
+          "name": "Verbal Ability",
+          "count": 134,
+          "years": [
+            2026,
+            2025,
+            2024,
+            2023,
+            2022,
+            2021,
+            2020,
+            2019,
+            2018,
+            2017,
+            2016,
+            2015,
+            2014,
+            2013,
+            2012,
+            2011
+          ]
+        }
+      ],
+      "years": [
+        {
+          "year": 2026,
+          "count": 20
+        },
+        {
+          "year": 2025,
+          "count": 20
+        },
+        {
+          "year": 2024,
+          "count": 20
+        },
+        {
+          "year": 2023,
+          "count": 20
+        },
+        {
+          "year": 2022,
+          "count": 20
+        },
+        {
+          "year": 2021,
+          "count": 20
+        },
+        {
+          "year": 2020,
+          "count": 20
+        },
+        {
+          "year": 2019,
+          "count": 20
+        },
+        {
+          "year": 2018,
+          "count": 20
+        },
+        {
+          "year": 2017,
+          "count": 20
+        },
+        {
+          "year": 2016,
+          "count": 20
+        },
+        {
+          "year": 2015,
+          "count": 20
+        },
+        {
+          "year": 2014,
+          "count": 20
+        },
+        {
+          "year": 2013,
+          "count": 10
+        },
+        {
+          "year": 2012,
+          "count": 10
+        },
+        {
+          "year": 2011,
+          "count": 10
+        }
+      ]
+    },
+    {
+      "subject": "Geomatics Engineering",
+      "file": "geomatics-engineering.json",
+      "count": 112,
+      "topics": [
+        {
+          "name": "Fundamental Concepts of Surveying",
+          "count": 16,
+          "years": [
+            2026,
+            2025,
+            2024,
+            2023,
+            2022,
+            2021,
+            2015,
+            2014,
+            2008,
+            2007
+          ]
+        },
+        {
+          "name": "Levelling and Contouring",
+          "count": 29,
+          "years": [
+            2026,
+            2025,
+            2024,
+            2023,
+            2021,
+            2018,
+            2016,
+            2015,
+            2014,
+            2012,
+            2011,
+            2010,
+            2009,
+            2008,
+            2007,
+            2006
+          ]
+        },
+        {
+          "name": "Remote Sensing, GIS, GPS and Photogrammetry",
+          "count": 14,
+          "years": [
+            2026,
+            2024,
+            2023,
+            2022,
+            2019,
+            2018,
+            2017,
+            2016
+          ]
+        },
+        {
+          "name": "Tacheometric, Curve and Hydrographic Surveying",
+          "count": 11,
+          "years": [
+            2020,
+            2019,
+            2017,
+            2016,
+            2014,
+            2008,
+            2007
+          ]
+        },
+        {
+          "name": "Theodolites, Compass and Traverse Surveying",
+          "count": 42,
+          "years": [
+            2026,
+            2025,
+            2024,
+            2023,
+            2022,
+            2021,
+            2020,
+            2019,
+            2018,
+            2017,
+            2016,
+            2015,
+            2014,
+            2013,
+            2011,
+            2010,
+            2009,
+            2008,
+            2007,
+            2006
+          ]
+        }
+      ],
+      "years": [
+        {
+          "year": 2026,
+          "count": 9
+        },
+        {
+          "year": 2025,
+          "count": 4
+        },
+        {
+          "year": 2024,
+          "count": 10
+        },
+        {
+          "year": 2023,
+          "count": 6
+        },
+        {
+          "year": 2022,
+          "count": 5
+        },
+        {
+          "year": 2021,
+          "count": 6
+        },
+        {
+          "year": 2020,
+          "count": 5
+        },
+        {
+          "year": 2019,
+          "count": 6
+        },
+        {
+          "year": 2018,
+          "count": 4
+        },
+        {
+          "year": 2017,
+          "count": 7
+        },
+        {
+          "year": 2016,
+          "count": 8
+        },
+        {
+          "year": 2015,
+          "count": 8
+        },
+        {
+          "year": 2014,
+          "count": 6
+        },
+        {
+          "year": 2013,
+          "count": 3
+        },
+        {
+          "year": 2012,
+          "count": 2
+        },
+        {
+          "year": 2011,
+          "count": 2
+        },
+        {
+          "year": 2010,
+          "count": 2
+        },
+        {
+          "year": 2009,
+          "count": 3
+        },
+        {
+          "year": 2008,
+          "count": 6
+        },
+        {
+          "year": 2007,
+          "count": 5
+        },
+        {
+          "year": 2006,
+          "count": 5
+        }
+      ]
+    },
+    {
+      "subject": "Geotechnical Engineering",
+      "file": "geotechnical-engineering.json",
+      "count": 382,
+      "topics": [
+        {
+          "name": "Classification of Soils and Clay Minerals",
+          "count": 23,
+          "years": [
+            2026,
+            2025,
+            2024,
+            2022,
+            2021,
+            2019,
+            2016,
+            2014,
+            2012,
+            2011,
+            2010,
+            2009,
+            2008,
+            2007,
+            2006,
+            2005,
+            2002,
+            2001
+          ]
+        },
+        {
+          "name": "Compaction of Soil",
+          "count": 12,
+          "years": [
+            2024,
+            2023,
+            2022,
+            2016,
+            2013,
+            2012,
+            2010,
+            2009,
+            2008,
+            2006,
+            2005,
+            2003
+          ]
+        },
+        {
+          "name": "Consolidation of Soils",
+          "count": 46,
+          "years": [
+            2026,
+            2025,
+            2024,
+            2023,
+            2022,
+            2021,
+            2020,
+            2019,
+            2018,
+            2017,
+            2016,
+            2015,
+            2014,
+            2012,
+            2011,
+            2010,
+            2009,
+            2008,
+            2007,
+            2006,
+            2005,
+            2004,
+            2003,
+            2002,
+            2001
+          ]
+        },
+        {
+          "name": "Deep Foundation",
+          "count": 30,
+          "years": [
+            2026,
+            2025,
+            2024,
+            2023,
+            2022,
+            2019,
+            2018,
+            2017,
+            2015,
+            2014,
+            2013,
+            2011,
+            2010,
+            2009,
+            2008,
+            2007,
+            2006,
+            2005,
+            2004,
+            2003,
+            2001
+          ]
+        },
+        {
+          "name": "Effective Stress and Permeability",
+          "count": 35,
+          "years": [
+            2026,
+            2025,
+            2023,
+            2022,
+            2021,
+            2020,
+            2019,
+            2018,
+            2016,
+            2015,
+            2013,
+            2012,
+            2011,
+            2010,
+            2008,
+            2007,
+            2006,
+            2005,
+            2004,
+            2003,
+            2001
+          ]
+        },
+        {
+          "name": "Properties of Soils",
+          "count": 39,
+          "years": [
+            2025,
+            2024,
+            2023,
+            2022,
+            2021,
+            2020,
+            2019,
+            2018,
+            2017,
+            2016,
+            2015,
+            2014,
+            2013,
+            2008,
+            2007,
+            2005,
+            2004,
+            2002,
+            2001
+          ]
+        },
+        {
+          "name": "Retaining Wall-Earth Pressure Theories",
+          "count": 31,
+          "years": [
+            2026,
+            2024,
+            2023,
+            2022,
+            2021,
+            2020,
+            2019,
+            2018,
+            2017,
+            2016,
+            2015,
+            2013,
+            2012,
+            2010,
+            2008,
+            2006,
+            2005,
+            2004,
+            2003
+          ]
+        },
+        {
+          "name": "Seepage Analysis",
+          "count": 27,
+          "years": [
+            2026,
+            2025,
+            2024,
+            2023,
+            2021,
+            2019,
+            2018,
+            2017,
+            2016,
+            2015,
+            2014,
+            2013,
+            2012,
+            2011,
+            2010,
+            2006,
+            2004,
+            2003,
+            2002
+          ]
+        },
+        {
+          "name": "Shallow Foundation and Bearing Capacity",
+          "count": 54,
+          "years": [
+            2026,
+            2025,
+            2024,
+            2023,
+            2022,
+            2021,
+            2019,
+            2018,
+            2017,
+            2016,
+            2015,
+            2014,
+            2013,
+            2012,
+            2011,
+            2010,
+            2009,
+            2008,
+            2007,
+            2005,
+            2004,
+            2003,
+            2002,
+            2001
+          ]
+        },
+        {
+          "name": "Shear Strength of Soil",
+          "count": 33,
+          "years": [
+            2025,
+            2024,
+            2023,
+            2022,
+            2021,
+            2020,
+            2018,
+            2017,
+            2016,
+            2015,
+            2014,
+            2012,
+            2011,
+            2008,
+            2007,
+            2006,
+            2005,
+            2004,
+            2002
+          ]
+        },
+        {
+          "name": "Soil Stabilization and Soil Exploration",
+          "count": 9,
+          "years": [
+            2026,
+            2022,
+            2020,
+            2019,
+            2015,
+            2014,
+            2004,
+            2003
+          ]
+        },
+        {
+          "name": "Stability Analysis of Slopes",
+          "count": 24,
+          "years": [
+            2026,
+            2025,
+            2024,
+            2022,
+            2021,
+            2020,
+            2017,
+            2015,
+            2014,
+            2013,
+            2007,
+            2006,
+            2005,
+            2004,
+            2003,
+            2002,
+            2001
+          ]
+        },
+        {
+          "name": "Stress Distribution in the Soil",
+          "count": 19,
+          "years": [
+            2026,
+            2025,
+            2023,
+            2022,
+            2020,
+            2019,
+            2018,
+            2017,
+            2010,
+            2008,
+            2007,
+            2003
+          ]
+        }
+      ],
+      "years": [
+        {
+          "year": 2026,
+          "count": 17
+        },
+        {
+          "year": 2025,
+          "count": 17
+        },
+        {
+          "year": 2024,
+          "count": 16
+        },
+        {
+          "year": 2023,
+          "count": 20
+        },
+        {
+          "year": 2022,
+          "count": 18
+        },
+        {
+          "year": 2021,
+          "count": 16
+        },
+        {
+          "year": 2020,
+          "count": 17
+        },
+        {
+          "year": 2019,
+          "count": 20
+        },
+        {
+          "year": 2018,
+          "count": 18
+        },
+        {
+          "year": 2017,
+          "count": 18
+        },
+        {
+          "year": 2016,
+          "count": 17
+        },
+        {
+          "year": 2015,
+          "count": 19
+        },
+        {
+          "year": 2014,
+          "count": 17
+        },
+        {
+          "year": 2013,
+          "count": 10
+        },
+        {
+          "year": 2012,
+          "count": 10
+        },
+        {
+          "year": 2011,
+          "count": 11
+        },
+        {
+          "year": 2010,
+          "count": 10
+        },
+        {
+          "year": 2009,
+          "count": 9
+        },
+        {
+          "year": 2008,
+          "count": 13
+        },
+        {
+          "year": 2007,
+          "count": 13
+        },
+        {
+          "year": 2006,
+          "count": 12
+        },
+        {
+          "year": 2005,
+          "count": 13
+        },
+        {
+          "year": 2004,
+          "count": 16
+        },
+        {
+          "year": 2003,
+          "count": 16
+        },
+        {
+          "year": 2002,
+          "count": 9
+        },
+        {
+          "year": 2001,
+          "count": 10
+        }
+      ]
+    },
+    {
+      "subject": "Irrigation Engineering",
+      "file": "irrigation-engineering.json",
+      "count": 56,
+      "topics": [
+        {
+          "name": "Crop Water Requirements",
+          "count": 29,
+          "years": [
+            2026,
+            2023,
+            2022,
+            2021,
+            2020,
+            2019,
+            2018,
+            2017,
+            2015,
+            2014,
+            2013,
+            2012,
+            2010,
+            2009,
+            2008,
+            2007,
+            2006,
+            2005,
+            2004,
+            2003,
+            2002,
+            2001
+          ]
+        },
+        {
+          "name": "Design and Construction of Gravity Dams",
+          "count": 3,
+          "years": [
+            2020,
+            2016,
+            2008
+          ]
+        },
+        {
+          "name": "Design of Stable Channels",
+          "count": 13,
+          "years": [
+            2026,
+            2025,
+            2024,
+            2023,
+            2022,
+            2021,
+            2009,
+            2008,
+            2007,
+            2005
+          ]
+        },
+        {
+          "name": "Theories of Seepage, Spillways and Miscellaneous",
+          "count": 11,
+          "years": [
+            2025,
+            2019,
+            2017,
+            2016,
+            2008,
+            2005,
+            2003
+          ]
+        }
+      ],
+      "years": [
+        {
+          "year": 2026,
+          "count": 3
+        },
+        {
+          "year": 2025,
+          "count": 3
+        },
+        {
+          "year": 2024,
+          "count": 2
+        },
+        {
+          "year": 2023,
+          "count": 2
+        },
+        {
+          "year": 2022,
+          "count": 2
+        },
+        {
+          "year": 2021,
+          "count": 2
+        },
+        {
+          "year": 2020,
+          "count": 3
+        },
+        {
+          "year": 2019,
+          "count": 4
+        },
+        {
+          "year": 2018,
+          "count": 1
+        },
+        {
+          "year": 2017,
+          "count": 2
+        },
+        {
+          "year": 2016,
+          "count": 2
+        },
+        {
+          "year": 2015,
+          "count": 2
+        },
+        {
+          "year": 2014,
+          "count": 1
+        },
+        {
+          "year": 2013,
+          "count": 1
+        },
+        {
+          "year": 2012,
+          "count": 1
+        },
+        {
+          "year": 2010,
+          "count": 2
+        },
+        {
+          "year": 2009,
+          "count": 2
+        },
+        {
+          "year": 2008,
+          "count": 5
+        },
+        {
+          "year": 2007,
+          "count": 3
+        },
+        {
+          "year": 2006,
+          "count": 1
+        },
+        {
+          "year": 2005,
+          "count": 5
+        },
+        {
+          "year": 2004,
+          "count": 2
+        },
+        {
+          "year": 2003,
+          "count": 3
+        },
+        {
+          "year": 2002,
+          "count": 1
+        },
+        {
+          "year": 2001,
+          "count": 1
+        }
+      ]
+    },
+    {
+      "subject": "RCC Structures",
+      "file": "rcc-structures.json",
+      "count": 159,
+      "topics": [
+        {
+          "name": "Concrete Technology",
+          "count": 7,
+          "years": [
+            2026,
+            2025,
+            2024,
+            2023,
+            2022
+          ]
+        },
+        {
+          "name": "Footing, Columns, Beams and Slabs",
+          "count": 45,
+          "years": [
+            2026,
+            2025,
+            2024,
+            2023,
+            2022,
+            2021,
+            2020,
+            2018,
+            2016,
+            2015,
+            2014,
+            2012,
+            2011,
+            2010,
+            2008,
+            2007,
+            2006,
+            2005,
+            2004,
+            2003,
+            2002
+          ]
+        },
+        {
+          "name": "Prestressed Concrete Beams",
+          "count": 26,
+          "years": [
+            2026,
+            2024,
+            2023,
+            2022,
+            2021,
+            2020,
+            2019,
+            2018,
+            2017,
+            2015,
+            2013,
+            2012,
+            2010,
+            2009,
+            2008,
+            2007,
+            2005,
+            2004
+          ]
+        },
+        {
+          "name": "Shear, Torsion, Bond, Anchorage and Development Length",
+          "count": 21,
+          "years": [
+            2025,
+            2023,
+            2022,
+            2020,
+            2019,
+            2018,
+            2016,
+            2015,
+            2014,
+            2013,
+            2011,
+            2008,
+            2004,
+            2001
+          ]
+        },
+        {
+          "name": "Working Stress and Limit State Method",
+          "count": 60,
+          "years": [
+            2026,
+            2025,
+            2024,
+            2023,
+            2022,
+            2020,
+            2019,
+            2018,
+            2017,
+            2016,
+            2015,
+            2014,
+            2013,
+            2012,
+            2011,
+            2009,
+            2008,
+            2007,
+            2006,
+            2005,
+            2004,
+            2003,
+            2002
+          ]
+        }
+      ],
+      "years": [
+        {
+          "year": 2026,
+          "count": 6
+        },
+        {
+          "year": 2025,
+          "count": 6
+        },
+        {
+          "year": 2024,
+          "count": 9
+        },
+        {
+          "year": 2023,
+          "count": 8
+        },
+        {
+          "year": 2022,
+          "count": 7
+        },
+        {
+          "year": 2021,
+          "count": 3
+        },
+        {
+          "year": 2020,
+          "count": 8
+        },
+        {
+          "year": 2019,
+          "count": 7
+        },
+        {
+          "year": 2018,
+          "count": 11
+        },
+        {
+          "year": 2017,
+          "count": 4
+        },
+        {
+          "year": 2016,
+          "count": 5
+        },
+        {
+          "year": 2015,
+          "count": 9
+        },
+        {
+          "year": 2014,
+          "count": 10
+        },
+        {
+          "year": 2013,
+          "count": 3
+        },
+        {
+          "year": 2012,
+          "count": 5
+        },
+        {
+          "year": 2011,
+          "count": 5
+        },
+        {
+          "year": 2010,
+          "count": 3
+        },
+        {
+          "year": 2009,
+          "count": 4
+        },
+        {
+          "year": 2008,
+          "count": 7
+        },
+        {
+          "year": 2007,
+          "count": 6
+        },
+        {
+          "year": 2006,
+          "count": 6
+        },
+        {
+          "year": 2005,
+          "count": 8
+        },
+        {
+          "year": 2004,
+          "count": 7
+        },
+        {
+          "year": 2003,
+          "count": 8
+        },
+        {
+          "year": 2002,
+          "count": 3
+        },
+        {
+          "year": 2001,
+          "count": 1
+        }
+      ]
+    },
+    {
+      "subject": "Solid Mechanics",
+      "file": "solid-mechanics.json",
+      "count": 174,
+      "topics": [
+        {
+          "name": "Bending and Shear Stresses",
+          "count": 15,
+          "years": [
+            2024,
+            2023,
+            2022,
+            2019,
+            2018,
+            2016,
+            2013,
+            2008,
+            2007,
+            2006,
+            2004
+          ]
+        },
+        {
+          "name": "Deflection of Beams",
+          "count": 37,
+          "years": [
+            2025,
+            2024,
+            2023,
+            2021,
+            2020,
+            2017,
+            2016,
+            2015,
+            2014,
+            2013,
+            2012,
+            2011,
+            2009,
+            2008,
+            2007,
+            2006,
+            2004,
+            2003,
+            2002
+          ]
+        },
+        {
+          "name": "Friction",
+          "count": 3,
+          "years": [
+            2026,
+            2022
+          ]
+        },
+        {
+          "name": "Principal Stress and Principal Strain",
+          "count": 25,
+          "years": [
+            2026,
+            2025,
+            2024,
+            2023,
+            2022,
+            2021,
+            2020,
+            2019,
+            2018,
+            2016,
+            2015,
+            2013,
+            2012,
+            2011,
+            2010,
+            2009,
+            2007,
+            2006,
+            2005,
+            2004,
+            2003
+          ]
+        },
+        {
+          "name": "Properties of Metals, Stress and Strain",
+          "count": 36,
+          "years": [
+            2026,
+            2024,
+            2023,
+            2022,
+            2021,
+            2020,
+            2019,
+            2018,
+            2017,
+            2016,
+            2015,
+            2014,
+            2013,
+            2012,
+            2010,
+            2008,
+            2007,
+            2005,
+            2004,
+            2003,
+            2002
+          ]
+        },
+        {
+          "name": "Shear Force and Bending Moment",
+          "count": 25,
+          "years": [
+            2025,
+            2023,
+            2020,
+            2017,
+            2016,
+            2015,
+            2012,
+            2011,
+            2010,
+            2009,
+            2006,
+            2005,
+            2004,
+            2003,
+            2002,
+            2001
+          ]
+        },
+        {
+          "name": "Theory of Columns and Shear Centre",
+          "count": 16,
+          "years": [
+            2026,
+            2024,
+            2022,
+            2017,
+            2015,
+            2014,
+            2013,
+            2012,
+            2010,
+            2009,
+            2008,
+            2007,
+            2006,
+            2003
+          ]
+        },
+        {
+          "name": "Torsion of Shafts and Pressure Vessels",
+          "count": 17,
+          "years": [
+            2024,
+            2023,
+            2021,
+            2019,
+            2018,
+            2017,
+            2010,
+            2009,
+            2008,
+            2007,
+            2006,
+            2005,
+            2004
+          ]
+        }
+      ],
+      "years": [
+        {
+          "year": 2026,
+          "count": 7
+        },
+        {
+          "year": 2025,
+          "count": 3
+        },
+        {
+          "year": 2024,
+          "count": 8
+        },
+        {
+          "year": 2023,
+          "count": 11
+        },
+        {
+          "year": 2022,
+          "count": 8
+        },
+        {
+          "year": 2021,
+          "count": 6
+        },
+        {
+          "year": 2020,
+          "count": 8
+        },
+        {
+          "year": 2019,
+          "count": 6
+        },
+        {
+          "year": 2018,
+          "count": 4
+        },
+        {
+          "year": 2017,
+          "count": 9
+        },
+        {
+          "year": 2016,
+          "count": 7
+        },
+        {
+          "year": 2015,
+          "count": 8
+        },
+        {
+          "year": 2014,
+          "count": 9
+        },
+        {
+          "year": 2013,
+          "count": 6
+        },
+        {
+          "year": 2012,
+          "count": 6
+        },
+        {
+          "year": 2011,
+          "count": 4
+        },
+        {
+          "year": 2010,
+          "count": 6
+        },
+        {
+          "year": 2009,
+          "count": 7
+        },
+        {
+          "year": 2008,
+          "count": 9
+        },
+        {
+          "year": 2007,
+          "count": 7
+        },
+        {
+          "year": 2006,
+          "count": 12
+        },
+        {
+          "year": 2005,
+          "count": 5
+        },
+        {
+          "year": 2004,
+          "count": 7
+        },
+        {
+          "year": 2003,
+          "count": 7
+        },
+        {
+          "year": 2002,
+          "count": 3
+        },
+        {
+          "year": 2001,
+          "count": 1
+        }
+      ]
+    },
+    {
+      "subject": "Structural Analysis",
+      "file": "structural-analysis.json",
+      "count": 115,
+      "topics": [
+        {
+          "name": "Arches",
+          "count": 6,
+          "years": [
+            2022,
+            2021,
+            2020,
+            2017,
+            2010,
+            2004
+          ]
+        },
+        {
+          "name": "Determinacy and Indeterminacy",
+          "count": 16,
+          "years": [
+            2026,
+            2024,
+            2023,
+            2022,
+            2019,
+            2017,
+            2016,
+            2015,
+            2014,
+            2009,
+            2008,
+            2005,
+            2004,
+            2001
+          ]
+        },
+        {
+          "name": "Influence Line Diagram and Rolling Loads",
+          "count": 19,
+          "years": [
+            2025,
+            2024,
+            2023,
+            2022,
+            2021,
+            2020,
+            2019,
+            2017,
+            2015,
+            2014,
+            2013,
+            2008,
+            2007,
+            2006,
+            2003,
+            2001
+          ]
+        },
+        {
+          "name": "Matrix Method of Structural Analysis",
+          "count": 6,
+          "years": [
+            2021,
+            2015,
+            2007,
+            2005,
+            2003
+          ]
+        },
+        {
+          "name": "Methods of Structural Analysis",
+          "count": 36,
+          "years": [
+            2026,
+            2025,
+            2023,
+            2022,
+            2021,
+            2020,
+            2019,
+            2018,
+            2017,
+            2015,
+            2014,
+            2013,
+            2007,
+            2006,
+            2005,
+            2004,
+            2001
+          ]
+        },
+        {
+          "name": "Trusses",
+          "count": 32,
+          "years": [
+            2026,
+            2025,
+            2024,
+            2023,
+            2022,
+            2021,
+            2020,
+            2019,
+            2018,
+            2016,
+            2015,
+            2014,
+            2013,
+            2010,
+            2008,
+            2007,
+            2005,
+            2004,
+            2003,
+            2001
+          ]
+        }
+      ],
+      "years": [
+        {
+          "year": 2026,
+          "count": 6
+        },
+        {
+          "year": 2025,
+          "count": 5
+        },
+        {
+          "year": 2024,
+          "count": 3
+        },
+        {
+          "year": 2023,
+          "count": 5
+        },
+        {
+          "year": 2022,
+          "count": 7
+        },
+        {
+          "year": 2021,
+          "count": 8
+        },
+        {
+          "year": 2020,
+          "count": 6
+        },
+        {
+          "year": 2019,
+          "count": 6
+        },
+        {
+          "year": 2018,
+          "count": 5
+        },
+        {
+          "year": 2017,
+          "count": 6
+        },
+        {
+          "year": 2016,
+          "count": 4
+        },
+        {
+          "year": 2015,
+          "count": 5
+        },
+        {
+          "year": 2014,
+          "count": 6
+        },
+        {
+          "year": 2013,
+          "count": 4
+        },
+        {
+          "year": 2010,
+          "count": 2
+        },
+        {
+          "year": 2009,
+          "count": 1
+        },
+        {
+          "year": 2008,
+          "count": 3
+        },
+        {
+          "year": 2007,
+          "count": 5
+        },
+        {
+          "year": 2006,
+          "count": 2
+        },
+        {
+          "year": 2005,
+          "count": 6
+        },
+        {
+          "year": 2004,
+          "count": 6
+        },
+        {
+          "year": 2003,
+          "count": 7
+        },
+        {
+          "year": 2001,
+          "count": 7
+        }
+      ]
+    },
+    {
+      "subject": "Transportation Engineering",
+      "file": "transportation-engineering.json",
+      "count": 243,
+      "topics": [
+        {
+          "name": "Geometric Design of Highway and Planning",
+          "count": 67,
+          "years": [
+            2026,
+            2025,
+            2024,
+            2023,
+            2022,
+            2021,
+            2020,
+            2019,
+            2018,
+            2017,
+            2016,
+            2015,
+            2014,
+            2013,
+            2012,
+            2011,
+            2010,
+            2009,
+            2008,
+            2007,
+            2006,
+            2005,
+            2004,
+            2003,
+            2002,
+            2001
+          ]
+        },
+        {
+          "name": "Highway Maintenance",
+          "count": 2,
+          "years": [
+            2018,
+            2012
+          ]
+        },
+        {
+          "name": "Highway Materials",
+          "count": 33,
+          "years": [
+            2026,
+            2025,
+            2024,
+            2023,
+            2021,
+            2020,
+            2019,
+            2018,
+            2017,
+            2016,
+            2015,
+            2014,
+            2013,
+            2012,
+            2011,
+            2010,
+            2008,
+            2007,
+            2006,
+            2005,
+            2004,
+            2003,
+            2002,
+            2001
+          ]
+        },
+        {
+          "name": "Pavement Design",
+          "count": 40,
+          "years": [
+            2026,
+            2025,
+            2024,
+            2020,
+            2019,
+            2018,
+            2017,
+            2016,
+            2014,
+            2013,
+            2012,
+            2010,
+            2009,
+            2008,
+            2007,
+            2006,
+            2005,
+            2004,
+            2003,
+            2002,
+            2001
+          ]
+        },
+        {
+          "name": "Railway and Airport Engineering",
+          "count": 15,
+          "years": [
+            2026,
+            2025,
+            2024,
+            2021,
+            2020,
+            2019,
+            2017
+          ]
+        },
+        {
+          "name": "Traffic Engineering",
+          "count": 86,
+          "years": [
+            2026,
+            2025,
+            2024,
+            2023,
+            2022,
+            2021,
+            2020,
+            2019,
+            2018,
+            2017,
+            2016,
+            2015,
+            2014,
+            2013,
+            2012,
+            2011,
+            2010,
+            2009,
+            2008,
+            2007,
+            2006,
+            2005,
+            2004,
+            2003
+          ]
+        }
+      ],
+      "years": [
+        {
+          "year": 2026,
+          "count": 13
+        },
+        {
+          "year": 2025,
+          "count": 15
+        },
+        {
+          "year": 2024,
+          "count": 13
+        },
+        {
+          "year": 2023,
+          "count": 7
+        },
+        {
+          "year": 2022,
+          "count": 12
+        },
+        {
+          "year": 2021,
+          "count": 12
+        },
+        {
+          "year": 2020,
+          "count": 14
+        },
+        {
+          "year": 2019,
+          "count": 12
+        },
+        {
+          "year": 2018,
+          "count": 11
+        },
+        {
+          "year": 2017,
+          "count": 11
+        },
+        {
+          "year": 2016,
+          "count": 8
+        },
+        {
+          "year": 2015,
+          "count": 10
+        },
+        {
+          "year": 2014,
+          "count": 13
+        },
+        {
+          "year": 2013,
+          "count": 6
+        },
+        {
+          "year": 2012,
+          "count": 6
+        },
+        {
+          "year": 2011,
+          "count": 6
+        },
+        {
+          "year": 2010,
+          "count": 5
+        },
+        {
+          "year": 2009,
+          "count": 6
+        },
+        {
+          "year": 2008,
+          "count": 10
+        },
+        {
+          "year": 2007,
+          "count": 9
+        },
+        {
+          "year": 2006,
+          "count": 9
+        },
+        {
+          "year": 2005,
+          "count": 9
+        },
+        {
+          "year": 2004,
+          "count": 8
+        },
+        {
+          "year": 2003,
+          "count": 7
+        },
+        {
+          "year": 2002,
+          "count": 6
+        },
+        {
+          "year": 2001,
+          "count": 5
+        }
+      ]
+    }
+  ],
+  "questionCount": 2617,
+  "pendingCount": 179
+}
