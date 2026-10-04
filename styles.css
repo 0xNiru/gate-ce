@@ -295,3 +295,15 @@ body.dark .daily-quote{background:linear-gradient(135deg,#352b25,#302c27);border
 body.dark .daily-quote blockquote{color:#f0e3d2}
 body.dark .quote-kicker,body.dark .quote-counter{color:#e5bd7a}
 body.dark .todo-item{color:#d4ccc2}
+
+/* Keep every recent-practice action on the same row. */
+.home-history-row{grid-template-columns:36px minmax(0,1fr) auto auto auto auto}
+@media(max-width:760px){.home-history-row{grid-template-columns:36px minmax(0,1fr) auto auto auto}}
+@media(max-width:650px){.home-history-row{grid-template-columns:32px minmax(0,1fr) auto auto}}
+
+/* Match the GATE exam controls shown in the reference. */
+.exam-ribbon-actions button{display:inline-flex;align-items:center;gap:4px}
+.exam-ribbon-icon{width:16px;height:16px;flex:none;display:grid;place-items:center;border-radius:50%;color:#fff;line-height:1}
+.exam-ribbon-info-icon{background:#2196f3;font-family:Arial,sans-serif;font-size:11px;font-weight:700}
+.exam-ribbon-paper-icon{background:#20c77a}
+.exam-ribbon-paper-icon svg{width:12px;height:12px;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
