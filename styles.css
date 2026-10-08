@@ -332,3 +332,13 @@ body.dark .todo-item{color:#d4ccc2}
 .exam-ribbon-info-icon{background:#2196f3;font-family:Arial,sans-serif;font-size:11px;font-weight:700}
 .exam-ribbon-paper-icon{background:#20c77a}
 .exam-ribbon-paper-icon svg{width:12px;height:12px;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+
+/* Keep the exam inside the viewport; scroll the question and palette panels independently. */
+.exam-page{height:calc(100vh - 60px);height:calc(100dvh - 60px);min-height:0;overflow:hidden}
+.exam-workspace{min-height:0;overflow:hidden}
+.question-card{flex:1 1 0;min-height:0;overflow:auto}
+.exam-actions{flex:0 0 auto}
+.candidate-panel{min-height:0;overflow:hidden}
+.question-palette{flex:1 1 0;min-height:0;overflow-x:hidden;overflow-y:auto;grid-auto-rows:42px;overscroll-behavior:contain}
+.submit-dock{flex:0 0 auto}
+@media(max-width:760px){.exam-page{height:calc(100vh - 53px);height:calc(100dvh - 53px);min-height:0;display:flex;flex-direction:column}.candidate-panel{order:-1;flex:0 1 30%;min-height:130px;max-height:230px;border:0;border-bottom:2px solid #d4dce1}.question-palette{grid-template-columns:repeat(8,minmax(0,1fr));max-height:none;grid-auto-rows:32px;padding:7px;overflow-x:hidden;overflow-y:auto}.submit-dock{display:none}.exam-workspace{flex:1 1 0;min-height:0}.question-card{min-height:0}.exam-actions{height:auto;min-height:54px;flex:0 0 auto}}
