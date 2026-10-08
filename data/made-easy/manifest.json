@@ -1,0 +1,762 @@
+{
+  "version": 1,
+  "provider": "Made Easy",
+  "tests": [
+    {
+      "id": "001-advance-level-test-1-full-syllabus-gate-2026-ce",
+      "title": "Advance Level Test-1 Full Syllabus GATE 2026 CE",
+      "group": "Advanced full syllabus",
+      "examLabel": "GATE 2026 CE",
+      "durationSeconds": 10800,
+      "questionCount": 65,
+      "file": "001-advance-level-test-1-full-syllabus-gate-2026-ce.json"
+    },
+    {
+      "id": "002-advance-level-test-2-full-syllabus-gate-2026-ce",
+      "title": "Advance Level Test-2 Full Syllabus GATE 2026 CE",
+      "group": "Advanced full syllabus",
+      "examLabel": "GATE 2026 CE",
+      "durationSeconds": 10800,
+      "questionCount": 65,
+      "file": "002-advance-level-test-2-full-syllabus-gate-2026-ce.json"
+    },
+    {
+      "id": "003-advance-level-test-3-full-syllabus-gate-2026-ce",
+      "title": "Advance Level Test-3 Full Syllabus GATE 2026 CE",
+      "group": "Advanced full syllabus",
+      "examLabel": "GATE 2026 CE",
+      "durationSeconds": 10800,
+      "questionCount": 65,
+      "file": "003-advance-level-test-3-full-syllabus-gate-2026-ce.json"
+    },
+    {
+      "id": "004-advance-level-test-4-full-syllabus-gate-2026-ce",
+      "title": "Advance Level Test-4 Full Syllabus GATE 2026 CE",
+      "group": "Advanced full syllabus",
+      "examLabel": "GATE 2026 CE",
+      "durationSeconds": 10800,
+      "questionCount": 65,
+      "file": "004-advance-level-test-4-full-syllabus-gate-2026-ce.json"
+    },
+    {
+      "id": "005-basic-level-test-1-full-syllabus-gate-2026-ce",
+      "title": "Basic Level Test-1 Full Syllabus GATE 2026 CE",
+      "group": "Basic full syllabus",
+      "examLabel": "GATE 2026 CE",
+      "durationSeconds": 10800,
+      "questionCount": 65,
+      "file": "005-basic-level-test-1-full-syllabus-gate-2026-ce.json"
+    },
+    {
+      "id": "006-basic-level-test-2-full-syllabus-gate-2026-ce",
+      "title": "Basic Level Test-2 Full Syllabus GATE 2026 CE",
+      "group": "Basic full syllabus",
+      "examLabel": "GATE 2026 CE",
+      "durationSeconds": 10800,
+      "questionCount": 65,
+      "file": "006-basic-level-test-2-full-syllabus-gate-2026-ce.json"
+    },
+    {
+      "id": "007-basic-level-test-3-full-syllabus-gate-2026-ce",
+      "title": "Basic Level Test-3 Full Syllabus GATE 2026 CE",
+      "group": "Basic full syllabus",
+      "examLabel": "GATE 2026 CE",
+      "durationSeconds": 10800,
+      "questionCount": 65,
+      "file": "007-basic-level-test-3-full-syllabus-gate-2026-ce.json"
+    },
+    {
+      "id": "008-basic-level-test-4-full-syllabus-gate-2026-ce",
+      "title": "Basic Level Test-4 Full Syllabus GATE 2026 CE",
+      "group": "Basic full syllabus",
+      "examLabel": "GATE 2026 CE",
+      "durationSeconds": 10800,
+      "questionCount": 65,
+      "file": "008-basic-level-test-4-full-syllabus-gate-2026-ce.json"
+    },
+    {
+      "id": "009-ese-2026-demo-test-ce",
+      "title": "ESE 2026 DEMO TEST CE",
+      "group": "ESE demo tests",
+      "examLabel": "ESE 2026 CE",
+      "durationSeconds": 10800,
+      "questionCount": 150,
+      "file": "009-ese-2026-demo-test-ce.json"
+    },
+    {
+      "id": "010-full-syllabus-test-1-2026-ese-ce-general-studies-engineering",
+      "title": "Full Syllabus Test-1 2026 ESE CE General Studies & Engineering Aptitude",
+      "group": "ESE subject-wise tests",
+      "examLabel": "ESE 2026 CE",
+      "durationSeconds": 7200,
+      "questionCount": 100,
+      "file": "010-full-syllabus-test-1-2026-ese-ce-general-studies-engineering.json"
+    },
+    {
+      "id": "011-full-syllabus-test-10-2026-ese-ce-engineering-discipline",
+      "title": "Full Syllabus Test-10 2026 ESE CE Engineering Discipline",
+      "group": "ESE subject-wise tests",
+      "examLabel": "ESE 2026 CE",
+      "durationSeconds": 10800,
+      "questionCount": 150,
+      "file": "011-full-syllabus-test-10-2026-ese-ce-engineering-discipline.json"
+    },
+    {
+      "id": "012-full-syllabus-test-11-2026-ese-ce-general-studies-engineering",
+      "title": "Full Syllabus Test-11 2026 ESE CE General Studies & Engineering Aptitude",
+      "group": "ESE subject-wise tests",
+      "examLabel": "ESE 2026 CE",
+      "durationSeconds": 7200,
+      "questionCount": 100,
+      "file": "012-full-syllabus-test-11-2026-ese-ce-general-studies-engineering.json"
+    },
+    {
+      "id": "013-full-syllabus-test-12-2026-ese-ce-engineering-discipline",
+      "title": "Full Syllabus Test-12 2026 ESE CE Engineering Discipline",
+      "group": "ESE subject-wise tests",
+      "examLabel": "ESE 2026 CE",
+      "durationSeconds": 10800,
+      "questionCount": 150,
+      "file": "013-full-syllabus-test-12-2026-ese-ce-engineering-discipline.json"
+    },
+    {
+      "id": "014-full-syllabus-test-2-2026-ese-ce-engineering-discipline",
+      "title": "Full Syllabus Test-2 2026 ESE CE Engineering Discipline",
+      "group": "ESE full syllabus tests",
+      "examLabel": "ESE 2026 CE",
+      "durationSeconds": 10800,
+      "questionCount": 150,
+      "file": "014-full-syllabus-test-2-2026-ese-ce-engineering-discipline.json"
+    },
+    {
+      "id": "015-full-syllabus-test-3-2026-ese-ce-general-studies-engineering",
+      "title": "Full Syllabus Test-3 2026 ESE CE General Studies & Engineering Aptitude",
+      "group": "ESE subject-wise tests",
+      "examLabel": "ESE 2026 CE",
+      "durationSeconds": 7200,
+      "questionCount": 100,
+      "file": "015-full-syllabus-test-3-2026-ese-ce-general-studies-engineering.json"
+    },
+    {
+      "id": "016-full-syllabus-test-4-2026-ese-ce-engineering-discipline",
+      "title": "Full Syllabus Test-4 2026 ESE CE Engineering Discipline",
+      "group": "ESE full syllabus tests",
+      "examLabel": "ESE 2026 CE",
+      "durationSeconds": 10800,
+      "questionCount": 150,
+      "file": "016-full-syllabus-test-4-2026-ese-ce-engineering-discipline.json"
+    },
+    {
+      "id": "017-full-syllabus-test-5-2026-ese-ce-general-studies-engineering",
+      "title": "Full Syllabus Test-5 2026 ESE CE General Studies & Engineering Aptitude",
+      "group": "ESE subject-wise tests",
+      "examLabel": "ESE 2026 CE",
+      "durationSeconds": 7200,
+      "questionCount": 100,
+      "file": "017-full-syllabus-test-5-2026-ese-ce-general-studies-engineering.json"
+    },
+    {
+      "id": "018-full-syllabus-test-6-2026-ese-ce-engineering-discipline",
+      "title": "Full Syllabus Test-6 2026 ESE CE Engineering Discipline",
+      "group": "ESE full syllabus tests",
+      "examLabel": "ESE 2026 CE",
+      "durationSeconds": 10800,
+      "questionCount": 150,
+      "file": "018-full-syllabus-test-6-2026-ese-ce-engineering-discipline.json"
+    },
+    {
+      "id": "019-full-syllabus-test-7-2026-ese-ce-general-studies-engineering",
+      "title": "Full Syllabus Test-7 2026 ESE CE General Studies & Engineering Aptitude",
+      "group": "ESE subject-wise tests",
+      "examLabel": "ESE 2026 CE",
+      "durationSeconds": 7200,
+      "questionCount": 100,
+      "file": "019-full-syllabus-test-7-2026-ese-ce-general-studies-engineering.json"
+    },
+    {
+      "id": "020-full-syllabus-test-8-2026-ese-ce-engineering-discipline",
+      "title": "Full Syllabus Test-8 2026 ESE CE Engineering Discipline",
+      "group": "ESE full syllabus tests",
+      "examLabel": "ESE 2026 CE",
+      "durationSeconds": 10800,
+      "questionCount": 150,
+      "file": "020-full-syllabus-test-8-2026-ese-ce-engineering-discipline.json"
+    },
+    {
+      "id": "021-full-syllabus-test-9-2026-ese-ce-general-studies-engineering",
+      "title": "Full Syllabus Test-9 2026 ESE CE General Studies & Engineering Aptitude",
+      "group": "ESE subject-wise tests",
+      "examLabel": "ESE 2026 CE",
+      "durationSeconds": 7200,
+      "questionCount": 100,
+      "file": "021-full-syllabus-test-9-2026-ese-ce-general-studies-engineering.json"
+    },
+    {
+      "id": "022-gate-2026-demo-test-ce",
+      "title": "GATE 2026 DEMO TEST CE",
+      "group": "Mock tests",
+      "examLabel": "GATE 2026 CE",
+      "durationSeconds": 10800,
+      "questionCount": 65,
+      "file": "022-gate-2026-demo-test-ce.json"
+    },
+    {
+      "id": "023-mock-level-test-3-full-syllabus-gate-2026-ce",
+      "title": "Mock Level Test- 3 Full Syllabus GATE 2026 CE",
+      "group": "Mock tests",
+      "examLabel": "GATE 2026 CE",
+      "durationSeconds": 10800,
+      "questionCount": 65,
+      "file": "023-mock-level-test-3-full-syllabus-gate-2026-ce.json"
+    },
+    {
+      "id": "024-mock-level-test-4-full-syllabus-gate-2026-ce",
+      "title": "Mock Level Test- 4 Full Syllabus GATE 2026 CE",
+      "group": "Mock tests",
+      "examLabel": "GATE 2026 CE",
+      "durationSeconds": 10800,
+      "questionCount": 65,
+      "file": "024-mock-level-test-4-full-syllabus-gate-2026-ce.json"
+    },
+    {
+      "id": "025-mock-level-test-1-full-syllabus-gate-2026-ce",
+      "title": "Mock Level Test-1 Full Syllabus GATE 2026 CE",
+      "group": "Mock tests",
+      "examLabel": "GATE 2026 CE",
+      "durationSeconds": 10800,
+      "questionCount": 65,
+      "file": "025-mock-level-test-1-full-syllabus-gate-2026-ce.json"
+    },
+    {
+      "id": "026-mock-level-test-2-full-syllabus-gate-2026-ce",
+      "title": "Mock Level Test-2 Full Syllabus GATE 2026 CE",
+      "group": "Mock tests",
+      "examLabel": "GATE 2026 CE",
+      "durationSeconds": 10800,
+      "questionCount": 65,
+      "file": "026-mock-level-test-2-full-syllabus-gate-2026-ce.json"
+    },
+    {
+      "id": "027-subject-wise-test-1-2026-ese-ce-solid-mechanics",
+      "title": "Subject-wise Test-1 2026 ESE CE Solid Mechanics",
+      "group": "ESE subject-wise tests",
+      "examLabel": "ESE 2026 CE",
+      "durationSeconds": 2700,
+      "questionCount": 38,
+      "file": "027-subject-wise-test-1-2026-ese-ce-solid-mechanics.json"
+    },
+    {
+      "id": "028-subject-wise-test-10-2026-ese-ce-basics-of-project-management",
+      "title": "Subject-wise Test-10 2026 ESE CE Basics of Project Management",
+      "group": "ESE subject-wise tests",
+      "examLabel": "ESE 2026 CE",
+      "durationSeconds": 1800,
+      "questionCount": 25,
+      "file": "028-subject-wise-test-10-2026-ese-ce-basics-of-project-management.json"
+    },
+    {
+      "id": "029-subject-wise-test-11-2026-ese-ce-flow-of-fluids-hydraulic-machines",
+      "title": "Subject-wise Test-11 2026 ESE CE Flow of Fluids, Hydraulic Machines and Hydro Power",
+      "group": "ESE subject-wise tests",
+      "examLabel": "ESE 2026 CE",
+      "durationSeconds": 2700,
+      "questionCount": 38,
+      "file": "029-subject-wise-test-11-2026-ese-ce-flow-of-fluids-hydraulic-machines.json"
+    },
+    {
+      "id": "030-subject-wise-test-12-2026-ese-ce-basics-of-material-science",
+      "title": "Subject-wise Test-12 2026 ESE CE Basics of Material Science and Engineering",
+      "group": "ESE subject-wise tests",
+      "examLabel": "ESE 2026 CE",
+      "durationSeconds": 1800,
+      "questionCount": 25,
+      "file": "030-subject-wise-test-12-2026-ese-ce-basics-of-material-science.json"
+    },
+    {
+      "id": "031-subject-wise-test-13-2026-ese-ce-design-of-steel-structures",
+      "title": "Subject-wise Test-13 2026 ESE CE Design of Steel Structures",
+      "group": "ESE subject-wise tests",
+      "examLabel": "ESE 2026 CE",
+      "durationSeconds": 2700,
+      "questionCount": 38,
+      "file": "031-subject-wise-test-13-2026-ese-ce-design-of-steel-structures.json"
+    },
+    {
+      "id": "032-subject-wise-test-14-2026-ese-ce-information-and-communication",
+      "title": "Subject-wise Test-14 2026 ESE CE Information and Communication Technologies",
+      "group": "ESE subject-wise tests",
+      "examLabel": "ESE 2026 CE",
+      "durationSeconds": 1800,
+      "questionCount": 25,
+      "file": "032-subject-wise-test-14-2026-ese-ce-information-and-communication.json"
+    },
+    {
+      "id": "033-subject-wise-test-15-2026-ese-ce-geo-technical-engineering",
+      "title": "Subject-wise Test-15 2026 ESE CE Geo Technical Engineering & Foundation Engineering",
+      "group": "ESE subject-wise tests",
+      "examLabel": "ESE 2026 CE",
+      "durationSeconds": 2700,
+      "questionCount": 38,
+      "file": "033-subject-wise-test-15-2026-ese-ce-geo-technical-engineering.json"
+    },
+    {
+      "id": "034-subject-wise-test-16-2026-ese-ce-ethics-and-values-in-engineering",
+      "title": "Subject-wise Test-16 2026 ESE CE Ethics and values in engineering profession",
+      "group": "ESE subject-wise tests",
+      "examLabel": "ESE 2026 CE",
+      "durationSeconds": 1800,
+      "questionCount": 25,
+      "file": "034-subject-wise-test-16-2026-ese-ce-ethics-and-values-in-engineering.json"
+    },
+    {
+      "id": "035-subject-wise-test-17-2026-ese-ce-construction-practice-planning",
+      "title": "Subject-wise Test-17 2026 ESE CE Construction Practice, Planning and Management",
+      "group": "ESE subject-wise tests",
+      "examLabel": "ESE 2026 CE",
+      "durationSeconds": 2700,
+      "questionCount": 38,
+      "file": "035-subject-wise-test-17-2026-ese-ce-construction-practice-planning.json"
+    },
+    {
+      "id": "036-subject-wise-test-18-2026-ese-ce-standards-and-quality-practices",
+      "title": "Subject-wise Test-18 2026 ESE CE Standards and Quality practices",
+      "group": "ESE subject-wise tests",
+      "examLabel": "ESE 2026 CE",
+      "durationSeconds": 1800,
+      "questionCount": 25,
+      "file": "036-subject-wise-test-18-2026-ese-ce-standards-and-quality-practices.json"
+    },
+    {
+      "id": "037-subject-wise-test-19-2026-ese-ce-transporting-engineering",
+      "title": "Subject-wise Test-19 2026 ESE CE Transporting Engineering",
+      "group": "ESE subject-wise tests",
+      "examLabel": "ESE 2026 CE",
+      "durationSeconds": 2700,
+      "questionCount": 38,
+      "file": "037-subject-wise-test-19-2026-ese-ce-transporting-engineering.json"
+    },
+    {
+      "id": "038-subject-wise-test-2-2026-ese-ce-engineering-aptitude",
+      "title": "Subject-wise Test-2 2026 ESE CE Engineering Aptitude",
+      "group": "ESE subject-wise tests",
+      "examLabel": "ESE 2026 CE",
+      "durationSeconds": 1800,
+      "questionCount": 25,
+      "file": "038-subject-wise-test-2-2026-ese-ce-engineering-aptitude.json"
+    },
+    {
+      "id": "039-subject-wise-test-20-2026-ese-ce-current-issues-national-and",
+      "title": "Subject-wise Test-20 2026 ESE CE Current issues National and International",
+      "group": "ESE subject-wise tests",
+      "examLabel": "ESE 2026 CE",
+      "durationSeconds": 1800,
+      "questionCount": 25,
+      "file": "039-subject-wise-test-20-2026-ese-ce-current-issues-national-and.json"
+    },
+    {
+      "id": "040-subject-wise-test-21-2026-ese-ce-building-materials",
+      "title": "Subject-wise Test-21 2026 ESE CE Building Materials",
+      "group": "ESE subject-wise tests",
+      "examLabel": "ESE 2026 CE",
+      "durationSeconds": 2700,
+      "questionCount": 38,
+      "file": "040-subject-wise-test-21-2026-ese-ce-building-materials.json"
+    },
+    {
+      "id": "041-subject-wise-test-22-2026-ese-ce-surveying-and-geology",
+      "title": "Subject-wise Test-22 2026 ESE CE Surveying and Geology",
+      "group": "ESE subject-wise tests",
+      "examLabel": "ESE 2026 CE",
+      "durationSeconds": 2700,
+      "questionCount": 38,
+      "file": "041-subject-wise-test-22-2026-ese-ce-surveying-and-geology.json"
+    },
+    {
+      "id": "042-subject-wise-test-3-2026-ese-ce-environmental-engineering",
+      "title": "Subject-wise Test-3 2026 ESE CE Environmental Engineering",
+      "group": "ESE subject-wise tests",
+      "examLabel": "ESE 2026 CE",
+      "durationSeconds": 2700,
+      "questionCount": 38,
+      "file": "042-subject-wise-test-3-2026-ese-ce-environmental-engineering.json"
+    },
+    {
+      "id": "043-subject-wise-test-4-2026-ese-ce-engineering-mathematics-numerical",
+      "title": "Subject-wise Test-4 2026 ESE CE Engineering Mathematics & Numerical Analysis",
+      "group": "ESE subject-wise tests",
+      "examLabel": "ESE 2026 CE",
+      "durationSeconds": 1800,
+      "questionCount": 25,
+      "file": "043-subject-wise-test-4-2026-ese-ce-engineering-mathematics-numerical.json"
+    },
+    {
+      "id": "044-subject-wise-test-5-2026-ese-ce-structural-analysis",
+      "title": "Subject-wise Test-5 2026 ESE CE Structural Analysis",
+      "group": "ESE subject-wise tests",
+      "examLabel": "ESE 2026 CE",
+      "durationSeconds": 2700,
+      "questionCount": 38,
+      "file": "044-subject-wise-test-5-2026-ese-ce-structural-analysis.json"
+    },
+    {
+      "id": "045-subject-wise-test-6-2026-ese-ce-general-principles-of-design",
+      "title": "Subject-wise Test-6 2026 ESE CE General Principles of Design, Drawing, Importance of Safety",
+      "group": "ESE subject-wise tests",
+      "examLabel": "ESE 2026 CE",
+      "durationSeconds": 1800,
+      "questionCount": 25,
+      "file": "045-subject-wise-test-6-2026-ese-ce-general-principles-of-design.json"
+    },
+    {
+      "id": "046-subject-wise-test-7-2026-ese-ce-hydrology-water-resource-engineering",
+      "title": "Subject-wise Test-7 2026 ESE CE Hydrology & Water Resource Engineering",
+      "group": "ESE subject-wise tests",
+      "examLabel": "ESE 2026 CE",
+      "durationSeconds": 2700,
+      "questionCount": 38,
+      "file": "046-subject-wise-test-7-2026-ese-ce-hydrology-water-resource-engineering.json"
+    },
+    {
+      "id": "047-subject-wise-test-8-2026-ese-ce-basics-of-energy-and-environment",
+      "title": "Subject-wise Test-8 2026 ESE CE Basics of Energy and Environment",
+      "group": "ESE subject-wise tests",
+      "examLabel": "ESE 2026 CE",
+      "durationSeconds": 1800,
+      "questionCount": 25,
+      "file": "047-subject-wise-test-8-2026-ese-ce-basics-of-energy-and-environment.json"
+    },
+    {
+      "id": "048-subject-wise-test-9-2026-ese-ce-design-of-concrete-masonry",
+      "title": "Subject-wise Test-9 2026 ESE CE Design of Concrete & Masonry Structures",
+      "group": "ESE subject-wise tests",
+      "examLabel": "ESE 2026 CE",
+      "durationSeconds": 2700,
+      "questionCount": 38,
+      "file": "048-subject-wise-test-9-2026-ese-ce-design-of-concrete-masonry.json"
+    },
+    {
+      "id": "049-subjectwise-test-1-part-syllabus-gate-2026-ce-solid-mechanics",
+      "title": "Subjectwise Test-1 Part Syllabus GATE 2026 CE Solid Mechanics",
+      "group": "Subject-wise tests",
+      "examLabel": "GATE 2026 CE",
+      "durationSeconds": 5400,
+      "questionCount": 33,
+      "file": "049-subjectwise-test-1-part-syllabus-gate-2026-ce-solid-mechanics.json"
+    },
+    {
+      "id": "050-subjectwise-test-10-part-syllabus-gate-2026-ce-steel-structures",
+      "title": "Subjectwise Test-10 Part Syllabus GATE 2026 CE Steel Structures",
+      "group": "Subject-wise tests",
+      "examLabel": "GATE 2026 CE",
+      "durationSeconds": 5400,
+      "questionCount": 33,
+      "file": "050-subjectwise-test-10-part-syllabus-gate-2026-ce-steel-structures.json"
+    },
+    {
+      "id": "051-subjectwise-test-11-part-syllabus-gate-2026-ce-hydrology-and",
+      "title": "Subjectwise Test-11 Part Syllabus GATE 2026 CE Hydrology and Irrigation",
+      "group": "Subject-wise tests",
+      "examLabel": "GATE 2026 CE",
+      "durationSeconds": 5400,
+      "questionCount": 33,
+      "file": "051-subjectwise-test-11-part-syllabus-gate-2026-ce-hydrology-and.json"
+    },
+    {
+      "id": "052-subjectwise-test-12-part-syllabus-gate-2026-ce-engineering-mechanics",
+      "title": "Subjectwise Test-12 Part Syllabus GATE 2026 CE Engineering Mechanics, Construction Materials and Man",
+      "group": "Subject-wise tests",
+      "examLabel": "GATE 2026 CE",
+      "durationSeconds": 5400,
+      "questionCount": 33,
+      "file": "052-subjectwise-test-12-part-syllabus-gate-2026-ce-engineering-mechanics.json"
+    },
+    {
+      "id": "053-subjectwise-test-2-part-syllabus-gate-2026-ce-concrete-structures",
+      "title": "Subjectwise Test-2 Part Syllabus GATE 2026 CE Concrete Structures",
+      "group": "Subject-wise tests",
+      "examLabel": "GATE 2026 CE",
+      "durationSeconds": 5400,
+      "questionCount": 33,
+      "file": "053-subjectwise-test-2-part-syllabus-gate-2026-ce-concrete-structures.json"
+    },
+    {
+      "id": "054-subjectwise-test-3-part-syllabus-gate-2026-ce-environmental",
+      "title": "Subjectwise Test-3 Part Syllabus GATE 2026 CE - Environmental Engineering",
+      "group": "Subject-wise tests",
+      "examLabel": "GATE 2026 CE",
+      "durationSeconds": 5400,
+      "questionCount": 33,
+      "file": "054-subjectwise-test-3-part-syllabus-gate-2026-ce-environmental.json"
+    },
+    {
+      "id": "055-subjectwise-test-4-part-syllabus-gate-2026-ce-fluid-mechanics",
+      "title": "Subjectwise Test-4 Part Syllabus GATE 2026 CE Fluid Mechanics and Hydraulics",
+      "group": "Subject-wise tests",
+      "examLabel": "GATE 2026 CE",
+      "durationSeconds": 5400,
+      "questionCount": 33,
+      "file": "055-subjectwise-test-4-part-syllabus-gate-2026-ce-fluid-mechanics.json"
+    },
+    {
+      "id": "056-subjectwise-test-5-part-syllabus-gate-2026-ce-engineering-mathematics",
+      "title": "Subjectwise Test-5 Part Syllabus GATE 2026 CE ENGINEERING MATHEMATICS",
+      "group": "Subject-wise tests",
+      "examLabel": "GATE 2026 CE",
+      "durationSeconds": 5400,
+      "questionCount": 33,
+      "file": "056-subjectwise-test-5-part-syllabus-gate-2026-ce-engineering-mathematics.json"
+    },
+    {
+      "id": "057-subjectwise-test-6-part-syllabus-gate-2026-ce-general-aptitude",
+      "title": "Subjectwise Test-6 Part Syllabus GATE 2026 CE General Aptitude",
+      "group": "Subject-wise tests",
+      "examLabel": "GATE 2026 CE",
+      "durationSeconds": 5400,
+      "questionCount": 33,
+      "file": "057-subjectwise-test-6-part-syllabus-gate-2026-ce-general-aptitude.json"
+    },
+    {
+      "id": "058-subjectwise-test-7-part-syllabus-gate-2026-ce-transportation",
+      "title": "Subjectwise Test-7 Part Syllabus GATE 2026 CE Transportation Engineering and Geomatics Engineering",
+      "group": "Subject-wise tests",
+      "examLabel": "GATE 2026 CE",
+      "durationSeconds": 5400,
+      "questionCount": 33,
+      "file": "058-subjectwise-test-7-part-syllabus-gate-2026-ce-transportation.json"
+    },
+    {
+      "id": "059-subjectwise-test-8-part-syllabus-gate-2026-ce-structural-analysis",
+      "title": "Subjectwise Test-8 Part Syllabus GATE 2026 CE Structural Analysis",
+      "group": "Subject-wise tests",
+      "examLabel": "GATE 2026 CE",
+      "durationSeconds": 5400,
+      "questionCount": 33,
+      "file": "059-subjectwise-test-8-part-syllabus-gate-2026-ce-structural-analysis.json"
+    },
+    {
+      "id": "060-subjectwise-test-9-part-syllabus-gate-2026-ce-geotechnical-engineering",
+      "title": "Subjectwise Test-9 Part Syllabus GATE 2026 CE Geotechnical Engineering",
+      "group": "Subject-wise tests",
+      "examLabel": "GATE 2026 CE",
+      "durationSeconds": 5400,
+      "questionCount": 33,
+      "file": "060-subjectwise-test-9-part-syllabus-gate-2026-ce-geotechnical-engineering.json"
+    },
+    {
+      "id": "061-topicwise-test-1-part-syllabus-gate-2026-ce-solid-mechanics",
+      "title": "Topicwise Test-1 Part Syllabus GATE 2026 CE Solid Mechanics Part-1",
+      "group": "Topic-wise tests",
+      "examLabel": "GATE 2026 CE",
+      "durationSeconds": 2700,
+      "questionCount": 17,
+      "file": "061-topicwise-test-1-part-syllabus-gate-2026-ce-solid-mechanics.json"
+    },
+    {
+      "id": "062-topicwise-test-10-part-syllabus-gate-2026-ce-engineering-mathematics",
+      "title": "Topicwise Test-10 Part Syllabus GATE 2026 CE Engineering Mathematics-2",
+      "group": "Topic-wise tests",
+      "examLabel": "GATE 2026 CE",
+      "durationSeconds": 2700,
+      "questionCount": 17,
+      "file": "062-topicwise-test-10-part-syllabus-gate-2026-ce-engineering-mathematics.json"
+    },
+    {
+      "id": "063-topicwise-test-11-part-syllabus-gate-2026-ce-general-aptitude",
+      "title": "Topicwise Test-11 Part Syllabus GATE 2026 CE General Aptitude-1",
+      "group": "Topic-wise tests",
+      "examLabel": "GATE 2026 CE",
+      "durationSeconds": 2700,
+      "questionCount": 17,
+      "file": "063-topicwise-test-11-part-syllabus-gate-2026-ce-general-aptitude.json"
+    },
+    {
+      "id": "064-topicwise-test-12-part-syllabus-gate-2026-ce-general-aptitude",
+      "title": "Topicwise Test-12 Part Syllabus GATE 2026 CE General Aptitude Part-2",
+      "group": "Topic-wise tests",
+      "examLabel": "GATE 2026 CE",
+      "durationSeconds": 2700,
+      "questionCount": 17,
+      "file": "064-topicwise-test-12-part-syllabus-gate-2026-ce-general-aptitude.json"
+    },
+    {
+      "id": "065-topicwise-test-13-part-syllabus-gate-2026-ce-transportation",
+      "title": "Topicwise Test-13 Part Syllabus GATE 2026 CE Transportation Engg. and Geomatics Engg. -1",
+      "group": "Topic-wise tests",
+      "examLabel": "GATE 2026 CE",
+      "durationSeconds": 2700,
+      "questionCount": 17,
+      "file": "065-topicwise-test-13-part-syllabus-gate-2026-ce-transportation.json"
+    },
+    {
+      "id": "066-topicwise-test-14-part-syllabus-gate-2026-ce-transportation",
+      "title": "Topicwise Test-14 Part Syllabus GATE 2026 CE Transportation Engineering and Geomatics Engineering-2",
+      "group": "Topic-wise tests",
+      "examLabel": "GATE 2026 CE",
+      "durationSeconds": 2700,
+      "questionCount": 17,
+      "file": "066-topicwise-test-14-part-syllabus-gate-2026-ce-transportation.json"
+    },
+    {
+      "id": "067-topicwise-test-15-part-syllabus-gate-2026-ce-structural-analysis",
+      "title": "Topicwise Test-15 Part Syllabus GATE 2026 CE Structural Analysis (Part-1)",
+      "group": "Topic-wise tests",
+      "examLabel": "GATE 2026 CE",
+      "durationSeconds": 2700,
+      "questionCount": 17,
+      "file": "067-topicwise-test-15-part-syllabus-gate-2026-ce-structural-analysis.json"
+    },
+    {
+      "id": "068-topicwise-test-16-part-syllabus-gate-2026-ce-structural-analysis",
+      "title": "Topicwise Test-16 Part Syllabus GATE 2026 CE Structural Analysis (Part-2)",
+      "group": "Topic-wise tests",
+      "examLabel": "GATE 2026 CE",
+      "durationSeconds": 2700,
+      "questionCount": 17,
+      "file": "068-topicwise-test-16-part-syllabus-gate-2026-ce-structural-analysis.json"
+    },
+    {
+      "id": "069-topicwise-test-17-part-syllabus-gate-2026-ce-geotechnical-engineering",
+      "title": "Topicwise Test-17 Part Syllabus GATE 2026 CE Geotechnical Engineering (Part-1)",
+      "group": "Topic-wise tests",
+      "examLabel": "GATE 2026 CE",
+      "durationSeconds": 2700,
+      "questionCount": 17,
+      "file": "069-topicwise-test-17-part-syllabus-gate-2026-ce-geotechnical-engineering.json"
+    },
+    {
+      "id": "070-topicwise-test-18-part-syllabus-gate-2026-ce-geotechnical-engg",
+      "title": "Topicwise Test-18 Part Syllabus GATE 2026 CE Geotechnical Engg. (Part-2)",
+      "group": "Topic-wise tests",
+      "examLabel": "GATE 2026 CE",
+      "durationSeconds": 2700,
+      "questionCount": 17,
+      "file": "070-topicwise-test-18-part-syllabus-gate-2026-ce-geotechnical-engg.json"
+    },
+    {
+      "id": "071-topicwise-test-19-part-syllabus-gate-2026-ce-geotechnical-engg",
+      "title": "Topicwise Test-19 Part Syllabus GATE 2026 CE Geotechnical Engg -3",
+      "group": "Topic-wise tests",
+      "examLabel": "GATE 2026 CE",
+      "durationSeconds": 2700,
+      "questionCount": 17,
+      "file": "071-topicwise-test-19-part-syllabus-gate-2026-ce-geotechnical-engg.json"
+    },
+    {
+      "id": "072-topicwise-test-2-part-syllabus-gate-2026-ce-solid-mechanics",
+      "title": "Topicwise Test-2 Part Syllabus GATE 2026 CE Solid Mechanics Part-2",
+      "group": "Topic-wise tests",
+      "examLabel": "GATE 2026 CE",
+      "durationSeconds": 2700,
+      "questionCount": 17,
+      "file": "072-topicwise-test-2-part-syllabus-gate-2026-ce-solid-mechanics.json"
+    },
+    {
+      "id": "073-topicwise-test-20-part-syllabus-gate-2026-ce-steel-structures",
+      "title": "Topicwise Test-20 Part Syllabus GATE 2026 CE Steel Structures-1",
+      "group": "Topic-wise tests",
+      "examLabel": "GATE 2026 CE",
+      "durationSeconds": 2700,
+      "questionCount": 17,
+      "file": "073-topicwise-test-20-part-syllabus-gate-2026-ce-steel-structures.json"
+    },
+    {
+      "id": "074-topicwise-test-21-part-syllabus-gate-2026-ce-steel-structures",
+      "title": "Topicwise Test-21 Part Syllabus GATE 2026 CE Steel Structures-2",
+      "group": "Topic-wise tests",
+      "examLabel": "GATE 2026 CE",
+      "durationSeconds": 2700,
+      "questionCount": 17,
+      "file": "074-topicwise-test-21-part-syllabus-gate-2026-ce-steel-structures.json"
+    },
+    {
+      "id": "075-topicwise-test-22-part-syllabus-gate-2026-ce-hydrology",
+      "title": "Topicwise Test-22 Part Syllabus GATE 2026 CE Hydrology",
+      "group": "Topic-wise tests",
+      "examLabel": "GATE 2026 CE",
+      "durationSeconds": 2700,
+      "questionCount": 17,
+      "file": "075-topicwise-test-22-part-syllabus-gate-2026-ce-hydrology.json"
+    },
+    {
+      "id": "076-topicwise-test-23-part-syllabus-gate-2026-ce-irrigation",
+      "title": "Topicwise Test-23 Part Syllabus GATE 2026 CE Irrigation",
+      "group": "Topic-wise tests",
+      "examLabel": "GATE 2026 CE",
+      "durationSeconds": 2700,
+      "questionCount": 17,
+      "file": "076-topicwise-test-23-part-syllabus-gate-2026-ce-irrigation.json"
+    },
+    {
+      "id": "077-topicwise-test-24-part-syllabus-gate-2026-ce-engineering-mechanics",
+      "title": "Topicwise Test-24 Part Syllabus GATE 2026 CE Engineering Mechanics, Construction Materials and Manag",
+      "group": "Topic-wise tests",
+      "examLabel": "GATE 2026 CE",
+      "durationSeconds": 2700,
+      "questionCount": 17,
+      "file": "077-topicwise-test-24-part-syllabus-gate-2026-ce-engineering-mechanics.json"
+    },
+    {
+      "id": "078-topicwise-test-3-part-syllabus-gate-2026-ce-concrete-structures",
+      "title": "Topicwise Test-3 Part Syllabus GATE 2026 CE Concrete Structures Part-1",
+      "group": "Topic-wise tests",
+      "examLabel": "GATE 2026 CE",
+      "durationSeconds": 2700,
+      "questionCount": 17,
+      "file": "078-topicwise-test-3-part-syllabus-gate-2026-ce-concrete-structures.json"
+    },
+    {
+      "id": "079-topicwise-test-4-part-syllabus-gate-2026-ce-concrete-structure",
+      "title": "Topicwise Test-4 Part Syllabus GATE 2026 CE Concrete Structure Part-2",
+      "group": "Topic-wise tests",
+      "examLabel": "GATE 2026 CE",
+      "durationSeconds": 2700,
+      "questionCount": 17,
+      "file": "079-topicwise-test-4-part-syllabus-gate-2026-ce-concrete-structure.json"
+    },
+    {
+      "id": "080-topicwise-test-5-part-syllabus-gate-2026-ce-environmental-engg",
+      "title": "Topicwise Test-5 Part Syllabus GATE 2026 CE Environmental Engg Part-1",
+      "group": "Topic-wise tests",
+      "examLabel": "GATE 2026 CE",
+      "durationSeconds": 2700,
+      "questionCount": 17,
+      "file": "080-topicwise-test-5-part-syllabus-gate-2026-ce-environmental-engg.json"
+    },
+    {
+      "id": "081-topicwise-test-6-part-syllabus-gate-2026-ce-environmental-engg",
+      "title": "Topicwise Test-6 Part Syllabus GATE 2026 CE Environmental Engg Part-2",
+      "group": "Topic-wise tests",
+      "examLabel": "GATE 2026 CE",
+      "durationSeconds": 2700,
+      "questionCount": 17,
+      "file": "081-topicwise-test-6-part-syllabus-gate-2026-ce-environmental-engg.json"
+    },
+    {
+      "id": "082-topicwise-test-7-part-syllabus-gate-2026-ce-fluid-mechanics",
+      "title": "Topicwise Test-7 Part Syllabus GATE 2026 CE Fluid Mechanics and Hydraulics - 1",
+      "group": "Topic-wise tests",
+      "examLabel": "GATE 2026 CE",
+      "durationSeconds": 2700,
+      "questionCount": 17,
+      "file": "082-topicwise-test-7-part-syllabus-gate-2026-ce-fluid-mechanics.json"
+    },
+    {
+      "id": "083-topicwise-test-8-part-syllabus-gate-2026-ce-fluid-mechanics",
+      "title": "Topicwise Test-8 Part Syllabus GATE 2026 CE Fluid Mechanics and Hydraulics -2",
+      "group": "Topic-wise tests",
+      "examLabel": "GATE 2026 CE",
+      "durationSeconds": 2700,
+      "questionCount": 17,
+      "file": "083-topicwise-test-8-part-syllabus-gate-2026-ce-fluid-mechanics.json"
+    },
+    {
+      "id": "084-topicwise-test-9-part-syllabus-gate-2026-ce-engineering-mathematics",
+      "title": "Topicwise Test-9 Part Syllabus GATE 2026 CE Engineering Mathematics-1",
+      "group": "Topic-wise tests",
+      "examLabel": "GATE 2026 CE",
+      "durationSeconds": 2700,
+      "questionCount": 17,
+      "file": "084-topicwise-test-9-part-syllabus-gate-2026-ce-engineering-mathematics.json"
+    }
+  ]
+}

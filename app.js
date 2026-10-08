@@ -10,6 +10,9 @@ let questionById = new Map();
 let subjects = [];
 let topicsBySubject = new Map();
 let questionManifest = null;
+let madeEasyCatalog = [];
+const madeEasyTests = new Map();
+let madeEasyManifestPromise = null;
 const loadedQuestionFiles = new Set();
 const questionFileLoads = new Map();
 let view = 'home';
@@ -150,7 +153,9 @@ function normalizeBackup(raw) {
     theme: incoming.theme === 'dark' ? 'dark' : 'light',
     activeExam: incoming.activeExam && typeof incoming.activeExam === 'object' ? incoming.activeExam : null
   };
-  if (next.activeExam && !(Array.isArray(next.activeExam.qids) && next.activeExam.qids.every(id => questionById.has(id)))) next.activeExam = null;
+  if (next.activeExam && next.activeExam.source === 'made-easy' && typeof next.activeExam.testId === 'string') {
+    // Made Easy question IDs are loaded on demand from the local test bundle.
+  } else if (next.activeExam && !(Array.isArray(next.activeExam.qids) && next.activeExam.qids.every(id => questionById.has(id)))) next.activeExam = null;
   return next;
 }
 function stageRestore(text, name) {
@@ -279,6 +284,24 @@ async function loadQuestionEntry(entry) {
   questionFileLoads.set(entry.file,task);
   return task;
 }
+async function loadMadeEasyCatalog() {
+  if (!madeEasyManifestPromise) madeEasyManifestPromise = fetch('data/made-easy/manifest.json').then(response => {
+    if (!response.ok) throw new Error(`Made Easy test catalog unavailable (${response.status})`);
+    return response.json();
+  }).then(manifest => { madeEasyCatalog = Array.isArray(manifest.tests) ? manifest.tests : []; return madeEasyCatalog; });
+  return madeEasyManifestPromise;
+}
+async function loadMadeEasyTest(testId) {
+  if (madeEasyTests.has(testId)) return madeEasyTests.get(testId);
+  const catalog = await loadMadeEasyCatalog(), entry = catalog.find(test => test.id === testId);
+  if (!entry) throw new Error('This Made Easy test is not available.');
+  const response = await fetch(`data/made-easy/${entry.file}`);
+  if (!response.ok) throw new Error(`Made Easy test unavailable (${response.status})`);
+  const test = await response.json();
+  madeEasyTests.set(testId, test);
+  for (const q of test.questions || []) questionById.set(q.id, q);
+  return test;
+}
 async function ensureQuestionsForSubjects(names) {
   const wanted=names?.length?questionManifest.subjects.filter(entry=>names.includes(entry.subject)):questionManifest.subjects;
   await Promise.all(wanted.map(loadQuestionEntry));
@@ -286,6 +309,16 @@ async function ensureQuestionsForSubjects(names) {
 async function ensureViewQuestions(target=view) {
   if(!questionManifest)return;
   if(target==='subject'||target==='topic')return ensureQuestionsForSubjects([selectedSubject||subjects[0]]);
+  if(target==='exam'&&user.activeExam?.source==='made-easy')return loadMadeEasyTest(user.activeExam.testId);
+  if(target==='results'){
+    const attempt=user.history.find(item=>item.id===activeResult)||user.history[0];
+    if(attempt?.source==='made-easy'&&attempt.testId)await loadMadeEasyTest(attempt.testId);
+  }
+  if(target==='bookmarks'||target==='mistakes'){
+    const ids=new Set(user[target]||[]);
+    const relevant=madeEasyCatalog.filter(test=>[...ids].some(id=>id.startsWith(`${test.id}-q`)));
+    await Promise.all(relevant.map(test=>loadMadeEasyTest(test.id)));
+  }
   if(target==='exam'&&user.activeExam?.subject)return ensureQuestionsForSubjects([user.activeExam.subject]);
   if(['exam','results','year','custom','analytics','bookmarks','mistakes'].includes(target))return ensureQuestionsForSubjects();
 }
@@ -329,6 +362,7 @@ async function loadDataset() {
   else if(['subject','topic','year','custom','analytics','bookmarks','mistakes','profile'].includes(hash))view=hash;
   else if(hash==='exam'&&user.activeExam)view='exam';
   if((view==='subject'||view==='topic')&&!selectedSubject)selectedSubject=subjects[0];
+  try { await loadMadeEasyCatalog(); } catch (error) { console.warn('[MadeEasy] catalog unavailable:', error); }
   await ensureViewQuestions(view);
   render();
 }
@@ -372,7 +406,11 @@ function authHeaderButton() {
 
 function header() {
   const examView=view==='exam';
-  if(examView)return `<header class="exam-masthead"><button class="masthead-seal" data-action="finish-later" title="Save and exit"><img src="assets/iitmadras.png?v=2" alt="IIT Madras logo"></button><div class="masthead-title"><strong>GRADUATE APTITUDE TEST IN ENGINEERING <span>(GATE 2027)</span></strong><small>Organizing Institute: INDIAN INSTITUTE OF TECHNOLOGY MADRAS</small></div><span class="masthead-brand" title="GATE CE"><img src="assets/gate-ce-mark.png?v=1" alt="GATE CE"></span></header>`;
+  if(examView){
+    const madeEasy=user.activeExam?.source==='made-easy';
+    const examLabel=user.activeExam?.examLabel||'GATE 2027';
+    return `<header class="exam-masthead"><button class="masthead-seal" data-action="finish-later" title="Save and exit"><img src="assets/iitmadras.png?v=2" alt="Save and exit"></button><div class="masthead-title"><strong>${madeEasy?'MADE EASY TEST SERIES':'GRADUATE APTITUDE TEST IN ENGINEERING'} <span>(${esc(madeEasy?examLabel:'GATE 2027')})</span></strong><small>${madeEasy?'Civil Engineering practice · Exam-like interface':'Organizing Institute: INDIAN INSTITUTE OF TECHNOLOGY MADRAS'}</small></div><span class="masthead-brand" title="GATE CE"><img src="assets/gate-ce-mark.png?v=1" alt="GATE CE"></span></header>`;
+  }
   const active=({home:['home','subject','topic','year','custom'],analytics:['analytics'],bookmarks:['bookmarks'],mistakes:['mistakes']});
   return `<header class="app-header ${examView?'exam-app-header':''}">
     <a class="brand" href="#home" data-action="go" data-view="home"><span class="brand-mark"><img src="assets/gate-ce-mark.png?v=1" alt=""></span><span class="brand-copy"><strong>GATE CE</strong><small>PREVIOUS YEAR PRACTICE</small></span></a>
@@ -546,10 +584,19 @@ function homePracticeHistory() {
   const recent=user.history.slice(0,5);
   return `<section class="home-history"><div class="home-section-heading"><div><h2>Recent practice</h2><p>Pick up where you left off and review a completed set.</p></div><button class="outline-button" data-action="go" data-view="analytics">View analytics</button></div>${recent.length?`<div class="home-history-list">${recent.map(a=>`<div class="surface home-history-row"><span class="home-history-mark" aria-hidden="true">✓</span><button class="home-history-main home-history-open" data-action="view-result" data-result="${esc(a.id)}"><strong>${esc(a.title)}</strong><small>${dateLabel(a.endedAt)} · ${a.correct} correct · ${a.incorrect} incorrect</small></button><span class="home-history-score"><strong>${num(a.score).toFixed(2)}</strong><small>of ${num(a.totalMarks).toFixed(2)} marks</small></span><button class="home-history-review" data-action="view-result" data-result="${esc(a.id)}">Review <span aria-hidden="true">→</span></button><button class="small-action" data-action="rename-history" data-result="${esc(a.id)}" title="Rename this test">Rename</button><button class="history-delete-button" data-action="delete-history" data-result="${esc(a.id)}" title="Delete this test from history" aria-label="Delete ${esc(a.title)} from history">×</button></div>`).join('')}</div>`:`<div class="surface home-history-empty"><span class="home-history-mark" aria-hidden="true">◷</span><span><strong>Your practice history will appear here</strong><small>Complete a practice set to see your score and review it later.</small></span></div>`}</section>`;
 }
+function madeEasySection() {
+  if (!madeEasyCatalog.length) return '';
+  const groups = [...new Set(madeEasyCatalog.map(test => test.group))];
+  const count = madeEasyCatalog.reduce((sum, test) => sum + test.questionCount, 0);
+  return `<section class="made-easy-section"><div class="home-section-heading"><div><h2>Made Easy Test Series <span class="new-tag">NEW</span></h2><p>${madeEasyCatalog.length} Civil Engineering tests · ${count.toLocaleString()} questions · GATE and ESE sets · Answer keys and solutions included</p></div></div><div class="made-easy-groups">${groups.map((group, index) => {
+    const tests = madeEasyCatalog.filter(test => test.group === group);
+    return `<details class="made-easy-group" ${index === 0 ? 'open' : ''}><summary><strong>${esc(group)}</strong><span>${tests.length} tests</span></summary><div class="made-easy-grid">${tests.map(test => `<article class="surface made-easy-card"><div class="made-easy-card-top"><span class="made-easy-mark">ME</span><span class="new-tag">NEW</span></div><h3>${esc(test.title)}</h3><p>${test.questionCount} questions · ${fmtDuration(test.durationSeconds)} · ${esc(test.examLabel)}</p><button class="primary-button" data-action="start-made-easy-test" data-test-id="${esc(test.id)}">Start test →</button></article>`).join('')}</div></details>`;
+  }).join('')}</div></section>`;
+}
 function renderHome() {
   const counts=subjectCounts();
   const topicCount=totalTopicCount();
-  app.innerHTML=`${header()}<main class="page home-page">${homeDashboard()}<section class="home-practice"><div class="home-section-heading"><div><h2>Start practicing</h2><p>Choose the way you want to work through the question bank.</p></div><div class="topic-actions"><button class="primary-button custom-test-cta" data-action="go" data-view="custom">Build a custom test</button></div></div>${practicePickerCards()}</section><section class="library-section home-library"><div class="library-section-head"><div><h2>Browse the question bank</h2><p>${countLabel(questionCount())} · ${topicCount} topics · GATE CE 2001–2026</p></div></div><div class="library-controls"><div class="search-wrap"><span class="search-icon">⌕</span><input class="search-input" id="librarySearch" placeholder="Search subjects and topics" autocomplete="off"></div><div class="segmented"><button class="segment-button active" data-action="go" data-view="home">By subject</button><button class="segment-button" data-action="go" data-view="year">By year</button></div></div><div class="subject-grid">${subjects.map(subject=>`<button class="surface subject-card browse-item" data-action="open-subject" data-subject="${esc(subject)}" data-search="${esc(`${subject} ${topicsFor(subject).join(' ')} ${manifestEntry(subject).years.map(y=>y.year).join(' ')}`.toLowerCase())}"><span class="subject-icon">${iconFor(subject)}</span><span class="subject-copy"><strong>${esc(subject)}</strong><small>${countLabel(counts.get(subject)||0)} · ${topicsFor(subject).length} topics</small></span><span class="subject-arrow">›</span></button>`).join('')}</div></section>${homeActivity()}${homePracticeHistory()}<footer class="home-footer"><span>Made with <span class="footer-heart" aria-label="love">♥</span> by <a href="https://github.com/0xniru" target="_blank" rel="noopener noreferrer">Niru</a></span></footer></main>`;
+  app.innerHTML=`${header()}<main class="page home-page">${homeDashboard()}<section class="home-practice"><div class="home-section-heading"><div><h2>Start practicing</h2><p>Choose the way you want to work through the question bank.</p></div><div class="topic-actions"><button class="primary-button custom-test-cta" data-action="go" data-view="custom">Build a custom test</button></div></div>${practicePickerCards()}</section>${madeEasySection()}<section class="library-section home-library"><div class="library-section-head"><div><h2>Browse the question bank</h2><p>${countLabel(questionCount())} · ${topicCount} topics · GATE CE 2001–2026</p></div></div><div class="library-controls"><div class="search-wrap"><span class="search-icon">⌕</span><input class="search-input" id="librarySearch" placeholder="Search subjects and topics" autocomplete="off"></div><div class="segmented"><button class="segment-button active" data-action="go" data-view="home">By subject</button><button class="segment-button" data-action="go" data-view="year">By year</button></div></div><div class="subject-grid">${subjects.map(subject=>`<button class="surface subject-card browse-item" data-action="open-subject" data-subject="${esc(subject)}" data-search="${esc(`${subject} ${topicsFor(subject).join(' ')} ${manifestEntry(subject).years.map(y=>y.year).join(' ')}`.toLowerCase())}"><span class="subject-icon">${iconFor(subject)}</span><span class="subject-copy"><strong>${esc(subject)}</strong><small>${countLabel(counts.get(subject)||0)} · ${topicsFor(subject).length} topics</small></span><span class="subject-arrow">›</span></button>`).join('')}</div></section>${homeActivity()}${homePracticeHistory()}<footer class="home-footer"><span>Made with <span class="footer-heart" aria-label="love">♥</span> by <a href="https://github.com/0xniru" target="_blank" rel="noopener noreferrer">Niru</a></span></footer></main>`;
 }
 function renderSubject() {
   const subject=selectedSubject||subjects[0];const topics=topicsFor(subject);const counts=new Map(topics.map(t=>[t,qsForTopic(subject,t).length]));
@@ -677,9 +724,9 @@ function openInstructions(exam) {
 function prepareExam(qs,title,meta={}) {
   if(!qs.length){toast('No questions found for that selection.');return;}
   const ids=qs.map(q=>q.id);const marks=qs.reduce((n,q)=>n+num(q.marks),0);
-  const customDuration=num(meta.customDurationSeconds);
+  const customDuration=num(meta.durationSeconds??meta.customDurationSeconds);
   const durationSeconds=Number.isFinite(customDuration)&&customDuration>=60?Math.round(customDuration):Math.max(60,Math.round(marks*108));
-  openInstructions({id:`exam-${Date.now()}`,title,qids:ids,subject:meta.subject||null,topic:meta.topic||null,year:meta.year||null,session:meta.session||null,durationSeconds,filterSummary:meta.filterSummary||null});
+  openInstructions({id:`exam-${Date.now()}`,title,qids:ids,subject:meta.subject||null,topic:meta.topic||null,year:meta.year||null,session:meta.session||null,durationSeconds,source:meta.source||null,testId:meta.testId||null,examLabel:meta.examLabel||null,filterSummary:meta.filterSummary||null});
 }
 async function enterExamFullscreen() {
   try {
@@ -695,7 +742,11 @@ async function beginPendingExam() {
   const exam={...pendingExam,index:0,answers:{},visited:[0],marked:[],times:{},questionStartedAt:Date.now(),deadline:Date.now()+pendingExam.durationSeconds*1000};
   user.activeExam=exam;saveUser();pendingExam=null;dialogClose();await enterExamFullscreen();navigate('exam');
 }
-function currentExamQuestions() { return (user.activeExam?.qids||[]).map(id=>questionById.get(id)).filter(Boolean); }
+function currentExamQuestions() {
+  const exam=user.activeExam;
+  if(exam?.source==='made-easy')return madeEasyTests.get(exam.testId)?.questions||[];
+  return (exam?.qids||[]).map(id=>questionById.get(id)).filter(Boolean);
+}
 function currentQuestion() { const qs=currentExamQuestions();return qs[user.activeExam?.index||0]; }
 function answerExists(value) { return value!==undefined&&value!==null&&value!==''&&!(Array.isArray(value)&&!value.length); }
 function answerStatus(index) {
@@ -711,7 +762,7 @@ function recordVisit(nextIndex) {
   const e=user.activeExam;if(!e)return;
   recordElapsedTime(e);e.index=nextIndex;e.questionStartedAt=Date.now();if(!e.visited.includes(nextIndex))e.visited.push(nextIndex);saveUser();
 }
-function renderRich(html,q,asOption=false) {
+function renderRich(html,q,asOption=false,imageRefs=null) {
   if(!html)return '';
   const parsed=new DOMParser().parseFromString(`<div>${html}</div>`,'text/html');
   const host=parsed.body.firstElementChild;
@@ -752,7 +803,7 @@ function renderRich(html,q,asOption=false) {
       el.removeAttribute(attr.name);
     }
     if(el.tagName==='IMG'){
-      const ref=(q.images||[])[imageIndex++];
+      const ref=(imageRefs||(q.images||[]))[imageIndex++];
       const src=ref?.localPath?`/${ref.localPath.replace(/^\//,'')}`:ref?.url;
       if(!src||(!src.startsWith('/')&&!src.startsWith('https://')))el.remove();else{el.setAttribute('src',src);el.setAttribute('loading','lazy');el.setAttribute('alt',ref.altText||'Question figure');}
     }
@@ -763,7 +814,7 @@ function renderQuestionContent(q) {
   const html=q.questionMarkup||'';
   return html?renderRich(html,q):`<div>${esc(q.questionText||'Question text unavailable').replace(/\n/g,'<br>')}</div>`;
 }
-function negativeMark(q) { return q.type==='MCQ'?num(q.marks)/3:0; }
+function negativeMark(q) { return q.negativeMarks!==undefined?num(q.negativeMarks):(q.type==='MCQ'?num(q.marks)/3:0); }
 function renderExam() {
   const e=user.activeExam,qs=currentExamQuestions(),q=currentQuestion();
   if(!e||!q){view='home';renderHome();return;}
@@ -773,7 +824,7 @@ function renderExam() {
   const options=(q.options||[]).map(o=>{
     const selected=type==='MSQ'?Array.isArray(answer)&&answer.includes(o.key):answer===o.key;
     const inputType=type==='MSQ'?'checkbox':'radio';
-    return `<label class="answer-option"><input type="${inputType}" class="answer-input" name="answer" value="${esc(o.key)}" ${selected?'checked':''}><span><strong>${esc(o.key)}.</strong> ${renderRich(o.html||esc(o.text||''),q,true)}</span></label>`;
+    return `<label class="answer-option"><input type="${inputType}" class="answer-input" name="answer" value="${esc(o.key)}" ${selected?'checked':''}><span><strong>${esc(o.key)}.</strong> ${renderRich(o.html||esc(o.text||''),q,true,o.images?.length?o.images:q.images||[])}</span></label>`;
   }).join('');
   const isNat=type==='NAT';
   const negative=negativeMark(q);
@@ -833,7 +884,7 @@ function finalizeExam() {
   const qs=currentExamQuestions();let correct=0,incorrect=0,unanswered=0,pending=0,earned=0,negative=0;
   const evaluations={};
   for(const q of qs){const answer=e.answers[q.id];const grade=scoreQuestion(q,answer);evaluations[q.id]=grade;if(grade.status==='correct'){correct++;earned+=grade.score;}else if(grade.status==='incorrect'){incorrect++;negative+=Math.abs(grade.score);}else if(grade.status==='unanswered')unanswered++;else pending++;}
-  const attempt={id:`result-${Date.now()}`,title:e.title,subject:e.subject,topic:e.topic,year:e.year,session:e.session,questionIds:[...e.qids],answers:{...e.answers},evaluations,endedAt:Date.now(),durationSeconds:e.durationSeconds,remainingSeconds:Math.max(0,Math.ceil((e.deadline-Date.now())/1000)),totalMarks:qs.reduce((n,q)=>n+num(q.marks),0),earned,negative,score:earned-negative,correct,incorrect,unanswered,pending,times:{...e.times},visited:[...e.visited]};
+  const attempt={id:`result-${Date.now()}`,title:e.title,subject:e.subject,topic:e.topic,year:e.year,session:e.session,source:e.source||null,testId:e.testId||null,questionIds:[...e.qids],answers:{...e.answers},evaluations,endedAt:Date.now(),durationSeconds:e.durationSeconds,remainingSeconds:Math.max(0,Math.ceil((e.deadline-Date.now())/1000)),totalMarks:qs.reduce((n,q)=>n+num(q.marks),0),earned,negative,score:earned-negative,correct,incorrect,unanswered,pending,times:{...e.times},visited:[...e.visited]};
   user.history.unshift(attempt);user.history=user.history.slice(0,150);user.activeExam=null;saveUser();activeResult=attempt.id;dialogClose();navigate('results',{result:attempt.id});
   if(window.SupaAuth?.user())SupaAuth.saveTestAttempt(attempt).then(()=>SupaAuth.saveCloudState(user)).catch(e=>console.warn('[CloudSync] test attempt save error',e));
 }
@@ -857,8 +908,8 @@ function reviewCard(q,attempt,grade,index) {
   const statusText={correct:'CORRECT',incorrect:'INCORRECT',unanswered:'UNANSWERED',pending:'ANSWER KEY PENDING'}[status]||status.toUpperCase();
   const keySet=(q.correctAnswer||[]).map(String);
   const selected=Array.isArray(answer)?answer.map(String):answer===undefined?[]:[String(answer)];
-  const options=q.type==='NAT'?'':`<div class="review-options">${(q.options||[]).map(o=>{const isCorrect=keySet.includes(String(o.key));const isSelected=selected.includes(String(o.key));let cls=isCorrect?'correct':isSelected&&status==='incorrect'?'selected-wrong':'';return `<div class="review-option ${cls}">${isCorrect?'✓ ':isSelected&&status==='incorrect'?'× ':''}<strong>${esc(o.key)}.</strong> ${renderRich(o.html||esc(o.text||''),q,true)}</div>`;}).join('')}</div>`;
-  const keyPending=status==='pending';const explanation=q.explanationHtml?renderRich(q.explanationHtml,q):esc(q.explanationText||'No explanation has been provided for this question.');
+  const options=q.type==='NAT'?'':`<div class="review-options">${(q.options||[]).map(o=>{const isCorrect=keySet.includes(String(o.key));const isSelected=selected.includes(String(o.key));let cls=isCorrect?'correct':isSelected&&status==='incorrect'?'selected-wrong':'';return `<div class="review-option ${cls}">${isCorrect?'✓ ':isSelected&&status==='incorrect'?'× ':''}<strong>${esc(o.key)}.</strong> ${renderRich(o.html||esc(o.text||''),q,true,o.images?.length?o.images:q.images||[])}</div>`;}).join('')}</div>`;
+  const keyPending=status==='pending';const explanation=q.explanationHtml?renderRich(q.explanationHtml,q,false,q.explanationImages||[]):esc(q.explanationText||'No explanation has been provided for this question.');
   const verifiedAnswer=q.type==='NAT'?natKeyLabel(user.answerOverrides[q.id]??q.natAnswer):answerLabel(q,keySet);
   return `<article class="surface review-card ${status}" data-review-status="${esc(status)}" id="review-${esc(q.id)}"><div class="review-card-head"><strong>Question ${esc(q.questionNo??index+1)} (${esc(q.type)})</strong><span>🗓 ${esc(q.year)}${q.session?` · ${esc(q.session)}`:''}</span><span class="review-topic">▦ ${esc(q.topic||attempt?.topic||q.subject||'Uncategorized')}</span><span>⏱ ${questionWasVisited?fmtDuration(elapsed):'Not visited'}</span><span>+${num(q.marks).toFixed(2)} marks</span><span class="question-status ${status}">${statusText}</span><button class="report-question-button" data-action="report-question" data-id="${esc(q.id)}" title="Report a question or answer-key issue" aria-label="Report question"><span aria-hidden="true">⚠</span><small>Report</small></button></div><div class="review-question question-markup">${renderQuestionContent(q)}</div>${options}<div class="review-note"><strong>Your answer:</strong> ${esc(answerLabel(q,answer))}<br><strong>${keyPending?'Verified answer:':'Correct answer:'}</strong> ${keyPending?'Pending verification':esc(verifiedAnswer)}</div><div class="review-actions"><button data-action="toggle-bookmark" data-id="${esc(q.id)}">${user.bookmarks.includes(q.id)?'📌 Bookmarked':'📌 Bookmark'}</button><button data-action="toggle-mistake" data-id="${esc(q.id)}">${user.mistakes.includes(q.id)?'🤦 Mistake recorded':'🤦 Silly mistake'}</button><button data-action="toggle-explanation" data-id="${esc(q.id)}">📖 ${q.explanationHtml||q.explanationText?'View explanation':'Explanation unavailable'}</button><button data-action="edit-note" data-id="${esc(q.id)}">📝 Notes</button></div><div class="review-explanation hidden" id="explanation-${esc(q.id)}">${explanation}</div><div class="review-explanation hidden" id="note-${esc(q.id)}"><textarea class="form-control question-note" data-id="${esc(q.id)}" placeholder="Add a note for this question…" style="width:100%">${esc(user.questionNotes?.[q.id]||'')}</textarea><button class="small-action" data-action="save-question-note" data-id="${esc(q.id)}">Save note</button></div></article>`;
 }
@@ -1027,6 +1078,13 @@ async function handleAction(action,el) {
       const group=questions.filter(q=>String(q.year)===selection).sort((a,b)=>String(a.session||'').localeCompare(String(b.session||''))||num(a.questionNo)-num(b.questionNo));
       prepareExam(group,`GATE CE ${selection} · All sessions`,{year:Number(selection)});return;
     }
+  }
+  if(action==='start-made-easy-test'){
+    try {
+      const test=await loadMadeEasyTest(el.dataset.testId);
+      prepareExam(test.questions, test.title, {source:'made-easy',testId:test.id,examLabel:test.examLabel,subject:'Civil Engineering',topic:test.group,durationSeconds:test.durationSeconds});
+    } catch(error) { toast(error.message||'Could not open this Made Easy test.'); }
+    return;
   }
   if(action==='practice-subject'){prepareExam(questions.filter(q=>q.subject===selectedSubject),`${selectedSubject} · All topics`,{subject:selectedSubject});return;}
   if(action==='practice-topic'){prepareExam(qsForTopic(selectedSubject,selectedTopic),`${selectedSubject} · ${selectedTopic}`,{subject:selectedSubject,topic:selectedTopic});return;}
